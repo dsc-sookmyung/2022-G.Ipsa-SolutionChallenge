@@ -1,0 +1,437 @@
+openapi: '3.0.0'
+servers: 
+  - url: http://34.64.244.115:3306
+info:
+  description: This is a simple API
+  version: "1.0.0"
+  title: G.Ipsa API
+  license:
+    name: Apache 2.0
+tags:
+  - name: user
+    description: Api for userDB
+  - name: story
+    description: Api for storyDB
+  - name: comment
+    description: Api from commentDB
+  - name: like
+    description: Api about like
+  - name: follow
+    description: Api about follow
+paths:
+  /user/emailCheck:
+    get:
+      tags:
+        - user
+      summary: 이메일 중복 확인
+      parameters:
+        - in: query
+          name: email
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Return email search result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: bad input parameter
+        '404':
+          description: Email Available
+  /user/nicknameCheck:
+    get:
+      tags:
+        - user
+      summary: 닉네임 중복 확인
+      parameters:
+        - in: query
+          name: nickname
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Return nickname search result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: bad input parameter
+        '404':
+          description: nickname Available
+  
+  /user/signin:
+    post:
+      tags:
+        - user
+      summary: 회원가입
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        description:
+          가입한 회원 정보
+      responses:
+        default:
+          description: successful operation
+  /user/search:
+    get:
+      tags:
+        - user
+      summary: search user by nickname
+      parameters: 
+      - in: query
+        name: keyword
+        schema:
+          type: string
+      responses:
+        '200':
+          description: user info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Story'
+        '400':
+          description: invalid
+          
+  /like:
+    put:
+      tags: 
+        - like
+      summary: 좋아요 한 스토리 추가하고 다시 유저정보 받아옴
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  description: userId
+                  type: number
+                likedStoryIds:
+                  description: Updated liked stories
+                  type: array
+                  items: 
+                    type: number
+                storyLikes:
+                  description: 스토리 좋아유 수
+                  type: number
+      responses:
+        '200':
+          description: get updated user info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /follow:
+    put:
+      tags: 
+        - follow
+      summary: 팔로우 시작할 때
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                followingUserId:
+                  description: 유저 id
+                  type: number
+                followingUserIds:
+                  description: 유저가 팔로우 중인 사람 리스트 
+                  type: array
+                  items:
+                    type: number
+                followedUserId:
+                  description: 크리에이터 id
+                  type: number
+                followerUserIds:
+                  description: 크리에이터를 구독하는 팔로워 리스트 
+                  type: array
+                  items:
+                    type: number
+      responses:
+        default:
+          description: good
+                
+  /story/comment:
+    put:
+      tags:
+        - comment
+      summary: 댓글 달기
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  description: storyId
+                  type: number
+                comments:
+                  description: comment array
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Comment'
+      responses:
+        default:
+          description: good
+
+  /story/create:
+    post:
+      tags:
+        - story
+      summary: 스토리 업로드
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Story'
+        description:
+          업로드한 스토리 정보
+      responses:
+        default:
+          description: successful operation
+          
+  /story:
+    get:
+      tags:
+        - story
+      summary: bring all stories
+      responses:
+        '200':
+          description: array of stories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Story'
+        '400':
+          description: invalid
+          
+  /story/searchTitle:
+    get:
+      tags:
+        - story
+      summary: search in title
+      parameters: 
+      - in: query
+        name: keyword
+        schema:
+          type: string
+      responses:
+        '200':
+          description: array of stories having keyword in title
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Story'
+        '400':
+          description: invalid
+  # /story/searchNickname:
+  #   get:
+  #     tags:
+  #       - story
+  #     summary: search story in nickname
+  #     parameters: 
+  #     - in: query
+  #       name: keyword
+  #       schema:
+  #         type: string
+  #     responses:
+  #       '200':
+  #         description: array of stories having keyword in nickname
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 $ref: '#/components/schemas/Story'
+  #       '400':
+  #         description: invalid
+  /story/{id}:
+    get:
+      tags:
+        - story
+      summary: bring clicked story
+      parameters: 
+      - name: id
+        in: path
+        schema:
+          type: number
+        required: true
+      responses:
+        '200':
+          description: clicked story
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Story'
+        '400':
+          description: invalid
+          
+  /count:
+    get:
+      summary: get CountDB
+      description: 0번 id 입력해서 userCount 불러오기, 1번 입력해서 storyCount
+      parameters:
+      - in: query
+        name: id
+        required: true
+        schema:
+          type: number
+      responses:
+        '200':
+          description: get current counts
+          content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Count'
+        '400':
+          description: sth wrong
+    put:
+      summary: update CountDB
+      description: userCount 업데이트, storyCount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Count'
+        description:
+          업데이트한 정보
+      responses:
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: not found
+        
+  
+
+components:
+  schemas:
+    User:
+      type: object
+      required: 
+        - id
+        - email
+        - birth
+        - showBirth
+        - isCreator
+        - nickname
+        - likedStoryIds
+        - followingUserIds
+        - profileImageSrc
+      properties:
+        id:
+          type: number
+          format: int64
+        email:
+          type: string
+        birth:
+          type: string
+          format: date
+          example: '2000-01-28'
+        showBirth:
+          type: boolean
+        isCreator:
+          type: boolean
+        nickname:
+          type: string
+        likedStoryIds:
+          type: array
+          items: 
+            type: number
+            format: int64
+        followingUserIds:
+          type: array
+          items: 
+            type: number
+            format: int64
+        profileImageSrc:
+          type: string
+        followerUserIds:
+          type: array
+          items: 
+            type: number
+            format: int64
+        myStoryIds:
+          type: array
+          items: 
+            type: number
+            format: int64
+    Story:
+      type: object
+      required:
+        - id
+        - creatorNickname
+        - title
+        - thumbnailImageSrc
+        - category
+        - audioFileSrc
+        - likes
+        - comments
+        - createdAt
+      properties:
+        id:
+          type: number
+          format: int64
+        creatorNickname:
+          type: string
+        title:
+          type: string
+        thumbnailImageSrc:
+          type: string
+        category:
+          type: string
+        audioFileSrc:
+          type: string
+        likes:
+          type: number
+          format: int64
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+        createdAt:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+    Comment:
+      type: object
+      required:
+        - id
+        - userId
+        - content
+        - createdAt
+      properties:
+        id:
+          type: number
+          format: int64
+        userId:
+          type: number
+          format: int64
+        content:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+    Count:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: number
+          format: int64
+        Count:
+          type: number
+          format: int64
