@@ -1,6 +1,6 @@
 openapi: 3.0.0
 servers:
-  - url: 'http://34.64.244.115:8080/'
+  - url: 'http://34.64.244.115:8080'
 info:
   description: This is a simple API
   version: 1.0.0
@@ -196,22 +196,6 @@ paths:
       tags:
         - story
       summary: bring all stories
-      responses:
-        '200':
-          description: array of stories
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Story'
-        '400':
-          description: invalid
-  /story/searchTitle:
-    get:
-      tags:
-        - story
-      summary: search in title
       parameters:
         - in: query
           name: keyword
@@ -219,7 +203,7 @@ paths:
             type: string
       responses:
         '200':
-          description: array of stories having keyword in title
+          description: array of stories
           content:
             application/json:
               schema:

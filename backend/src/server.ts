@@ -14,14 +14,17 @@ class Server {
     constructor() {
         this.app = express();
         this.config();
-        this.routerConfig();
         this.dbConnect();
+        this.routerConfig();
         this.swagger();
     }
 
     private config() {
         this.app.use(bodyParser.urlencoded({ extended:true }));
         this.app.use(bodyParser.json({ limit: '1mb' })); // 100kb default
+        this.app.get('/', (req, res)=>{
+            res.send('hello')
+        })
     }
 
     private dbConnect() {

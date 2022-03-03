@@ -22,13 +22,16 @@ class Server {
         };
         this.app = (0, express_1.default)();
         this.config();
-        this.routerConfig();
         this.dbConnect();
+        this.routerConfig();
         this.swagger();
     }
     config() {
         this.app.use(body_parser_1.default.urlencoded({ extended: true }));
         this.app.use(body_parser_1.default.json({ limit: '1mb' })); // 100kb default
+        this.app.get('/', (req, res) => {
+            res.send('hello');
+        });
     }
     dbConnect() {
         dbconnector_1.default.connect(function (err, client, done) {
