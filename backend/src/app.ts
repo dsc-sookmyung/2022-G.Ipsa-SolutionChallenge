@@ -1,20 +1,10 @@
-import express, { Request, Response, NextFunction, Application } from 'express';
-import path from 'path';
-import swaggerUi from 'swagger-ui-express' 
-import YAML from 'yamljs'
-
-const PORT = 8080;
+import server from './server';
 
 
-const app: Application = express();
-const swaggerSpec = YAML.load(path.join(__dirname, '../build/swagger.yaml'))
+const port = parseInt(process.env.PORT || '8080');
 
-
-app.use(express.json());
-app.use(express.static("public"));
-
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
-
-app.listen(PORT, () => {
-    console.log("Server is running on port", PORT);
+const starter = new server().start(port)
+  .then(port => console.log(`Running on port ${port}`))
+  .catch(error => {
+    console.log(error)
   });
