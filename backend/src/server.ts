@@ -15,7 +15,7 @@ class Server {
         this.app = express();
         this.config();
         this.routerConfig();
-        // this.dbConnect();
+        this.dbConnect();
         this.swagger();
     }
 

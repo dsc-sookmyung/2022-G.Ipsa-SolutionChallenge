@@ -1,6 +1,6 @@
 openapi: 3.0.0
 servers:
-  - url: 'http://34.64.244.115:8080'
+  - url: 'http://34.64.244.115:8080/'
 info:
   description: This is a simple API
   version: 1.0.0

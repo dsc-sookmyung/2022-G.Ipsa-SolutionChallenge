@@ -23,7 +23,7 @@ class Server {
         this.app = (0, express_1.default)();
         this.config();
         this.routerConfig();
-        // this.dbConnect();
+        this.dbConnect();
         this.swagger();
     }
     config() {
