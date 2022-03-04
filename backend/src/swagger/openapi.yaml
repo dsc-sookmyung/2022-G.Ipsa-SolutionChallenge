@@ -73,7 +73,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserInfo'
         description:
           가입한 회원 정보
       responses:
@@ -97,7 +97,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserInfo'
         '400':
           description: invalid
           
@@ -205,10 +205,9 @@ paths:
 
 components:
   schemas:
-    User:
+    UserInfo:
       type: object
       required: 
-        - id
         - email
         - birth
         - showBirth
@@ -233,28 +232,8 @@ components:
           type: boolean
         nickname:
           type: string
-        # likedStoryIds:
-        #   type: array
-        #   items: 
-        #     type: number
-        #     format: int64
-        # followingUserIds:
-        #   type: array
-        #   items: 
-        #     type: number
-        #     format: int64
         profileImageSrc:
           type: string
-        # followerUserIds:
-        #   type: array
-        #   items: 
-        #     type: number
-        #     format: int64
-        # myStoryIds:
-        #   type: array
-        #   items: 
-        #     type: number
-        #     format: int64
     Story:
       type: object
       required:
