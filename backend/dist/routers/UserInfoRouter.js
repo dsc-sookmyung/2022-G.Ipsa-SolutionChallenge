@@ -14,18 +14,32 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserInfoRouter = void 0;
 const express_1 = __importDefault(require("express"));
+const typeorm_1 = require("typeorm");
 const UserInfo_1 = __importDefault(require("../database/entities/UserInfo"));
 const router = express_1.default.Router();
 exports.UserInfoRouter = router;
+router.get('/emailCheck', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const kemail = req.query.email;
+    const userCount = yield UserInfo_1.default.findAndCount({ where: { email: kemail } });
+    if (userCount[1] > 0)
+        res.send('1');
+    else
+        res.send('0');
+}));
 router.post('/signin', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req['body'];
     const newUser = UserInfo_1.default.create(user);
     yield newUser.save();
     res.send(newUser);
 }));
-router.get('/search', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const keyword = req.query.keyword;
-    console.log(keyword);
-    const searchedUser = yield UserInfo_1.default.findOne({ where: { nickname: keyword } });
-    res.send(searchedUser);
+    if (keyword) {
+        const searchedUser = yield UserInfo_1.default.find({ nickname: (0, typeorm_1.Like)(`%${keyword}%`) });
+        res.send(searchedUser);
+    }
+    else {
+        const searchedUser = yield UserInfo_1.default.find();
+        res.send(searchedUser);
+    }
 }));

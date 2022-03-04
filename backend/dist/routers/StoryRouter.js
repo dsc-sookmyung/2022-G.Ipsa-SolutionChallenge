@@ -27,11 +27,11 @@ router.post('/create', (req, res) => __awaiter(void 0, void 0, void 0, function*
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const keyword = req.query.keyword;
     if (keyword) {
-        const searchedUser = yield Story_1.default.find({ title: (0, typeorm_1.Like)(`%${keyword}%`) });
-        res.send(searchedUser);
+        const searchedStory = yield Story_1.default.find({ title: (0, typeorm_1.Like)(`%${keyword}%`) });
+        res.send(searchedStory);
     }
     else {
-        const searchedUser = yield Story_1.default.find();
-        res.send(searchedUser);
+        const searchedStory = yield Story_1.default.find();
+        res.send(searchedStory);
     }
 }));
