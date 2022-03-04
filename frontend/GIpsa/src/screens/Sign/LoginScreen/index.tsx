@@ -1,13 +1,18 @@
 import { View, Text, Button } from 'react-native';
 import React from 'react';
+import S from './Styles';
+import { MainTabScreenProps } from 'navigator/types';
 
-const LoginScreen = ({ navigation }) => {
+
+const LoginScreen = ({navigation}) => {
   return (
-    <View>
-      <Text>LoginScreen</Text>
-      <Button title="Go Main" onPress={() => navigation.navigate('Main')} />
+    <View style={S.container}>
+      <Text style={S.title}>LoginScreen</Text>
+      <Button title="Go Signin" onPress={() => navigation.navigate('Signin')} />
     </View>
   );
 };
 
 export default LoginScreen;
+
+
