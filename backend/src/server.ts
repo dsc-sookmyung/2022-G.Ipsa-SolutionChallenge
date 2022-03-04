@@ -1,41 +1,35 @@
-import express, { Application, Router } from 'express';
+import express, { Application, Router, Request, Response} from 'express';
 import bodyParser from 'body-parser';
-import todosRouter from './routers/TodosRouter';
-import pool from './dbconfig/dbconnector';
+import {UserInfoRouter} from './routers/UserInfoRouter';
+import Options from './database/dbconnector';
 import path from 'path';
 import swaggerUi from 'swagger-ui-express' 
 import YAML from 'yamljs'
-
+import {createConnection} from 'typeorm';
 
 class Server {
-    private app;
+    private app: express.Application;
 
 
     constructor() {
-        this.app = express();
+        this.app = express(); //init the application
         this.config();
-        this.dbConnect();
         this.routerConfig();
         this.swagger();
     }
 
     private config() {
-        this.app.use(bodyParser.urlencoded({ extended:true }));
-        this.app.use(bodyParser.json({ limit: '1mb' })); // 100kb default
-        this.app.get('/', (req, res)=>{
+        // this.app.use(bodyParser.urlencoded({ extended:true }));
+        // this.app.use(bodyParser.json({ limit: '1mb' })); // 100kb default
+        this.app.use(express.json())
+    }
+
+    public async routerConfig() {
+        await createConnection(Options);
+        this.app.get('/', (req: Request, res: Response)=>{
             res.send('hello')
         })
-    }
-
-    private dbConnect() {
-        pool.connect(function (err, client, done) {
-            if (err) throw new Error('error');
-            console.log('Connected');
-          }); 
-    }
-
-    private routerConfig() {
-        this.app.use('/todos', todosRouter);
+        this.app.use('/user', UserInfoRouter);
     }
 
     private swaggerSpec = YAML.load(path.join(__dirname, '../build/swagger.yaml'))

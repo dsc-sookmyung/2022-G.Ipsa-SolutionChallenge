@@ -8,12 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TodosController = void 0;
+exports.UserInfoController = void 0;
 // // import pool from '../dbconfig/dbconnector';
 // import {Router, Response, Request} from "express";
 const typeorm_1 = require("typeorm");
-const post_1 = require("../database/entities/post");
+const UserInfo_1 = __importDefault(require("../database/entities/UserInfo"));
 // class TodosController {
 //     // public router: Router;
 //     // constructor(){
@@ -42,17 +45,17 @@ const post_1 = require("../database/entities/post");
 //     // }
 // }
 // export default TodosController;
-class TodosController {
+class UserInfoController {
     constructor() {
-        this.index = () => __awaiter(this, void 0, void 0, function* () {
-            const posts = yield this.postRepository.find();
+        this.all = () => __awaiter(this, void 0, void 0, function* () {
+            const posts = yield this.userInfoRepository.find();
             return posts;
         });
-        this.create = (post) => __awaiter(this, void 0, void 0, function* () {
-            const newPost = yield this.postRepository.save(post);
+        this.signin = (post) => __awaiter(this, void 0, void 0, function* () {
+            const newPost = yield this.userInfoRepository.save(post);
             return newPost;
         });
-        this.postRepository = (0, typeorm_1.getConnection)('gipsa_db').getRepository(post_1.usertable);
+        this.userInfoRepository = (0, typeorm_1.getConnection)('gipsa_db').getRepository(UserInfo_1.default);
     }
 }
-exports.TodosController = TodosController;
+exports.UserInfoController = UserInfoController;
