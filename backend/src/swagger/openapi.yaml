@@ -1,0 +1,331 @@
+openapi: '3.0.0'
+servers: 
+  - url: http://34.64.244.115:8080/
+info:
+  description: This is a simple API
+  version: "1.0.0"
+  title: G.Ipsa API
+  license:
+    name: Apache 2.0
+tags:
+  - name: user
+    description: Api for userDB
+  - name: story
+    description: Api for storyDB
+  - name: comment
+    description: Api from commentDB
+  - name: like
+    description: Api about like
+  - name: follow
+    description: Api about follow
+paths:
+  /user/emailCheck:
+    get:
+      tags:
+        - user
+      summary: 가입한 사람인지 아닌지 확인가능
+      parameters:
+        - in: query
+          name: email
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 사람이 있으면 1, 없으면 0
+          content:
+            application/json:
+              schema:
+                type: number
+        '400':
+          description: bad input parameter
+        '404':
+          description: don't have data
+  /user/nicknameCheck:
+    get:
+      tags:
+        - user
+      summary: 닉네임 중복 확인
+      parameters:
+        - in: query
+          name: nickname
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 겹치면 1, 없으면 0
+          content:
+            application/json:
+              schema:
+                type: number
+        '400':
+          description: bad input parameter
+        '404':
+          description: don't have nickname 
+  
+  /user/signin:
+    post:
+      tags:
+        - user
+      summary: 회원가입
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        description:
+          가입한 회원 정보
+      responses:
+        default:
+          description: successful operation
+  /user/search:
+    get:
+      tags:
+        - user
+      summary: search user by nickname
+      parameters: 
+      - in: query
+        name: keyword
+        schema:
+          type: string
+        required: true
+
+      responses:
+        '200':
+          description: user info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: invalid
+          
+  /like:
+    put:
+      tags: 
+        - like
+      summary: 좋아요 추가와 좋아요 수 업데이트
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Like'
+      responses:
+        default:
+          description: successful operation
+  /follow:
+    put:
+      tags: 
+        - follow
+      summary: 팔로우 시작할 때
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Follow'
+      responses:
+        default:
+          description: good
+                
+  /story/comment:
+    put:
+      tags:
+        - comment
+      summary: 댓글 달기
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+      responses:
+        default:
+          description: good
+
+  /story/create:
+    post:
+      tags:
+        - story
+      summary: 스토리 업로드
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Story'
+        description:
+          업로드한 스토리 정보
+      responses:
+        default:
+          description: successful operation
+          
+  /story:
+    get:
+      tags:
+        - story
+      summary: bring stories
+      parameters: 
+      - in: query
+        name: keyword
+        schema:
+          type: string
+      responses:
+        '200':
+          description: array of stories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Story'
+        '400':
+          description: invalid
+  
+  /story/click:
+    get:
+      tags:
+        - story
+      summary: bring clicked story
+      parameters: 
+      - name: id
+        in: query
+        schema:
+          type: number
+        required: true
+      responses:
+        '200':
+          description: clicked story
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Story'
+        '400':
+          description: invalid
+        
+  
+
+components:
+  schemas:
+    User:
+      type: object
+      required: 
+        - id
+        - email
+        - birth
+        - showBirth
+        - isCreator
+        - nickname
+        # - likedStoryIds
+        # - followingUserIds
+        - profileImageSrc
+      properties:
+        id:
+          type: number
+          format: int64
+        email:
+          type: string
+        birth:
+          type: string
+          format: date
+          example: '2000-01-28'
+        showBirth:
+          type: boolean
+        isCreator:
+          type: boolean
+        nickname:
+          type: string
+        # likedStoryIds:
+        #   type: array
+        #   items: 
+        #     type: number
+        #     format: int64
+        # followingUserIds:
+        #   type: array
+        #   items: 
+        #     type: number
+        #     format: int64
+        profileImageSrc:
+          type: string
+        # followerUserIds:
+        #   type: array
+        #   items: 
+        #     type: number
+        #     format: int64
+        # myStoryIds:
+        #   type: array
+        #   items: 
+        #     type: number
+        #     format: int64
+    Story:
+      type: object
+      required:
+        - creatorNickname
+        - title
+        - thumbnailImageSrc
+        - category
+        - audioFileSrc
+        - likes
+        - createdAt
+      properties:
+        id:
+          type: number
+          format: int64
+        creatorNickname:
+          type: string
+        title:
+          type: string
+        thumbnailImageSrc:
+          type: string
+        category:
+          type: string
+        audioFileSrc:
+          type: string
+        likes:
+          type: number
+          format: int64
+        createdAt:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+    Comment:
+      type: object
+      required:
+        - userId
+        - content
+        - createdAt
+      properties:
+        id:
+          type: number
+          format: int64
+        userId:
+          type: number
+          format: int64
+        content:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+    Follow:
+      type: object
+      required:
+        - followerId
+        - followedUserId
+      properties:
+        followerId:
+          type: number
+          format: int64
+        followedUserId:
+          type: number
+          format: int64
+    Like:
+      type: object
+      required:
+        - userId
+        - likedStoryId
+      properties:
+        userId:
+          type: number
+          format: int64
+        likedStoryId:
+          type: number
+          format: int64
