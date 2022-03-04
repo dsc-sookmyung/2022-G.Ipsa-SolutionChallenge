@@ -20,8 +20,7 @@ __decorate([
 ], Comment.prototype, "content", void 0);
 __decorate([
     (0, typeorm_1.Column)({
-        type: 'date',
-        default: () => 'NOW()'
+        type: "timestamp", default: () => "CURRENT_TIMESTAMP"
     })
 ], Comment.prototype, "createdAt", void 0);
 Comment = __decorate([

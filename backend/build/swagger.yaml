@@ -223,19 +223,17 @@ components:
     Story:
       type: object
       required:
-        - creatorNickname
+        - creatorId
         - title
         - thumbnailImageSrc
         - category
         - audioFileSrc
-        - likes
-        - createdAt
       properties:
         id:
           type: number
           format: int64
-        creatorNickname:
-          type: string
+        creatorId:
+          type: number
         title:
           type: string
         thumbnailImageSrc:
@@ -256,7 +254,6 @@ components:
       required:
         - userId
         - content
-        - createdAt
       properties:
         id:
           type: number

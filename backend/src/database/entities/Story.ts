@@ -5,8 +5,8 @@ export default class Story extends BaseEntity{
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column({type: 'text'})
-    creatorNickname!: string;
+    @Column({type: 'int'})
+    creatorId!: number;
 
     @Column({type: 'text'})
     title!: string;
@@ -20,12 +20,13 @@ export default class Story extends BaseEntity{
     @Column({type: 'text'})
     audioFileSrc!: string;
 
-    @Column({type: 'int'})
+    @Column({type: 'int', default: 0})
     likes!: number;
 
     @Column({
-        type: 'date',
-        default: ()=> 'NOW()'
+        // type: 'date',
+        // default: ()=> 'NOW()'
+        type: "timestamp", default: () => "CURRENT_TIMESTAMP"
     })
     createdAt!: string;
 }

@@ -13,8 +13,8 @@ __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)()
 ], Story.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'text' })
-], Story.prototype, "creatorNickname", void 0);
+    (0, typeorm_1.Column)({ type: 'int' })
+], Story.prototype, "creatorId", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'text' })
 ], Story.prototype, "title", void 0);
@@ -28,12 +28,13 @@ __decorate([
     (0, typeorm_1.Column)({ type: 'text' })
 ], Story.prototype, "audioFileSrc", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'int' })
+    (0, typeorm_1.Column)({ type: 'int', default: 0 })
 ], Story.prototype, "likes", void 0);
 __decorate([
     (0, typeorm_1.Column)({
-        type: 'date',
-        default: () => 'NOW()'
+        // type: 'date',
+        // default: ()=> 'NOW()'
+        type: "timestamp", default: () => "CURRENT_TIMESTAMP"
     })
 ], Story.prototype, "createdAt", void 0);
 Story = __decorate([
