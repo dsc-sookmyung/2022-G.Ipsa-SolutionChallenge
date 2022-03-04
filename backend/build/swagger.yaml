@@ -72,7 +72,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UserInfo'
         description: 가입한 회원 정보
       responses:
         default:
@@ -94,7 +94,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserInfo'
         '400':
           description: invalid
   /like:
@@ -193,10 +193,9 @@ paths:
           description: invalid
 components:
   schemas:
-    User:
+    UserInfo:
       type: object
       required:
-        - id
         - email
         - birth
         - showBirth
