@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StoryRouter = void 0;
 const express_1 = __importDefault(require("express"));
+const typeorm_1 = require("typeorm");
 const Story_1 = __importDefault(require("../database/entities/Story"));
 const router = express_1.default.Router();
 exports.StoryRouter = router;
@@ -26,7 +27,7 @@ router.post('/create', (req, res) => __awaiter(void 0, void 0, void 0, function*
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const keyword = req.query.keyword;
     if (keyword) {
-        const searchedUser = yield Story_1.default.find({ where: { title: keyword } });
+        const searchedUser = yield Story_1.default.find({ title: (0, typeorm_1.Like)(`%${keyword}%`) });
         res.send(searchedUser);
     }
     else {
