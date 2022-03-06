@@ -19,8 +19,16 @@ const UserInfo_1 = __importDefault(require("../database/entities/UserInfo"));
 const router = express_1.default.Router();
 exports.UserInfoRouter = router;
 router.get('/emailCheck', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const kemail = req.query.email;
-    const userCount = yield UserInfo_1.default.findAndCount({ where: { email: kemail } });
+    const email = req.query.email;
+    const userCount = yield UserInfo_1.default.findAndCount({ where: { email: email } });
+    if (userCount[1] > 0)
+        res.send('1');
+    else
+        res.send('0');
+}));
+router.get('/nicknameCheck', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const nickname = req.query.nickname;
+    const userCount = yield UserInfo_1.default.findAndCount({ where: { nickname: nickname } });
     if (userCount[1] > 0)
         res.send('1');
     else
@@ -32,6 +40,18 @@ router.post('/signin', (req, res) => __awaiter(void 0, void 0, void 0, function*
     yield newUser.save();
     res.send(newUser);
 }));
+// router.post('/login', async (req: Request, res:Response)=>{
+//     const id = req.query.id;
+//     const checkUserLogin = await UserInfo.find({where: {id:id}, select: ['loginStatus']});
+//     if (!checkUserLogin){
+//         UserInfo.createQueryBuilder()
+//         .update(User)
+//         .set({ firstName: "Timber", lastName: "Saw" })
+//         .where("id = :id", { id: 1 })
+//         .execute();
+//     }
+//     res.send(newUser)
+// });
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const keyword = req.query.keyword;
     if (keyword) {

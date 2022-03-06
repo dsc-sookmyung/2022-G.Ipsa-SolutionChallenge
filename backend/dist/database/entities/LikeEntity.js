@@ -7,15 +7,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
-let Like = class Like {
+let LikeEntity = class LikeEntity extends typeorm_1.BaseEntity {
 };
 __decorate([
     (0, typeorm_1.PrimaryColumn)({ type: 'int' })
-], Like.prototype, "userId", void 0);
+], LikeEntity.prototype, "userId", void 0);
 __decorate([
     (0, typeorm_1.PrimaryColumn)({ type: 'int' })
-], Like.prototype, "likedStoryId", void 0);
-Like = __decorate([
+], LikeEntity.prototype, "likedStoryId", void 0);
+LikeEntity = __decorate([
     (0, typeorm_1.Entity)()
-], Like);
-exports.default = Like;
+], LikeEntity);
+exports.default = LikeEntity;

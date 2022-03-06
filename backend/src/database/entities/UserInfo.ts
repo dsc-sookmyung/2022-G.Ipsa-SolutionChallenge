@@ -23,6 +23,6 @@ export default class UserInfo extends BaseEntity{
     @Column({type: 'text'})
     profileImageSrc!: string;
 
-    @Column({type: 'boolean'})
-    loginStatus!: boolean;
+    // @Column({type: 'boolean'})
+    // loginStatus!: boolean;
 }

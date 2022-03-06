@@ -13,9 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const body_parser_1 = __importDefault(require("body-parser"));
 const UserInfoRouter_1 = require("./routers/UserInfoRouter");
 const StoryRouter_1 = require("./routers/StoryRouter");
+const LikeRouter_1 = require("./routers/LikeRouter");
 const dbconnector_1 = __importDefault(require("./database/dbconnector"));
 const path_1 = __importDefault(require("path"));
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
@@ -37,9 +37,9 @@ class Server {
         this.swagger();
     }
     config() {
-        this.app.use(body_parser_1.default.urlencoded({ extended: true }));
-        this.app.use(body_parser_1.default.json({ limit: '1mb' })); // 100kb default
-        // this.app.use(express.json())
+        // this.app.use(bodyParser.urlencoded({ extended:true }));
+        // this.app.use(bodyParser.json({ limit: '1mb' })); // 100kb default
+        this.app.use(express_1.default.json());
     }
     routerConfig() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -49,6 +49,7 @@ class Server {
             });
             this.app.use('/user', UserInfoRouter_1.UserInfoRouter);
             this.app.use('/story', StoryRouter_1.StoryRouter);
+            this.app.use('/like', LikeRouter_1.LikeRouter);
         });
     }
     swagger() {

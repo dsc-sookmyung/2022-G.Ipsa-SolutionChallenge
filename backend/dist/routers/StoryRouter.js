@@ -24,6 +24,11 @@ router.post('/create', (req, res) => __awaiter(void 0, void 0, void 0, function*
     yield newStory.save();
     res.send(newStory);
 }));
+router.post('/click', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.query.id;
+    const clickedStory = yield Story_1.default.findOne({ where: { id: id } });
+    res.send(clickedStory);
+}));
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const keyword = req.query.keyword;
     if (keyword) {
