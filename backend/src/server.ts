@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import {UserInfoRouter} from './routers/UserInfoRouter';
 import {StoryRouter} from './routers/StoryRouter';
 import {LikeRouter} from './routers/LikeRouter';
+import {FollowRouter} from './routers/FollowRouter';
 
 import Options from './database/dbconnector';
 import path from 'path';
@@ -35,7 +36,7 @@ class Server {
         this.app.use('/user', UserInfoRouter);
         this.app.use('/story', StoryRouter);
         this.app.use('/like', LikeRouter);
-
+        this.app.use('/follow', FollowRouter);
     }
 
     private swaggerSpec = YAML.load(path.join(__dirname, '../build/swagger.yaml'))
