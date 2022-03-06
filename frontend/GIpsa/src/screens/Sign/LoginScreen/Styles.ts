@@ -10,6 +10,10 @@ const S = StyleSheet.create({
     fontWeight: '600',
     marginBottom: 30,
   },
+  signInButton: {
+    width: 200,
+    height: 50,
+  },
 });
 
 export default S;
