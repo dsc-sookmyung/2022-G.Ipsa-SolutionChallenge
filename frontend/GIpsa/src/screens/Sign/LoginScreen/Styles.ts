@@ -4,6 +4,7 @@ const S = StyleSheet.create({
   container: {
     marginTop: 32,
     paddingHorizontal: 24,
+    marginBottom: 20,
   },
   title: {
     fontSize: 24,
@@ -11,7 +12,7 @@ const S = StyleSheet.create({
     marginBottom: 30,
   },
   signInButton: {
-    width: 200,
+    width: 300,
     height: 50,
   },
 });

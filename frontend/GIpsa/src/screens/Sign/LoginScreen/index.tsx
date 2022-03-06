@@ -4,10 +4,13 @@ import S from './Styles';
 import { MainTabScreenProps } from 'navigator/types';
 import { GoogleSignin, GoogleSigninButton, statusCodes, User } from '@react-native-google-signin/google-signin';
 import { isConditionalExpression } from 'typescript';
+import { getProfile, KakaoOAuthToken, KakaoProfile, KakaoProfileNoneAgreement, login, logout} from '@react-native-seoul/kakao-login';
 
 
 const LoginScreen = ({navigation}) => {
 
+
+  // /* google
   useEffect(() => {
     configureGoogleSign();
   }, []);
@@ -62,7 +65,8 @@ const LoginScreen = ({navigation}) => {
   }
 
 
-
+  
+  // google User
   // {
   //   idToken: string,
   //   serverAuthCode: string,
@@ -77,24 +81,90 @@ const LoginScreen = ({navigation}) => {
   //   }
   // }
 
+
+
+  // */ google
+
+
+
+  // /* kakao
+
+  const [userInfoKakao, setUserInfoKakao] = useState<KakaoProfile>();
+  const [isLoggedInKakao, setIsLoggedInKakao] = useState(false);
+  const signInWithKakao = async (): Promise<void> => {
+    const token: KakaoOAuthToken = await login();
+    setIsLoggedInKakao(true)
+    getKakaoProfile()
+    // setUserInfoKakao(JSON.stringify(token));
+  };
+  
+  const signOutWithKakao = async (): Promise<void> => {
+    const message = await logout();
+    setIsLoggedInKakao(false)
+    // setUserInfoKakao("message: \n"+message);
+  };
+  
+  const getKakaoProfile = async (): Promise<void> => {
+    const profile = await getProfile();
+    setUserInfoKakao(profile as KakaoProfile);
+
+  };
+
+//   type KakaoProfile = {
+//     id: string;
+//     email: string;
+//     nickname: string;
+//     profileImageUrl: string;
+//     thumbnailImageUrl: string;
+//     phoneNumber: string;
+//     ageRange: string;
+//     birthday: string;
+//     birthdayType: string;
+//     birthyear: string;
+//     gender: string;
+//     isEmailValid: boolean;
+//     isEmailVerified: boolean;
+//     isKorean: boolean;
+//     ageRangeNeedsAgreement?: boolean | undefined;
+//     ... 6 more ...;
+//     profileNeedsAgreement?: boolean | undefined;
+// }
+
+// */ kakao
+
+
   return (
     <View style={S.container}>
       <Text style={S.title}>LoginScreen</Text>
 
-      <GoogleSigninButton
-        style={S.signInButton}
-        size={GoogleSigninButton.Size.Wide}
-        color={GoogleSigninButton.Color.Dark}
-        onPress={() => LogInWithGoogle()}
-      />
+      <View style={S.container}>
+        <GoogleSigninButton
+          style={S.signInButton}
+          size={GoogleSigninButton.Size.Wide}
+          color={GoogleSigninButton.Color.Dark}
+          onPress={() => LogInWithGoogle()}
+        />
+        <Button color={'#F7E314'} title="KakaoSignin" onPress={() => signInWithKakao()} />
+      </View>
 
-      <Text>{userInfo?.user.email}</Text>
-      {isLoggedIn === false ? (
-          <Text>You must sign in!</Text>
-      ) : (
-          <Button onPress={() => signOut()} title='Sign out' color='#332211' />
-      )}
+      <View style={S.container}>
+        <Text>google: {userInfo?.user.email}</Text>
 
+        {isLoggedIn === false ? (
+            <Text>You must google sign in!</Text>
+        ) : (
+            <Button onPress={() => signOut()} title='Sign out Google' color='#332211' />
+        )}
+      </View>
+
+      <View style={S.container}>
+        <Text>kakao: {(userInfoKakao as KakaoProfile)?.email}</Text>
+        {isLoggedInKakao === false ? (
+            <Text>You must kakao sign in!</Text>
+        ) : (
+            <Button onPress={() => signOutWithKakao()} title='Sign out Kakao' color='#332211' />
+        )}
+      </View>
       <Button title="Go Signin" onPress={() => navigation.navigate('Signin')} />
     </View>
   );
