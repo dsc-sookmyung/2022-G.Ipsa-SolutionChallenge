@@ -1,80 +1,70 @@
 import { View, Text, Button } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet} from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
+
 import S from './Styles';
 import { NickNameInput, DateInput } from '../../../theme/navigation';
-import { Checkbox } from 'react-native-paper';
 
-const SigninScreen = ({ navigation}) => {
+const SigninScreen = ({ navigation }) => {
+  const [nickName, setNickName] = useState('');
+  const [year, setYear] = useState('');
+  const [month, setMonth] = useState('');
+  const [day, setDay] = useState('');
+  const [isSenior, setIsSenior] = useState(false);
 
-  const [nickName, setNickName]=useState("")
-  const [year, setYear]=useState("")
-  const [month, setMonth]=useState("")
-  const [day, setDay]=useState("")
-  const [isSenior, setIsSenior]=useState(false)
-
-  useEffect(()=>{
-    
-    if(Number(year)<=1972 && Number(year)>=1900){
-      setIsSenior(true)
+  useEffect(() => {
+    if (Number(year) <= 1972 && Number(year) >= 1900) {
+      setIsSenior(true);
+    } else {
+      setIsSenior(false);
     }
-    else{
-      setIsSenior(false)
-    }
-    console.log("year!!: "+year)
-    console.log("isSenior!!: "+isSenior)
+    console.log('year!!: ' + year);
+    console.log('isSenior!!: ' + isSenior);
+  }, [year]);
 
-  },[year])
+  const yeartyped = (y: string) => {
+    setYear(y);
+  };
+  const monthtyped = (m: string) => {
+    setMonth(m);
+  };
+  const daytyped = (d: string) => {
+    setDay(d);
+  };
 
-
-  const yeartyped=(y:string)=>{
-    setYear(y)
-  }
-  const monthtyped=(m:string)=>{
-    setMonth(m)
-  }
-  const daytyped=(d:string)=>{
-    setDay(d)
-  }
-
-  // ½Ã´Ï¾î Áß Ã¼Å©¹Ú½º ´©¸§
-  const [isChecked, setIsChecked]=useState(false)
-  
+  // ï¿½Ã´Ï¾ï¿½ ï¿½ï¿½ Ã¼Å©ï¿½Ú½ï¿½ ï¿½ï¿½ï¿½ï¿½
+  const [isChecked, setIsChecked] = useState(false);
 
   return (
     <View style={S.container}>
       <Text style={S.title}>SigninScreen</Text>
       <Text>nickname</Text>
-      <NickNameInput style={S.defaultMargin}
-        onChangeText={(nickName)=>setNickName(nickName)}
-        placeholder="Enter nickname..."/>
+      <NickNameInput
+        style={S.defaultMargin}
+        onChangeText={(nickName) => setNickName(nickName)}
+        placeholder="Enter nickname..."
+      />
       <Text style={S.defaultMargin}>birth</Text>
 
       <View style={S.dateAlign}>
-        <DateInput 
-          onChangeText={yeartyped}/>
+        <DateInput onChangeText={yeartyped} />
         <Text>year</Text>
-        <DateInput 
-          onChangeText={monthtyped}
-          />
+        <DateInput onChangeText={monthtyped} />
         <Text>month</Text>
-        <DateInput 
-          onChangeText={daytyped}
-          />
+        <DateInput onChangeText={daytyped} />
         <Text>day</Text>
       </View>
 
-      {isSenior && 
-      <View style={S.dateAlign}>
-        <CheckBox 
-          value={isChecked}
-          onValueChange={(val)=>setIsChecked(val)}
-        />
-        <Text>more than 50~</Text>
-        <Text>Is CheckBox selected: {isChecked ? "yep" : "nope"}</Text>
-      </View>
-      }
+      {isSenior && (
+        <View style={S.dateAlign}>
+          <CheckBox
+            value={isChecked}
+            onValueChange={(val) => setIsChecked(val)}
+          />
+          <Text>more than 50~</Text>
+          <Text>Is CheckBox selected: {isChecked ? 'yep' : 'nope'}</Text>
+        </View>
+      )}
 
       <Button title="Go Main" onPress={() => navigation.navigate('Main')} />
     </View>
@@ -82,4 +72,3 @@ const SigninScreen = ({ navigation}) => {
 };
 
 export default SigninScreen;
-

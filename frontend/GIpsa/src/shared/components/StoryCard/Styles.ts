@@ -2,12 +2,10 @@ import { StyleSheet } from 'react-native';
 
 const S = StyleSheet.create({
   container: {
-    paddingHorizontal: 24,
-    paddingVertical: 24,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '600',
+    marginRight: 5,
+    width: 100,
+    height: 100,
+    backgroundColor: '#555555',
   },
 });
 
