@@ -8,6 +8,9 @@ export default class Comment extends BaseEntity{
     @Column({type: 'int'})
     userId!: number;
 
+    @Column({type: 'int'})
+    storyId!: number;
+
     @Column({type: 'text'})
     content!: string;
 

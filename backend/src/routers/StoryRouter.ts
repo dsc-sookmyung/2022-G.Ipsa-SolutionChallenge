@@ -1,5 +1,6 @@
 
 import express, { Response, Request } from 'express';
+import { Like } from 'typeorm';
 import Story from '../database/entities/Story'
 
 const router = express.Router();
@@ -12,17 +13,23 @@ router.post('/create', async (req: Request, res:Response)=>{
 
 });
 
+router.post('/click', async (req: Request, res:Response)=>{
+    const id = req.query.id;
+    const clickedStory = await Story.findOne({where:{id: id}})
+    res.send(clickedStory)
+
+});
+
 router.get('/', async (req: Request, res:Response)=>{
     const keyword = req.query.keyword;
     if (keyword){
-        const searchedUser = await Story.find({where: {title: keyword}})
-        res.send(searchedUser)
+        const searchedStory = await Story.find({title: Like(`%${keyword}%`)})
+        res.send(searchedStory)
     }
     else{
-        const searchedUser = await Story.find()
-        res.send(searchedUser)
+        const searchedStory = await Story.find()
+        res.send(searchedStory)
     }
-
 })
 
 export {
