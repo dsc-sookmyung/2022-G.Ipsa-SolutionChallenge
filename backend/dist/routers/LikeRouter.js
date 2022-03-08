@@ -23,7 +23,7 @@ router.post('/click', (req, res) => __awaiter(void 0, void 0, void 0, function* 
     const body = req.body;
     const likedStoryId = body.likedStoryId;
     const userId = body.userId;
-    const searchLike = yield LikeEntity_1.default.find({ where: { userId: userId, likedStoryId: likedStoryId } });
+    const searchLike = yield LikeEntity_1.default.findOne({ where: { userId: userId, likedStoryId: likedStoryId } });
     const storyLikes = yield Story_1.default.find({ where: { id: likedStoryId }, select: ['likes'] });
     let newLikes;
     if (searchLike) {

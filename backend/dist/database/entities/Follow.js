@@ -11,10 +11,10 @@ let Follow = class Follow extends typeorm_1.BaseEntity {
 };
 __decorate([
     (0, typeorm_1.PrimaryColumn)({ type: 'int' })
-], Follow.prototype, "follwerId", void 0);
+], Follow.prototype, "followerId", void 0);
 __decorate([
     (0, typeorm_1.PrimaryColumn)({ type: 'int' })
-], Follow.prototype, "followedUserId", void 0);
+], Follow.prototype, "creatorId", void 0);
 Follow = __decorate([
     (0, typeorm_1.Entity)()
 ], Follow);

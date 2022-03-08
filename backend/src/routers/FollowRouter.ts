@@ -8,13 +8,13 @@ const router = express.Router();
 
 router.get('/', async (req: Request, res:Response)=>{
     const followerId = req.query.followerId;
-    const followingUserId = req.query.followingUserId;
+    const creatorId = req.query.creatorId;
     if (followerId){
         const searchedFollow = await Follow.find({where: {followerId: followerId}})
         res.send(searchedFollow)
     }
-    else if (followingUserId){
-        const searchedFollow = await Follow.find({where: {followingUserId: followingUserId}})
+    else if (creatorId){
+        const searchedFollow = await Follow.find({where: {creatorId: creatorId}})
         res.send(searchedFollow)
     }
     else{
@@ -26,14 +26,14 @@ router.get('/', async (req: Request, res:Response)=>{
 router.post('/click', async (req: Request, res:Response)=>{
     const body = req.body;
     const followerId = body.followerId;
-    const followingUserId = body.followingUserId;
-    const searchFollow = await Follow.find({where:{followerId:followerId, followingUserId:followingUserId}})
+    const creatorId = body.creatorId;
+    const searchFollow = await Follow.findOne({where:{followerId:followerId, creatorId:creatorId}})
     if (searchFollow){
         //팔로잉 상태. 언팔
         await createQueryBuilder()
         .delete()
         .from(Follow)
-        .where({followerId:followerId, followingUserId:followingUserId})
+        .where({followerId:followerId, creatorId:creatorId})
         .execute();
         res.send('Unfollowed')
     }

@@ -20,13 +20,13 @@ const router = express_1.default.Router();
 exports.FollowRouter = router;
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const followerId = req.query.followerId;
-    const followingUserId = req.query.followingUserId;
+    const creatorId = req.query.creatorId;
     if (followerId) {
         const searchedFollow = yield Follow_1.default.find({ where: { followerId: followerId } });
         res.send(searchedFollow);
     }
-    else if (followingUserId) {
-        const searchedFollow = yield Follow_1.default.find({ where: { followingUserId: followingUserId } });
+    else if (creatorId) {
+        const searchedFollow = yield Follow_1.default.find({ where: { creatorId: creatorId } });
         res.send(searchedFollow);
     }
     else {
@@ -37,14 +37,14 @@ router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 router.post('/click', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req.body;
     const followerId = body.followerId;
-    const followingUserId = body.followingUserId;
-    const searchFollow = yield Follow_1.default.find({ where: { followerId: followerId, followingUserId: followingUserId } });
+    const creatorId = body.creatorId;
+    const searchFollow = yield Follow_1.default.findOne({ where: { followerId: followerId, creatorId: creatorId } });
     if (searchFollow) {
         //팔로잉 상태. 언팔
         yield (0, typeorm_1.createQueryBuilder)()
             .delete()
             .from(Follow_1.default)
-            .where({ followerId: followerId, followingUserId: followingUserId })
+            .where({ followerId: followerId, creatorId: creatorId })
             .execute();
         res.send('Unfollowed');
     }

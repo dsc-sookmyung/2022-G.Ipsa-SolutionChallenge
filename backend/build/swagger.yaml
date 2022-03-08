@@ -1,6 +1,7 @@
 openapi: 3.0.0
 servers:
-  - url: 'https://gipsa-solutionchallenge2022.du.r.appspot.com/'
+  - url: 'https://gipsa-solutionchallenge2022.du.r.appspot.com'
+  - url: 'http://34.64.244.115:8080'
 info:
   description: This is a simple API
   version: 1.0.0
@@ -69,7 +70,7 @@ paths:
       responses:
         default:
           description: successful operation
-  /user/:
+  /user:
     get:
       tags:
         - user
@@ -90,7 +91,7 @@ paths:
                   $ref: '#/components/schemas/UserInfo'
         '400':
           description: invalid
-  /like/:
+  /like:
     get:
       tags:
         - like
@@ -124,7 +125,7 @@ paths:
       responses:
         default:
           description: successful operation
-  /follow/:
+  /follow:
     get:
       tags:
         - follow
@@ -135,7 +136,7 @@ paths:
           schema:
             type: number
         - in: query
-          name: followedUserId
+          name: creatorId
           schema:
             type: number
       responses:
@@ -161,10 +162,35 @@ paths:
         default:
           description: good
   /comment:
+    get:
+      tags:
+        - comment
+      summary: bring comments
+      parameters:
+        - in: query
+          name: userId
+          schema:
+            type: number
+        - in: query
+          name: storyId
+          schema:
+            type: number
+      responses:
+        '200':
+          description: array of comments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+        '400':
+          description: invalid
+  /comment/create:
     post:
       tags:
         - comment
-      summary: 댓글 달기
+      summary: 댓글 추가
       requestBody:
         content:
           application/json:
@@ -172,7 +198,7 @@ paths:
               $ref: '#/components/schemas/Comment'
       responses:
         default:
-          description: good
+          description: successful operation
   /story/create:
     post:
       tags:
@@ -187,7 +213,7 @@ paths:
       responses:
         default:
           description: successful operation
-  /story/:
+  /story:
     get:
       tags:
         - story
@@ -290,12 +316,16 @@ components:
       type: object
       required:
         - userId
+        - storyId
         - content
       properties:
         id:
           type: number
           format: int64
         userId:
+          type: number
+          format: int64
+        storyId:
           type: number
           format: int64
         content:
@@ -308,12 +338,12 @@ components:
       type: object
       required:
         - followerId
-        - followedUserId
+        - creatorId
       properties:
         followerId:
           type: number
           format: int64
-        followedUserId:
+        creatorId:
           type: number
           format: int64
     LikeEntity:

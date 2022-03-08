@@ -11,7 +11,7 @@ router.post('/click', async (req: Request, res:Response)=>{
     const body = req.body;
     const likedStoryId = body.likedStoryId;
     const userId = body.userId;
-    const searchLike = await LikeEntity.find({where:{userId:userId, likedStoryId:likedStoryId}})
+    const searchLike = await LikeEntity.findOne({where:{userId:userId, likedStoryId:likedStoryId}})
     const storyLikes = await Story.find({where:{id:likedStoryId}, select:['likes']});
     let newLikes: number;
     if (searchLike){

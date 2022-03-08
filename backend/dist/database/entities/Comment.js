@@ -16,6 +16,9 @@ __decorate([
     (0, typeorm_1.Column)({ type: 'int' })
 ], Comment.prototype, "userId", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'int' })
+], Comment.prototype, "storyId", void 0);
+__decorate([
     (0, typeorm_1.Column)({ type: 'text' })
 ], Comment.prototype, "content", void 0);
 __decorate([

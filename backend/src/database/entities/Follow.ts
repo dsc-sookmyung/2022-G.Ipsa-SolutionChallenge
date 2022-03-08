@@ -3,9 +3,9 @@ import {Column, Entity, BaseEntity, PrimaryColumn, PrimaryGeneratedColumn} from 
 @Entity()
 export default class Follow extends BaseEntity{
     @PrimaryColumn({type: 'int'})
-    follwerId!: number;
+    followerId!: number;
 
     @PrimaryColumn({type: 'int'})
-    followedUserId!: number;
+    creatorId!: number;
 
 }

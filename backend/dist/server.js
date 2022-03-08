@@ -17,6 +17,7 @@ const UserInfoRouter_1 = require("./routers/UserInfoRouter");
 const StoryRouter_1 = require("./routers/StoryRouter");
 const LikeRouter_1 = require("./routers/LikeRouter");
 const FollowRouter_1 = require("./routers/FollowRouter");
+const CommentRouter_1 = require("./routers/CommentRouter");
 const dbconnector_1 = __importDefault(require("./database/dbconnector"));
 const path_1 = __importDefault(require("path"));
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
@@ -38,14 +39,16 @@ class Server {
         this.swagger();
     }
     config() {
-        // this.app.use(bodyParser.urlencoded({ extended:true }));
-        // this.app.use(bodyParser.json({ limit: '1mb' })); // 100kb default
-        this.app.use(express_1.default.json());
-        this.app.enable('trust proxy');
+        return __awaiter(this, void 0, void 0, function* () {
+            // this.app.use(bodyParser.urlencoded({ extended:true }));
+            // this.app.use(bodyParser.json({ limit: '1mb' })); // 100kb default
+            this.app.use(express_1.default.json());
+            this.app.enable('trust proxy');
+            yield (0, typeorm_1.createConnection)(dbconnector_1.default);
+        });
     }
     routerConfig() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield (0, typeorm_1.createConnection)(dbconnector_1.default);
             this.app.get('/', (req, res) => {
                 res.send('hello');
             });
@@ -53,6 +56,7 @@ class Server {
             this.app.use('/story', StoryRouter_1.StoryRouter);
             this.app.use('/like', LikeRouter_1.LikeRouter);
             this.app.use('/follow', FollowRouter_1.FollowRouter);
+            this.app.use('/comment', CommentRouter_1.CommentRouter);
         });
     }
     swagger() {
