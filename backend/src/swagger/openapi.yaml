@@ -1,6 +1,6 @@
 openapi: '3.0.0'
 servers: 
-  - url: http://34.64.244.115:8080/
+  - url: https://gipsa-solutionchallenge2022.du.r.appspot.com/
 info:
   description: This is a simple API
   version: "1.0.0"
@@ -32,11 +32,7 @@ paths:
             type: string
       responses:
         '200':
-          description: 사람이 있으면 1, 없으면 0
-          content:
-            application/json:
-              schema:
-                type: number
+          description: 사람이 있으면 '1', 없으면 '0'
         '400':
           description: bad input parameter
         '404':
@@ -54,11 +50,7 @@ paths:
             type: string
       responses:
         '200':
-          description: 겹치면 1, 없으면 0
-          content:
-            application/json:
-              schema:
-                type: number
+          description: 겹치면 '1', 없으면 '0'
         '400':
           description: bad input parameter
         '404':
@@ -79,46 +71,92 @@ paths:
       responses:
         default:
           description: successful operation
-  /user/search:
+  /user/:
     get:
       tags:
         - user
-      summary: search user by nickname
+      summary: 회원 검색
       parameters: 
       - in: query
         name: keyword
         schema:
           type: string
-        required: true
 
       responses:
         '200':
-          description: user info
+          description: 키워드 없으면 전체 리턴
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserInfo'
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserInfo'
         '400':
           description: invalid
-          
-  /like:
-    put:
+  /like/:
+    get:
+      tags:
+        - like
+      summary: bring likes
+      parameters: 
+      - in: query
+        name: userId
+        schema:
+          type: string
+      responses:
+        '200':
+          description: array of likes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LikeEntity'
+        '400':
+          description: invalid
+  /like/click:
+    post:
       tags: 
         - like
-      summary: 좋아요 추가와 좋아요 수 업데이트
+      summary: 좋아요 한거면 취소하고, 좋아요한적없으면 좋아요 추가.
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Like'
+              $ref: '#/components/schemas/LikeEntity'
       responses:
         default:
           description: successful operation
-  /follow:
-    put:
+          
+  /follow/:
+    get:
       tags: 
         - follow
-      summary: 팔로우 시작할 때
+      summary: followerId 넣으면 본인이 팔로하는 사람, followedUserId라면 본인을 팔로하는 사람
+      parameters: 
+      - in: query
+        name: followerId
+        schema:
+          type: number
+      - in: query
+        name: followedUserId
+        schema:
+          type: number
+      responses:
+        '200':
+          description: return
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Follow'
+          
+  /follow/click:
+    post:
+      tags: 
+        - follow
+      summary: 팔로우 되어있으면 팔로 아니면 언팔
       requestBody:
         content:
           application/json:
@@ -128,8 +166,8 @@ paths:
         default:
           description: good
                 
-  /story/comment:
-    put:
+  /comment:
+    post:
       tags:
         - comment
       summary: 댓글 달기
@@ -158,7 +196,7 @@ paths:
         default:
           description: successful operation
           
-  /story:
+  /story/:
     get:
       tags:
         - story
@@ -291,7 +329,7 @@ components:
         followedUserId:
           type: number
           format: int64
-    Like:
+    LikeEntity:
       type: object
       required:
         - userId

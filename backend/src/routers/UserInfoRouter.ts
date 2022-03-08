@@ -2,6 +2,8 @@
 import express, { Response, Request } from 'express';
 import { Like } from 'typeorm';
 import UserInfo from '../database/entities/UserInfo'
+import Options from '../database/dbconnector';
+import {createConnection} from 'typeorm';
 
 const router = express.Router();
 

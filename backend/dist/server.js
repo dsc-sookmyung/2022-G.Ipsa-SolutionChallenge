@@ -41,6 +41,7 @@ class Server {
         // this.app.use(bodyParser.urlencoded({ extended:true }));
         // this.app.use(bodyParser.json({ limit: '1mb' })); // 100kb default
         this.app.use(express_1.default.json());
+        this.app.enable('trust proxy');
     }
     routerConfig() {
         return __awaiter(this, void 0, void 0, function* () {

@@ -16,6 +16,8 @@ exports.UserInfoRouter = void 0;
 const express_1 = __importDefault(require("express"));
 const typeorm_1 = require("typeorm");
 const UserInfo_1 = __importDefault(require("../database/entities/UserInfo"));
+const dbconnector_1 = __importDefault(require("../database/dbconnector"));
+const typeorm_2 = require("typeorm");
 const router = express_1.default.Router();
 exports.UserInfoRouter = router;
 router.get('/emailCheck', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -53,6 +55,7 @@ router.post('/signin', (req, res) => __awaiter(void 0, void 0, void 0, function*
 //     res.send(newUser)
 // });
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    yield (0, typeorm_2.createConnection)(dbconnector_1.default);
     const keyword = req.query.keyword;
     if (keyword) {
         const searchedUser = yield UserInfo_1.default.find({ nickname: (0, typeorm_1.Like)(`%${keyword}%`) });
