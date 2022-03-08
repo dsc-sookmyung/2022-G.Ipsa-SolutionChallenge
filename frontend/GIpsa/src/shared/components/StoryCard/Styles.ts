@@ -1,11 +1,18 @@
 import { StyleSheet } from 'react-native';
 
 const S = StyleSheet.create({
-  container: {
-    marginRight: 5,
-    width: 100,
-    height: 100,
-    backgroundColor: '#555555',
+  container: { marginRight: 24 },
+  thumbnail: {
+    width: 160,
+    height: 160,
+    marginBottom: 16,
+    borderRadius: 8,
+  },
+  title: {
+    fontSize: 18,
+  },
+  creator: {
+    fontSize: 12,
   },
 });
 

@@ -7,7 +7,7 @@ import { StoryCard } from '..';
 
 export interface StoryTopicProps {
   title: string;
-  stories: Story[];
+  stories: Story[] | undefined;
 }
 
 const StoryTopic: FC<StoryTopicProps> = ({
@@ -18,7 +18,7 @@ const StoryTopic: FC<StoryTopicProps> = ({
     <View style={S.container}>
       <Text style={S.title}>{title}</Text>
       <ScrollView style={S.storyCardContainer} horizontal persistentScrollbar>
-        {stories.map((story) => (
+        {stories?.map((story) => (
           <StoryCard key={story.id} story={story} />
         ))}
       </ScrollView>
