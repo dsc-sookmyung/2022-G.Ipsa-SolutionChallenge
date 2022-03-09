@@ -200,6 +200,11 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    
+    // 카카오 SDK 모듈 설정 
+    implementation "com.kakao.sdk:v2-user:2.5.2" 
+    // 카카오 로그인 
+    implementation group: 'com.kakao.sdk', name: 'usermgmt', version: '1.27.0'
 
     // firebase login
     implementation platform("com.google.firebase:firebase-bom:29.1.0")

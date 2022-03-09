@@ -1,4 +1,4 @@
-import { View, Text, Button, Alert } from 'react-native';
+import { View, Text, Button, Alert, Image, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import S from './Styles';
 import { MainTabScreenProps } from 'navigator/types';
@@ -17,6 +17,7 @@ import {
   login,
   logout,
 } from '@react-native-seoul/kakao-login';
+
 
 const LoginScreen = ({ navigation }) => {
   // /* google
@@ -133,53 +134,75 @@ const LoginScreen = ({ navigation }) => {
 
   // */ kakao
 
+
+  // 구글 제공 로그인 버튼
+  // <GoogleSigninButton
+  //   style={S.signInButton}
+  //   size={GoogleSigninButton.Size.Wide}
+  //   color={GoogleSigninButton.Color.Dark}
+  //   onPress={() => LogInWithGoogle()}
+  // />
+
+  // 구글 유저 정보 및 sign out
+  // <View style={S.container}>
+  //   <Text>google: {userInfo?.user.email}</Text>
+
+  //   {isLoggedIn === false ? (
+  //     <Text>You must google sign in!</Text>
+  //   ) : (
+  //     <Button
+  //       onPress={() => signOut()}
+  //       title="Sign out Google"
+  //       color="#332211"
+  //     />
+  //   )}
+  // </View>
+
+  // 카카오 유저 정보 및 sign out
+  // <View style={S.container}>
+  //   <Text>kakao: {(userInfoKakao as KakaoProfile)?.email}</Text>
+  //   {isLoggedInKakao === false ? (
+  //     <Text>You must kakao sign in!</Text>
+  //   ) : (
+  //     <Button
+  //       onPress={() => signOutWithKakao()}
+  //       title="Sign out Kakao"
+  //       color="#332211"
+  //     />
+  //   )}
+  // </View>
+  // signin 페이지로 이동
+  //  <Button title="Go Signin" onPress={() => navigation.navigate('Signin')} />
+
+
+
   return (
     <View style={S.container}>
-      <Text style={S.title}>LoginScreen</Text>
+      <Text style={S.title}>Log In</Text>
 
       <View style={S.container}>
-        <GoogleSigninButton
-          style={S.signInButton}
-          size={GoogleSigninButton.Size.Wide}
-          color={GoogleSigninButton.Color.Dark}
-          onPress={() => LogInWithGoogle()}
-        />
-        <Button
-          color={'#F7E314'}
-          title="KakaoSignin"
-          onPress={() => signInWithKakao()}
-        />
+
+        <TouchableOpacity style={S.signInButton}
+          onPress={() => signInWithKakao()}>
+          <Image source={require('../../../shared/assets/images/login-kakao.png')}
+            style={S.signInButton} />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={S.signInButton}
+          onPress={() => LogInWithGoogle()}>
+          <Image source={require('../../../shared/assets/images/login-google.jpg')}
+            style={S.signInButton} />
+        </TouchableOpacity>
       </View>
 
-      <View style={S.container}>
-        <Text>google: {userInfo?.user.email}</Text>
+      <Button title="Go Signin(test)" onPress={() => navigation.navigate('Signin')} />
 
-        {isLoggedIn === false ? (
-          <Text>You must google sign in!</Text>
-        ) : (
-          <Button
-            onPress={() => signOut()}
-            title="Sign out Google"
-            color="#332211"
-          />
-        )}
-      </View>
-
-      <View style={S.container}>
-        <Text>kakao: {(userInfoKakao as KakaoProfile)?.email}</Text>
-        {isLoggedInKakao === false ? (
-          <Text>You must kakao sign in!</Text>
-        ) : (
-          <Button
-            onPress={() => signOutWithKakao()}
-            title="Sign out Kakao"
-            color="#332211"
-          />
-        )}
-      </View>
-      <Button title="Go Signin" onPress={() => navigation.navigate('Signin')} />
     </View>
   );
 };
 
 export default LoginScreen;
+
+
+
+

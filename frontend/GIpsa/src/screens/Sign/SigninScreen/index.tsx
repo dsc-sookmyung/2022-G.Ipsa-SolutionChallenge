@@ -1,4 +1,4 @@
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, TouchableOpacity, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import CheckBox from '@react-native-community/checkbox';
 
@@ -32,41 +32,47 @@ const SigninScreen = ({ navigation }) => {
     setDay(d);
   };
 
-  // �ôϾ� �� üũ�ڽ� ����
+  // Is CheckBox selected?
   const [isChecked, setIsChecked] = useState(false);
 
   return (
     <View style={S.container}>
-      <Text style={S.title}>SigninScreen</Text>
-      <Text>nickname</Text>
+      <Text style={S.title}>Join</Text>
+      <Text style={S.marginNn}>Nickname</Text>
       <NickNameInput
-        style={S.defaultMargin}
+        style={S.marginNnInput}
         onChangeText={(nickName) => setNickName(nickName)}
         placeholder="Enter nickname..."
       />
-      <Text style={S.defaultMargin}>birth</Text>
+      <Text style={S.marginavail}>available</Text>
+      <Text style={S.marginB}>Birth</Text>
 
       <View style={S.dateAlign}>
-        <DateInput onChangeText={yeartyped} />
-        <Text>year</Text>
-        <DateInput onChangeText={monthtyped} />
-        <Text>month</Text>
-        <DateInput onChangeText={daytyped} />
-        <Text>day</Text>
+        <DateInput style={S.tinputYear} onChangeText={yeartyped} />
+        <DateInput style={S.tinputMonth} onChangeText={monthtyped} />
+        <DateInput style={S.tinputDay} onChangeText={daytyped} />
       </View>
 
       {isSenior && (
-        <View style={S.dateAlign}>
-          <CheckBox
-            value={isChecked}
-            onValueChange={(val) => setIsChecked(val)}
-          />
-          <Text>more than 50~</Text>
-          <Text>Is CheckBox selected: {isChecked ? 'yep' : 'nope'}</Text>
+        <View style={S.area}>
+          <Text style={S.textQ}>Do you want to make contents as a story teller?</Text>
+          <View style={S.checkAlign}>
+            <CheckBox
+              value={isChecked}
+              onValueChange={(val) => setIsChecked(val)}
+            />
+            <Text>Yes, I want to share my story</Text>
+          </View>
         </View>
+
       )}
 
-      <Button title="Go Main" onPress={() => navigation.navigate('Main')} />
+      <TouchableOpacity style={S.startbtntouch}
+        onPress={() => navigation.navigate('Main')}>
+        <Image source={require('../../../shared/assets/images/start-bind.jpg')}
+          style={S.startbtn} />
+      </TouchableOpacity>
+
     </View>
   );
 };
