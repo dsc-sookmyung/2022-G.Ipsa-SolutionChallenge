@@ -2,12 +2,13 @@ import { StyleSheet } from 'react-native';
 
 const S = StyleSheet.create({
   container: {
-    paddingHorizontal: 24,
-    paddingVertical: 24,
+    width: '100%',
   },
   title: {
-    fontSize: 24,
-    fontWeight: '600',
+    fontSize: 16,
+  },
+  storyCardContainer: {
+    paddingBottom: 10,
   },
 });
 
