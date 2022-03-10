@@ -1,4 +1,11 @@
-import { View, Text, Button, Alert, Image, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  Button,
+  Alert,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import S from './Styles';
 import { MainTabScreenProps } from 'navigator/types';
@@ -6,7 +13,7 @@ import {
   GoogleSignin,
   GoogleSigninButton,
   statusCodes,
-  User,
+  User as GUser,
 } from '@react-native-google-signin/google-signin';
 import { isConditionalExpression } from 'typescript';
 import {
@@ -18,6 +25,7 @@ import {
   logout,
 } from '@react-native-seoul/kakao-login';
 
+import { User } from 'shared/types';
 
 const LoginScreen = ({ navigation }) => {
   // /* google
@@ -32,7 +40,7 @@ const LoginScreen = ({ navigation }) => {
     });
   }
 
-  const [userInfo, setUserInfo] = useState<User>();
+  const [userInfo, setUserInfo] = useState<GUser>();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [error, setError] = useState<Error>();
 
@@ -53,6 +61,20 @@ const LoginScreen = ({ navigation }) => {
       const userInfo = await GoogleSignin.signIn();
       setUserInfo(userInfo);
       setIsLoggedIn(true);
+
+      // 여기 userInfo 갖고 다음 장으로 이동 필요
+
+      const user: User = {
+        email: userInfo?.user.email,
+        profileImageSrc: userInfo?.user.photo as string,
+
+        birth: new Date(),
+        showBirth: false,
+        isCreator: false,
+        nickname: '',
+      };
+
+      navigation.navigate('Signin', { user: user });
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // when user cancels sign in process,
@@ -78,7 +100,7 @@ const LoginScreen = ({ navigation }) => {
   //   idToken: string,
   //   serverAuthCode: string,
   //   scopes: Array<string>, // on iOS this is empty array if no additional scopes are defined
-  //   user: {
+  //   user: {}
   //     email: string,
   //     id: string,
   //     givenName: string,
@@ -100,7 +122,6 @@ const LoginScreen = ({ navigation }) => {
     getKakaoProfile();
     // setUserInfoKakao(JSON.stringify(token));
   };
-  console.log(userInfoKakao);
   const signOutWithKakao = async (): Promise<void> => {
     const message = await logout();
     setIsLoggedInKakao(false);
@@ -110,6 +131,21 @@ const LoginScreen = ({ navigation }) => {
   const getKakaoProfile = async (): Promise<void> => {
     const profile = await getProfile();
     setUserInfoKakao(profile as KakaoProfile);
+
+    // 여기 userInfo 갖고 다음 장으로 이동 필요
+
+    const KuserInfo: KakaoProfile = profile as KakaoProfile;
+    const user: User = {
+      email: KuserInfo.email,
+      profileImageSrc: KuserInfo.profileImageUrl,
+
+      birth: new Date(),
+      showBirth: false,
+      isCreator: false,
+      nickname: '',
+    };
+
+    navigation.navigate('Signin', { user: user });
   };
 
   //   type KakaoProfile = {
@@ -133,7 +169,6 @@ const LoginScreen = ({ navigation }) => {
   // }
 
   // */ kakao
-
 
   // 구글 제공 로그인 버튼
   // <GoogleSigninButton
@@ -174,35 +209,33 @@ const LoginScreen = ({ navigation }) => {
   // signin 페이지로 이동
   //  <Button title="Go Signin" onPress={() => navigation.navigate('Signin')} />
 
-
-
   return (
     <View style={S.container}>
       <Text style={S.title}>Log In</Text>
 
       <View style={S.container}>
-
-        <TouchableOpacity style={S.signInButton}
-          onPress={() => signInWithKakao()}>
-          <Image source={require('../../../shared/assets/images/login-kakao.png')}
-            style={S.signInButton} />
+        <TouchableOpacity
+          style={S.signInButton}
+          onPress={() => signInWithKakao()}
+        >
+          <Image
+            source={require('../../../shared/assets/images/login-kakao.png')}
+            style={S.signInButton}
+          />
         </TouchableOpacity>
 
-        <TouchableOpacity style={S.signInButton}
-          onPress={() => LogInWithGoogle()}>
-          <Image source={require('../../../shared/assets/images/login-google.jpg')}
-            style={S.signInButton} />
+        <TouchableOpacity
+          style={S.signInButton}
+          onPress={() => LogInWithGoogle()}
+        >
+          <Image
+            source={require('../../../shared/assets/images/login-google.jpg')}
+            style={S.signInButton}
+          />
         </TouchableOpacity>
       </View>
-
-      <Button title="Go Signin(test)" onPress={() => navigation.navigate('Signin')} />
-
     </View>
   );
 };
 
 export default LoginScreen;
-
-
-
-
