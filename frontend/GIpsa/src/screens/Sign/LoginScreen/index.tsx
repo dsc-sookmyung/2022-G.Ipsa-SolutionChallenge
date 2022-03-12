@@ -26,6 +26,8 @@ import {
 } from '@react-native-seoul/kakao-login';
 
 import { User } from 'shared/types';
+import { useUsers } from 'shared/hook/useUsers';
+import { useECheck } from 'shared/hook/useECheck';
 
 const LoginScreen = ({ navigation }) => {
   // /* google
@@ -64,6 +66,8 @@ const LoginScreen = ({ navigation }) => {
 
       // 여기 userInfo 갖고 다음 장으로 이동 필요
 
+      setEmail(userInfo?.user.email);
+
       const user: User = {
         email: userInfo?.user.email,
         profileImageSrc: userInfo?.user.photo as string,
@@ -74,6 +78,16 @@ const LoginScreen = ({ navigation }) => {
         nickname: '',
       };
 
+      console.log('email: ' + email);
+      console.log('emailCheck: ' + emailCheck);
+      // 이거 undefined 나오는거 좀 이상함
+      if (emailCheck == 1) {
+        navigation.navigate('Main', { user: user });
+      } else if (emailCheck == 0) {
+        navigation.navigate('Signin', { user: user });
+      }
+
+      // 일단 넘김
       navigation.navigate('Signin', { user: user });
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -116,6 +130,10 @@ const LoginScreen = ({ navigation }) => {
 
   const [userInfoKakao, setUserInfoKakao] = useState<KakaoProfile>();
   const [isLoggedInKakao, setIsLoggedInKakao] = useState(false);
+  const [email, setEmail] = useState('');
+
+  const { emailCheck } = useECheck(email);
+
   const signInWithKakao = async (): Promise<void> => {
     const token: KakaoOAuthToken = await login();
     setIsLoggedInKakao(true);
@@ -135,6 +153,7 @@ const LoginScreen = ({ navigation }) => {
     // 여기 userInfo 갖고 다음 장으로 이동 필요
 
     const KuserInfo: KakaoProfile = profile as KakaoProfile;
+    setEmail(KuserInfo.email);
     const user: User = {
       email: KuserInfo.email,
       profileImageSrc: KuserInfo.profileImageUrl,
@@ -144,7 +163,16 @@ const LoginScreen = ({ navigation }) => {
       isCreator: false,
       nickname: '',
     };
+    console.log('email: ' + email);
+    console.log('emailCheck: ' + emailCheck);
+    // 이거 undefined 나오는거 좀 이상함
+    if (emailCheck == 1) {
+      navigation.navigate('Main', { user: user });
+    } else if (emailCheck == 0) {
+      navigation.navigate('Signin', { user: user });
+    }
 
+    // 일단 넘김
     navigation.navigate('Signin', { user: user });
   };
 

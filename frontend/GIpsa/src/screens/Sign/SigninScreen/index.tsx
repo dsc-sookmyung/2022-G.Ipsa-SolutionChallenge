@@ -74,33 +74,42 @@ const SigninScreen = ({ route, navigation }) => {
   useEffect(() => {
     console.log('nicknameCheck: ' + nicknameCheck);
     console.log('nickName: ' + nickName);
-    if (nicknameCheck == 1) {
-      setAvailNn(false);
-    } else if (nicknameCheck == 0) {
-      setAvailNn(true);
-      user.nickname = nickName;
-    }
+    //   if (nicknameCheck == 1) {
+    //     setAvailNn(false);
+    //   } else if (nicknameCheck == 0) {
+    //     setAvailNn(true);
+    //     user.nickname = nickName;
+    //   }
+    user.nickname = nickName;
   }, [nicknameCheck, nickName]);
 
-  const { users, loading, mutate } = useUsers();
-
-  // console.log('users: \n' + JSON.stringify(users));
   // tester, jaehyun
 
   const onPressGoMain = () => {
-    // post users here
-    //////////
-    let data = {
-      method: 'POST',
-      body: JSON.stringify({ user }),
+    let options = {
       headers: {
         Accept: 'application/json',
       },
+      method: 'POST',
+      body: JSON.stringify({ user }),
     };
 
-    fetch(API_ENDPOINT + `/user/signin`, data).then((response) => {
-      console.log('SENT ' + response.json);
-    });
+    fetch(API_ENDPOINT + `/user/signin`, options)
+      .then((response) => {
+        return response
+          .json()
+          .then((responseJson) => {
+            const data = responseJson;
+            console.log('data: \n' + data);
+          })
+          .catch((error) => {
+            console.log('error: \n' + error);
+          });
+      })
+      .catch((error) => {
+        console.log('Fetch Error: \n', error);
+      });
+
     console.log('user: ' + JSON.stringify(user));
     navigation.navigate('Main');
   };
