@@ -3,6 +3,7 @@ import { Image, Text, View } from 'react-native';
 
 import S from './Styles';
 import { Story } from 'shared/types';
+import MyText from '../MyText';
 
 export interface StoryCardProps {
   story: Story;
@@ -17,8 +18,13 @@ const StoryCard: FC<StoryCardProps> = ({ story }: StoryCardProps) => {
           uri: 'https://k.kakaocdn.net/dn/chFJvJ/btrlY5GSAEx/KdKaCGcO2kyMpE5mM1cwp1/img_640x640.jpg',
         }}
       />
-      <Text style={S.title}>{story.title}</Text>
-      <Text style={S.creator}>{`made by > ${story.creatorId}`}</Text>
+      <MyText fontWeight="bold" fontSize={18}>
+        {story.title}
+      </MyText>
+      <MyText
+        fontWeight="medium"
+        fontSize={12}
+      >{`made by > ${story.creatorId}`}</MyText>
     </View>
   );
 };

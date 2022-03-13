@@ -6,6 +6,7 @@ const S = StyleSheet.create({
   },
   title: {
     fontSize: 16,
+    fontFamily: 'NotoSans',
   },
   storyCardContainer: {
     paddingBottom: 10,
