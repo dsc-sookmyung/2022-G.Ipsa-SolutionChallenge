@@ -8,7 +8,7 @@ export function useECheck(keyword: string) {
     error,
     mutate,
   } = useSWRNative<{ data: number }>(
-    `/user/emailCheck?email=${qs.stringify(keyword)}`,
+    `/user/emailCheck?email=${keyword}`,
     api.client.get
   );
   const loading = fetchingData === undefined;

@@ -8,7 +8,7 @@ export function useStories(keyword?: string) {
     data: fetchingData,
     error,
     mutate,
-  } = useSWRNative(`/story/${qs.stringify(keyword)}`, api.client.get);
+  } = useSWRNative(`/story/${keyword}`, api.client.get);
 
   const loading = fetchingData === undefined;
   const stories = fetchingData?.data;

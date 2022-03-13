@@ -72,14 +72,14 @@ const SigninScreen = ({ route, navigation }) => {
   const { nicknameCheck } = useNnCheck(nickName);
 
   useEffect(() => {
-    console.log('nicknameCheck: ' + nicknameCheck);
     console.log('nickName: ' + nickName);
-    //   if (nicknameCheck == 1) {
-    //     setAvailNn(false);
-    //   } else if (nicknameCheck == 0) {
-    //     setAvailNn(true);
-    //     user.nickname = nickName;
-    //   }
+    console.log('nicknameCheck: ' + nicknameCheck);
+    if (nicknameCheck == 1) {
+      setAvailNn(false);
+    } else if (nicknameCheck == 0) {
+      setAvailNn(true);
+      user.nickname = nickName;
+    }
     user.nickname = nickName;
   }, [nicknameCheck, nickName]);
 
@@ -89,15 +89,16 @@ const SigninScreen = ({ route, navigation }) => {
     let options = {
       headers: {
         Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
       method: 'POST',
-      body: JSON.stringify({ user }),
+      body: JSON.stringify(user),
     };
 
     fetch(API_ENDPOINT + `/user/signin`, options)
       .then((response) => {
         return response
-          .json()
+          .text()
           .then((responseJson) => {
             const data = responseJson;
             console.log('data: \n' + data);

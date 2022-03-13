@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">https://gipsa-solutionchallenge2022.du.r.appspot.com</domain>
+    </domain-config>
+</network-security-config>
