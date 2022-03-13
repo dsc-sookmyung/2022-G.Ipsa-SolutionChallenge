@@ -27,6 +27,8 @@ public class MainActivity extends ReactActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(null);
     getHashKey();
+    String keyHash = com.kakao.util.helper.Utility.getKeyHash(this /* context */);
+    Log.d("KeyHash2",keyHash);
   }
   private void getHashKey(){
     PackageInfo packageInfo = null;
