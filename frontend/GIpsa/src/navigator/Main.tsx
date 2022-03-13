@@ -8,6 +8,7 @@ import ProfileScreen from 'screens/Main/ProfileScreen';
 import MyTabHeader from 'shared/components/MyTabHeader';
 import { colors } from 'shared/utils/colors';
 import { MyText } from 'shared/components';
+import Profile from './Profile';
 
 const Tab = createBottomTabNavigator();
 
@@ -47,7 +48,7 @@ const Main = () => {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Record" component={RecordScreen} />
       <Tab.Screen name="Search" component={SearchScreen} />
-      <Tab.Screen name="My page" component={ProfileScreen} />
+      <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );
 };

@@ -2,18 +2,19 @@ import { StyleSheet } from 'react-native';
 
 const S = StyleSheet.create({
   container: {
-    marginTop: 32,
     paddingHorizontal: 24,
-    marginBottom: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 35,
     fontWeight: '600',
-    marginBottom: 30,
+    marginTop: 166,
+    marginBottom: 172,
+    textAlign: 'center',
   },
   signInButton: {
-    width: 300,
-    height: 50,
+    width: 312,
+    height: 48,
+    marginBottom: 43,
   },
 });
 

@@ -1,4 +1,11 @@
-import { View, Text, Button, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  Button,
+  Alert,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import S from './Styles';
 import { MainTabScreenProps } from 'navigator/types';
@@ -6,7 +13,7 @@ import {
   GoogleSignin,
   GoogleSigninButton,
   statusCodes,
-  User,
+  User as GUser,
 } from '@react-native-google-signin/google-signin';
 import { isConditionalExpression } from 'typescript';
 import {
@@ -17,6 +24,10 @@ import {
   login,
   logout,
 } from '@react-native-seoul/kakao-login';
+
+import { User } from 'shared/types';
+import { useUsers } from 'shared/hook/useUsers';
+import { useECheck } from 'shared/hook/useECheck';
 
 const LoginScreen = ({ navigation }) => {
   // /* google
@@ -31,7 +42,7 @@ const LoginScreen = ({ navigation }) => {
     });
   }
 
-  const [userInfo, setUserInfo] = useState<User>();
+  const [userInfo, setUserInfo] = useState<GUser>();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [error, setError] = useState<Error>();
 
@@ -52,6 +63,32 @@ const LoginScreen = ({ navigation }) => {
       const userInfo = await GoogleSignin.signIn();
       setUserInfo(userInfo);
       setIsLoggedIn(true);
+
+      // 여기 userInfo 갖고 다음 장으로 이동 필요
+
+      setEmail(userInfo?.user.email);
+
+      const user: User = {
+        email: userInfo?.user.email,
+        profileImageSrc: userInfo?.user.photo as string,
+
+        birth: new Date(),
+        showBirth: false,
+        isCreator: false,
+        nickname: '',
+      };
+
+      console.log('email: ' + email);
+      console.log('emailCheck: ' + emailCheck);
+      // 이거 undefined 나오는거 좀 이상함
+      if (emailCheck == 1) {
+        navigation.navigate('Main', { user: user });
+      } else if (emailCheck == 0) {
+        navigation.navigate('Signin', { user: user });
+      }
+
+      // 일단 넘김
+      // navigation.navigate('Signin', { user: user });
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // when user cancels sign in process,
@@ -77,7 +114,7 @@ const LoginScreen = ({ navigation }) => {
   //   idToken: string,
   //   serverAuthCode: string,
   //   scopes: Array<string>, // on iOS this is empty array if no additional scopes are defined
-  //   user: {
+  //   user: {}
   //     email: string,
   //     id: string,
   //     givenName: string,
@@ -93,13 +130,16 @@ const LoginScreen = ({ navigation }) => {
 
   const [userInfoKakao, setUserInfoKakao] = useState<KakaoProfile>();
   const [isLoggedInKakao, setIsLoggedInKakao] = useState(false);
+  const [email, setEmail] = useState('');
+
+  const { emailCheck } = useECheck(email);
+
   const signInWithKakao = async (): Promise<void> => {
     const token: KakaoOAuthToken = await login();
     setIsLoggedInKakao(true);
     getKakaoProfile();
     // setUserInfoKakao(JSON.stringify(token));
   };
-  console.log(userInfoKakao);
   const signOutWithKakao = async (): Promise<void> => {
     const message = await logout();
     setIsLoggedInKakao(false);
@@ -109,6 +149,31 @@ const LoginScreen = ({ navigation }) => {
   const getKakaoProfile = async (): Promise<void> => {
     const profile = await getProfile();
     setUserInfoKakao(profile as KakaoProfile);
+
+    // 여기 userInfo 갖고 다음 장으로 이동 필요
+
+    const KuserInfo: KakaoProfile = profile as KakaoProfile;
+    setEmail(KuserInfo.email);
+    const user: User = {
+      email: KuserInfo.email,
+      profileImageSrc: KuserInfo.profileImageUrl,
+
+      birth: new Date(),
+      showBirth: false,
+      isCreator: false,
+      nickname: '',
+    };
+    console.log('email: ' + email);
+    console.log('emailCheck: ' + emailCheck);
+    // 이거 undefined 나오는거 좀 이상함
+    if (emailCheck == 1) {
+      navigation.navigate('Main', { user: user });
+    } else if (emailCheck == 0) {
+      navigation.navigate('Signin', { user: user });
+    }
+
+    // 일단 넘김
+    // navigation.navigate('Signin', { user: user });
   };
 
   //   type KakaoProfile = {
@@ -133,51 +198,70 @@ const LoginScreen = ({ navigation }) => {
 
   // */ kakao
 
+  // 구글 제공 로그인 버튼
+  // <GoogleSigninButton
+  //   style={S.signInButton}
+  //   size={GoogleSigninButton.Size.Wide}
+  //   color={GoogleSigninButton.Color.Dark}
+  //   onPress={() => LogInWithGoogle()}
+  // />
+
+  // 구글 유저 정보 및 sign out
+  // <View style={S.container}>
+  //   <Text>google: {userInfo?.user.email}</Text>
+
+  //   {isLoggedIn === false ? (
+  //     <Text>You must google sign in!</Text>
+  //   ) : (
+  //     <Button
+  //       onPress={() => signOut()}
+  //       title="Sign out Google"
+  //       color="#332211"
+  //     />
+  //   )}
+  // </View>
+
+  // 카카오 유저 정보 및 sign out
+  // <View style={S.container}>
+  //   <Text>kakao: {(userInfoKakao as KakaoProfile)?.email}</Text>
+  //   {isLoggedInKakao === false ? (
+  //     <Text>You must kakao sign in!</Text>
+  //   ) : (
+  //     <Button
+  //       onPress={() => signOutWithKakao()}
+  //       title="Sign out Kakao"
+  //       color="#332211"
+  //     />
+  //   )}
+  // </View>
+  // signin 페이지로 이동
+  //  <Button title="Go Signin" onPress={() => navigation.navigate('Signin')} />
+
   return (
     <View style={S.container}>
-      <Text style={S.title}>LoginScreen</Text>
+      <Text style={S.title}>Log In</Text>
 
       <View style={S.container}>
-        <GoogleSigninButton
+        <TouchableOpacity
           style={S.signInButton}
-          size={GoogleSigninButton.Size.Wide}
-          color={GoogleSigninButton.Color.Dark}
-          onPress={() => LogInWithGoogle()}
-        />
-        <Button
-          color={'#F7E314'}
-          title="KakaoSignin"
           onPress={() => signInWithKakao()}
-        />
-      </View>
-
-      <View style={S.container}>
-        <Text>google: {userInfo?.user.email}</Text>
-
-        {isLoggedIn === false ? (
-          <Text>You must google sign in!</Text>
-        ) : (
-          <Button
-            onPress={() => signOut()}
-            title="Sign out Google"
-            color="#332211"
+        >
+          <Image
+            source={require('../../../shared/assets/images/login-kakao.png')}
+            style={S.signInButton}
           />
-        )}
-      </View>
+        </TouchableOpacity>
 
-      <View style={S.container}>
-        <Text>kakao: {(userInfoKakao as KakaoProfile)?.email}</Text>
-        {isLoggedInKakao === false ? (
-          <Text>You must kakao sign in!</Text>
-        ) : (
-          <Button
-            onPress={() => signOutWithKakao()}
-            title="Sign out Kakao"
-            color="#332211"
+        <TouchableOpacity
+          style={S.signInButton}
+          onPress={() => LogInWithGoogle()}
+        >
+          <Image
+            source={require('../../../shared/assets/images/login-google.jpg')}
+            style={S.signInButton}
           />
-        )}
+        </TouchableOpacity>
       </View>
-      <Button title="Go Signin" onPress={() => navigation.navigate('Signin')} />
     </View>
   );
 };
