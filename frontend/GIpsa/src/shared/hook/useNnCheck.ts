@@ -8,7 +8,7 @@ export function useNnCheck(keyword: string) {
     error,
     mutate,
   } = useSWRNative<{ data: number }>(
-    `/user/nicknameCheck?nickname=${qs.stringify(keyword)}`,
+    `/user/nicknameCheck?nickname=${keyword}`,
     api.client.get
   );
   const loading = fetchingData === undefined;

@@ -88,7 +88,7 @@ const LoginScreen = ({ navigation }) => {
       }
 
       // ¿œ¥‹ ≥—±Ë
-      navigation.navigate('Signin', { user: user });
+      // navigation.navigate('Signin', { user: user });
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // when user cancels sign in process,
@@ -173,7 +173,7 @@ const LoginScreen = ({ navigation }) => {
     }
 
     // ¿œ¥‹ ≥—±Ë
-    navigation.navigate('Signin', { user: user });
+    // navigation.navigate('Signin', { user: user });
   };
 
   //   type KakaoProfile = {
