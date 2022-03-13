@@ -62,6 +62,10 @@
 		<string>NotoSansKRLight.otf</string>
 		<string>NotoSansKRMedium.otf</string>
 		<string>NotoSansKRRegular.otf</string>
+		<string>SUITBold.ttf</string>
+		<string>SUITLight.ttf</string>
+		<string>SUITMedium.ttf</string>
+		<string>SUITRegular.ttf</string>
 	</array>
 </dict>
 </plist>

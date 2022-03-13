@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { Text } from 'react-native';
+import { colors } from 'shared/utils/colors';
 
 import * as S from './Styles';
 
@@ -8,16 +9,23 @@ export interface MyTextProps {
   fontWeight?: 'bold' | 'medium' | 'regular' | 'light';
   fontSize?: number;
   color?: string;
+  font?: 'Noto' | 'Suit';
 }
 
 const MyText: FC<MyTextProps> = ({
   children,
   fontWeight = 'regular',
   fontSize = 16,
-  color = 'black',
+  color = colors.gray11,
+  font = 'Noto',
 }: MyTextProps) => {
   return (
-    <S.MyText fontWeight={fontWeight} fontSize={fontSize} color={color}>
+    <S.MyText
+      font={font}
+      fontWeight={fontWeight}
+      fontSize={fontSize}
+      color={color}
+    >
       {children}
     </S.MyText>
   );
