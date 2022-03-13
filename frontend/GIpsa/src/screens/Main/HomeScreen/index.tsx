@@ -24,9 +24,6 @@ const HomeScreen = ({ navigation, route }: MainTabScreenProps<'Home'>) => {
 
   return (
     <ScrollView style={S.container}>
-      <MyText fontSize={24} fontWeight="bold">
-        HomeScreen
-      </MyText>
       <StoryTopic title="Weekly New Stories" stories={timeSortedStories} />
       <StoryTopic title="Weekly Best Stories" stories={likeSortedStories} />
     </ScrollView>
