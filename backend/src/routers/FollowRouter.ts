@@ -2,11 +2,14 @@
 import express, { Response, Request } from 'express';
 import { createQueryBuilder, Like } from 'typeorm';
 import Follow from '../database/entities/Follow'
-
+import Options from '../database/dbconnector';
+import {createConnection} from 'typeorm';
 
 const router = express.Router();
 
 router.get('/', async (req: Request, res:Response)=>{
+  const connection = await createConnection(Options);
+
     const followerId = req.query.followerId;
     const creatorId = req.query.creatorId;
     if (followerId){
@@ -21,9 +24,13 @@ router.get('/', async (req: Request, res:Response)=>{
         const searchedFollow = await Follow.find()
         res.send(searchedFollow)
     }
+  await connection.close();
+
 })
 
 router.post('/click', async (req: Request, res:Response)=>{
+  const connection = await createConnection(Options);
+
     const body = req.body;
     const followerId = body.followerId;
     const creatorId = body.creatorId;
@@ -44,6 +51,7 @@ router.post('/click', async (req: Request, res:Response)=>{
         await newFollow.save();
         res.send('Following')
     }
+    await connection.close();
 
     
 });
