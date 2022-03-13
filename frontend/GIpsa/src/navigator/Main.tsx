@@ -4,7 +4,6 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import HomeScreen from 'screens/Main/HomeScreen';
 import RecordScreen from 'screens/Main/CreateScreen';
 import SearchScreen from 'screens/Main/SearchScreen';
-import ProfileScreen from 'screens/Main/ProfileScreen';
 import MyTabHeader from 'shared/components/MyTabHeader';
 import { colors } from 'shared/utils/colors';
 import { MyText } from 'shared/components';
@@ -48,7 +47,7 @@ const Main = () => {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Record" component={RecordScreen} />
       <Tab.Screen name="Search" component={SearchScreen} />
-      <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen name="My page" component={Profile} />
     </Tab.Navigator>
   );
 };
