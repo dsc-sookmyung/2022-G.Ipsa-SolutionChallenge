@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 import S from './Styles';
 import SearchInput from './SearchInput';
+import CategoryList from './CategoryList';
 
 const SearchScreen = () => {
   const [searchText, setSearchText] = useState<string>('');
@@ -10,6 +11,7 @@ const SearchScreen = () => {
   return (
     <View style={S.container}>
       <SearchInput value={searchText} onChangeText={setSearchText} />
+      <CategoryList />
     </View>
   );
 };

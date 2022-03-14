@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { colors } from 'shared/utils/colors';
 import styled from 'styled-components/native';
+
+import { colors } from 'shared/utils/colors';
 
 export const Root = styled.View`
   position: relative;
@@ -20,6 +21,6 @@ export const Input = styled.TextInput`
 
 export const IconWrapper = styled.View`
   position: absolute;
-  top: 10;
-  right: 20;
+  top: 10px;
+  right: 20px;
 `;
