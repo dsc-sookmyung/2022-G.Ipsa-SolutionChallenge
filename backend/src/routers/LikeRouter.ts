@@ -56,16 +56,55 @@ router.post('/click', async (req: Request, res:Response)=>{
 
 router.get('/', async (req: Request, res:Response)=>{
   const connection = await createConnection(Options);
+  const userId = req.query.userId;
+  const storyId = req.query.storyId;
+
+  if (userId){
+      const searchedLike = await LikeEntity.find({where: {userId: userId}})
+      res.send(searchedLike)
+  }
+  else if (storyId){
+    const searchedLike = await LikeEntity.find({where: {likedStoryId: storyId}})
+    res.send(searchedLike)
+  }
+  else{
+      const searchedLike = await LikeEntity.find()
+      res.send(searchedLike)
+  }
+  await connection.close();
+})
+
+router.get('/cnt', async (req: Request, res:Response)=>{
+  const connection = await createConnection(Options);
+  const userId = req.query.userId;
+  const storyId = req.query.storyId;
+
+  if (userId){
+      const searchedLike = await LikeEntity.findAndCount({where: {userId: userId}})
+      res.send(searchedLike[1].toString())
+  }
+  else if (storyId){
+    const searchedLike = await LikeEntity.findAndCount({where: {likedStoryId: storyId}})
+    res.send(searchedLike[1].toString())
+  }
+  else{
+      const searchedLike = await LikeEntity.findAndCount()
+      res.send(searchedLike[1].toString())
+  }
+  await connection.close();
+})
+
+router.get('/story', async (req: Request, res:Response)=>{
+  const connection = await createConnection(Options);
 
     const userId = req.query.userId;
-    if (userId){
-        const searchedLike = await LikeEntity.find({where: {userId: userId}})
-        res.send(searchedLike)
-    }
-    else{
-        const searchedLike = await LikeEntity.find()
-        res.send(searchedLike)
-    }
+    const searchedStory = await createQueryBuilder()
+    .from(Story, 'story')
+    .innerJoin(LikeEntity,'le', 'story.id = le.likedStoryId')
+    .where("le.userId = :userId",{userId: userId})
+    .getRawMany()
+
+    res.send(searchedStory)
   await connection.close();
 
 })

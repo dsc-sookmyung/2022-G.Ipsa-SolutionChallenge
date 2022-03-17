@@ -4,6 +4,7 @@ import { createQueryBuilder, Like } from 'typeorm';
 import Follow from '../database/entities/Follow'
 import Options from '../database/dbconnector';
 import {createConnection} from 'typeorm';
+import UserInfo from '../database/entities/UserInfo';
 
 const router = express.Router();
 
@@ -13,11 +14,21 @@ router.get('/', async (req: Request, res:Response)=>{
     const followerId = req.query.followerId;
     const creatorId = req.query.creatorId;
     if (followerId){
-        const searchedFollow = await Follow.find({where: {followerId: followerId}})
-        res.send(searchedFollow)
+      //이 유저가 팔로잉하는 크리에이터들 리턴
+        const searchedCreator = await createQueryBuilder()
+        .from(Follow, 'fl')
+        .leftJoin(UserInfo, 'ui', 'ui.id = fl.creatorId')
+        .where('fl.followerId = :followerId', {followerId:followerId})
+        .getRawMany()
+        res.send(searchedCreator)
     }
     else if (creatorId){
-        const searchedFollow = await Follow.find({where: {creatorId: creatorId}})
+      //이 유저를 팔로우하는 팔로워들 리턴
+        const searchedFollow = await createQueryBuilder()
+        .from(Follow, 'fl')
+        .leftJoin(UserInfo, 'ui', 'ui.id = fl.followerId')
+        .where('fl.creatorId = :creatorId', {creatorId:creatorId})
+        .getRawMany()
         res.send(searchedFollow)
     }
     else{
@@ -27,6 +38,38 @@ router.get('/', async (req: Request, res:Response)=>{
   await connection.close();
 
 })
+
+router.get('/cnt', async (req: Request, res:Response)=>{
+  const connection = await createConnection(Options);
+
+    const followerId = req.query.followerId;
+    const creatorId = req.query.creatorId;
+    if (followerId){
+      //이 유저가 팔로잉하는 크리에이터들 리턴
+        const searchedCreator = await createQueryBuilder()
+        .from(Follow, 'fl')
+        .leftJoin(UserInfo, 'ui', 'ui.id = fl.creatorId')
+        .where('fl.followerId = :followerId', {followerId:followerId})
+        .getCount()
+        res.send(searchedCreator.toString())
+    }
+    else if (creatorId){
+      //이 유저를 팔로우하는 팔로워들 리턴
+        const searchedFollow = await createQueryBuilder()
+        .from(Follow, 'fl')
+        .leftJoin(UserInfo, 'ui', 'ui.id = fl.followerId')
+        .where('fl.creatorId = :creatorId', {creatorId:creatorId})
+        .getCount()
+        res.send(searchedFollow.toString())
+    }
+    else{
+        const searchedFollow = await Follow.findAndCount()
+        res.send(searchedFollow[1].toString())
+    }
+  await connection.close();
+
+})
+
 
 router.post('/click', async (req: Request, res:Response)=>{
   const connection = await createConnection(Options);

@@ -62,13 +62,47 @@ router.post('/click', (req, res) => __awaiter(void 0, void 0, void 0, function* 
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
     const userId = req.query.userId;
+    const storyId = req.query.storyId;
     if (userId) {
         const searchedLike = yield LikeEntity_1.default.find({ where: { userId: userId } });
+        res.send(searchedLike);
+    }
+    else if (storyId) {
+        const searchedLike = yield LikeEntity_1.default.find({ where: { likedStoryId: storyId } });
         res.send(searchedLike);
     }
     else {
         const searchedLike = yield LikeEntity_1.default.find();
         res.send(searchedLike);
     }
+    yield connection.close();
+}));
+router.get('/cnt', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    const userId = req.query.userId;
+    const storyId = req.query.storyId;
+    if (userId) {
+        const searchedLike = yield LikeEntity_1.default.findAndCount({ where: { userId: userId } });
+        res.send(searchedLike[1].toString());
+    }
+    else if (storyId) {
+        const searchedLike = yield LikeEntity_1.default.findAndCount({ where: { likedStoryId: storyId } });
+        res.send(searchedLike[1].toString());
+    }
+    else {
+        const searchedLike = yield LikeEntity_1.default.findAndCount();
+        res.send(searchedLike[1].toString());
+    }
+    yield connection.close();
+}));
+router.get('/story', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    const userId = req.query.userId;
+    const searchedStory = yield (0, typeorm_1.createQueryBuilder)()
+        .from(Story_1.default, 'story')
+        .innerJoin(LikeEntity_1.default, 'le', 'story.id = le.likedStoryId')
+        .where("le.userId = :userId", { userId: userId })
+        .getRawMany();
+    res.send(searchedStory);
     yield connection.close();
 }));

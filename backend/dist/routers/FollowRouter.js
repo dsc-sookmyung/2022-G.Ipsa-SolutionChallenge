@@ -18,6 +18,7 @@ const typeorm_1 = require("typeorm");
 const Follow_1 = __importDefault(require("../database/entities/Follow"));
 const dbconnector_1 = __importDefault(require("../database/dbconnector"));
 const typeorm_2 = require("typeorm");
+const UserInfo_1 = __importDefault(require("../database/entities/UserInfo"));
 const router = express_1.default.Router();
 exports.FollowRouter = router;
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -25,16 +26,54 @@ router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const followerId = req.query.followerId;
     const creatorId = req.query.creatorId;
     if (followerId) {
-        const searchedFollow = yield Follow_1.default.find({ where: { followerId: followerId } });
-        res.send(searchedFollow);
+        //이 유저가 팔로잉하는 크리에이터들 리턴
+        const searchedCreator = yield (0, typeorm_1.createQueryBuilder)()
+            .from(Follow_1.default, 'fl')
+            .leftJoin(UserInfo_1.default, 'ui', 'ui.id = fl.creatorId')
+            .where('fl.followerId = :followerId', { followerId: followerId })
+            .getRawMany();
+        res.send(searchedCreator);
     }
     else if (creatorId) {
-        const searchedFollow = yield Follow_1.default.find({ where: { creatorId: creatorId } });
+        //이 유저를 팔로우하는 팔로워들 리턴
+        const searchedFollow = yield (0, typeorm_1.createQueryBuilder)()
+            .from(Follow_1.default, 'fl')
+            .leftJoin(UserInfo_1.default, 'ui', 'ui.id = fl.followerId')
+            .where('fl.creatorId = :creatorId', { creatorId: creatorId })
+            .getRawMany();
         res.send(searchedFollow);
     }
     else {
         const searchedFollow = yield Follow_1.default.find();
         res.send(searchedFollow);
+    }
+    yield connection.close();
+}));
+router.get('/cnt', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    const followerId = req.query.followerId;
+    const creatorId = req.query.creatorId;
+    if (followerId) {
+        //이 유저가 팔로잉하는 크리에이터들 리턴
+        const searchedCreator = yield (0, typeorm_1.createQueryBuilder)()
+            .from(Follow_1.default, 'fl')
+            .leftJoin(UserInfo_1.default, 'ui', 'ui.id = fl.creatorId')
+            .where('fl.followerId = :followerId', { followerId: followerId })
+            .getCount();
+        res.send(searchedCreator.toString());
+    }
+    else if (creatorId) {
+        //이 유저를 팔로우하는 팔로워들 리턴
+        const searchedFollow = yield (0, typeorm_1.createQueryBuilder)()
+            .from(Follow_1.default, 'fl')
+            .leftJoin(UserInfo_1.default, 'ui', 'ui.id = fl.followerId')
+            .where('fl.creatorId = :creatorId', { creatorId: creatorId })
+            .getCount();
+        res.send(searchedFollow.toString());
+    }
+    else {
+        const searchedFollow = yield Follow_1.default.findAndCount();
+        res.send(searchedFollow[1].toString());
     }
     yield connection.close();
 }));

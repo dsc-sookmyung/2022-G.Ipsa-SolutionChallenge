@@ -50,11 +50,16 @@ router.get('/click', async (req: Request, res:Response)=>{
 
 router.get('/', async (req: Request, res:Response)=>{
   const connection = await createConnection(Options);
-
   const keyword = req.query.keyword;
+  const creatorId = req.query.creatorId;
+
   if (keyword){
       const searchedStory = await Story.find({title: Like(`%${keyword}%`)})
       res.send(searchedStory)
+  }
+  else if (creatorId){
+    const searchedStory = await Story.find({where: {creatorId: creatorId}})
+    res.send(searchedStory)
   }
   else{
       const searchedStory = await Story.find()
@@ -63,6 +68,28 @@ router.get('/', async (req: Request, res:Response)=>{
   await connection.close();
   
 })
+
+router.get('/cnt', async (req: Request, res:Response)=>{
+  const connection = await createConnection(Options);
+  const keyword = req.query.keyword;
+  const creatorId = req.query.creatorId;
+
+  if (keyword){
+      const searchedStory = await Story.findAndCount({title: Like(`%${keyword}%`)})
+      res.send(searchedStory[1].toString())
+  }
+  else if (creatorId){
+    const searchedStory = await Story.findAndCount({where: {creatorId: creatorId}})
+    res.send(searchedStory[1].toString())
+  }
+  else{
+      const searchedStory = await Story.findAndCount()
+      res.send(searchedStory[1].toString())
+  }
+  await connection.close();
+  
+})
+
 
 export {
     router as StoryRouter};

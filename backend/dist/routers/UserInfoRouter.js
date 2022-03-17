@@ -63,8 +63,18 @@ router.post('/signin', (req, res) => __awaiter(void 0, void 0, void 0, function*
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
     const keyword = req.query.keyword;
+    const email = req.query.email;
+    const id = req.query.id;
     if (keyword) {
         const searchedUser = yield UserInfo_1.default.find({ nickname: (0, typeorm_1.Like)(`%${keyword}%`) });
+        res.send(searchedUser);
+    }
+    else if (email) {
+        const searchedUser = yield UserInfo_1.default.find({ where: { email: email } });
+        res.send(searchedUser);
+    }
+    else if (id) {
+        const searchedUser = yield UserInfo_1.default.find({ where: { id: id } });
         res.send(searchedUser);
     }
     else {

@@ -57,8 +57,19 @@ router.get('/', async (req: Request, res:Response)=>{
     const connection = await createConnection(Options);
 
     const keyword = req.query.keyword;
+    const email = req.query.email;
+    const id = req.query.id;
+
     if (keyword){
         const searchedUser = await UserInfo.find({nickname: Like(`%${keyword}%`)})
+        res.send(searchedUser)
+    }
+    else if (email){
+        const searchedUser = await UserInfo.find({where:{email: email}})
+        res.send(searchedUser)
+    }
+    else if (id){
+        const searchedUser = await UserInfo.find({where:{id:id}})
         res.send(searchedUser)
     }
     else{

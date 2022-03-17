@@ -46,7 +46,7 @@ router.post('/create', multerMid.single('file'), (req, res) => __awaiter(void 0,
     res.send(newStory);
     yield connection.close();
 }));
-router.post('/click', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get('/click', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
     const id = req.query.id;
     const clickedStory = yield Story_1.default.findOne({ where: { id: id } });
@@ -56,13 +56,36 @@ router.post('/click', (req, res) => __awaiter(void 0, void 0, void 0, function* 
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
     const keyword = req.query.keyword;
+    const creatorId = req.query.creatorId;
     if (keyword) {
         const searchedStory = yield Story_1.default.find({ title: (0, typeorm_1.Like)(`%${keyword}%`) });
+        res.send(searchedStory);
+    }
+    else if (creatorId) {
+        const searchedStory = yield Story_1.default.find({ where: { creatorId: creatorId } });
         res.send(searchedStory);
     }
     else {
         const searchedStory = yield Story_1.default.find();
         res.send(searchedStory);
+    }
+    yield connection.close();
+}));
+router.get('/cnt', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    const keyword = req.query.keyword;
+    const creatorId = req.query.creatorId;
+    if (keyword) {
+        const searchedStory = yield Story_1.default.findAndCount({ title: (0, typeorm_1.Like)(`%${keyword}%`) });
+        res.send(searchedStory[1].toString());
+    }
+    else if (creatorId) {
+        const searchedStory = yield Story_1.default.findAndCount({ where: { creatorId: creatorId } });
+        res.send(searchedStory[1].toString());
+    }
+    else {
+        const searchedStory = yield Story_1.default.findAndCount();
+        res.send(searchedStory[1].toString());
     }
     yield connection.close();
 }));
