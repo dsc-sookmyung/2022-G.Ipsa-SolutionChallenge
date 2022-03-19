@@ -40,7 +40,12 @@ const ProfileScreen = ({ navigation }) => {
         >
           My following teller
         </Text>
-        <Text style={S.subtitle}>My like story</Text>
+        <Text
+          style={S.subtitle}
+          onPress={() => navigation.navigate('LikeScreen')}
+        >
+          My like story
+        </Text>
         <Text style={S.subtitle}>My comments</Text>
       </View>
     </View>

@@ -22,7 +22,7 @@ const StoryCardHoriz: FC<StoryCardHorizProps> = ({
         />
         <View style={S.container3}>
           <Text style={S.title}>{story.title}</Text>
-          <Text style={S.creator}>{story.createdAt.toDateString()}</Text>
+          <Text style={S.creator}>{story.createdAt.toString()}</Text>
         </View>
       </View>
     </View>
