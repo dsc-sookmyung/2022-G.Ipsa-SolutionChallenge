@@ -22,7 +22,6 @@ const dbconnector_1 = __importDefault(require("../database/dbconnector"));
 const typeorm_2 = require("typeorm");
 const router = express_1.default.Router();
 exports.StoryRouter = router;
-// const uploadImage : new UploadImage;
 const multerMid = (0, multer_1.default)({
     storage: multer_1.default.memoryStorage(),
     limits: {
@@ -54,9 +53,11 @@ router.get('/click', (req, res) => __awaiter(void 0, void 0, void 0, function* (
     yield connection.close();
 }));
 router.post('/click', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
     const id = req.query.id;
     const clickedStory = yield Story_1.default.findOne({ where: { id: id } });
     res.send(clickedStory);
+    yield connection.close();
 }));
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);

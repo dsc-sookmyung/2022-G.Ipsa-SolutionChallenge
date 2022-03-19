@@ -9,39 +9,34 @@ const router = express.Router();
 
 router.get('/', async (req: Request, res:Response)=>{
   const connection = await createConnection(Options);
-
-    const userId = req.query.userId;
-    const storyId = req.query.storyId;
-    if (userId){
-        const searchedComment = await Comment.find({where: {userId: userId}})
-        res.send(searchedComment)
-    }
-    else if (storyId){
-        const searchedComment = await Comment.find({where: {storyId: storyId}})
-        res.send(searchedComment)
-    }
-    else{
-        const searchedComment = await Comment.find()
-        res.send(searchedComment)
-    }
+  const userId = req.query.userId;
+  const storyId = req.query.storyId;
+  if (userId){
+      const searchedComment = await Comment.find({where: {userId: userId}})
+      res.send(searchedComment)
+  }
+  else if (storyId){
+      const searchedComment = await Comment.find({where: {storyId: storyId}})
+      res.send(searchedComment)
+  }
+  else{
+      const searchedComment = await Comment.find()
+      res.send(searchedComment)
+  }
   await connection.close();
-
 })
 
 router.post('/create', async (req: Request, res:Response)=>{
   const connection = await createConnection(Options);
-
-    const body = req.body;
-    // const userId = body.userId;
-    // const storyId = body.storyId;
-    
-    const comment = body as Comment;
-    const newComment = Comment.create(comment)
-    await newComment.save();
-    res.send('Commented')
+  const body = req.body;
+  // const userId = body.userId;
+  // const storyId = body.storyId;
+  const comment = body as Comment;
+  const newComment = Comment.create(comment)
+  await newComment.save();
+  res.send('Commented')
   await connection.close();
-
 });
 
 export {
-    router as CommentRouter};
+  router as CommentRouter};
