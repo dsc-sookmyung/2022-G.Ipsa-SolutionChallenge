@@ -4,16 +4,17 @@ import S from './Styles';
 import { User } from 'shared/types/user';
 
 const ProfileScreen = ({ navigation }) => {
-  // ¿¹½Ã
-  const user: User = {
-    email: 'ryann3@naver.com',
-    profileImageSrc:
-      'https://k.kakaocdn.net/dn/vXU15/btrrr6F36R6/dDTklzgUtdGkHiRFZ5Mdm1/img_640x640.jpg',
-    birth: new Date(1909, 9, 9),
-    showBirth: false,
-    isCreator: true,
-    nickname: 'Nana',
-  };
+  //const user: User = {
+  //  email: 'ryann3@naver.com',
+  //  profileImageSrc:
+  //    'https://k.kakaocdn.net/dn/vXU15/btrrr6F36R6/dDTklzgUtdGkHiRFZ5Mdm1/img_640x640.jpg',
+  //  birth: new Date(1909, 9, 9),
+  //  showBirth: false,
+  //  isCreator: true,
+  //  nickname: 'Nana',
+  //};
+
+  const user = global.User[0] as User;
 
   return (
     <View>
@@ -31,8 +32,14 @@ const ProfileScreen = ({ navigation }) => {
           />
         </TouchableOpacity>
       )}
+
       <View style={S.container2}>
-        <Text style={S.subtitle}>My following teller</Text>
+        <Text
+          style={S.subtitle}
+          onPress={() => navigation.navigate('FollowerScreen')}
+        >
+          My following teller
+        </Text>
         <Text style={S.subtitle}>My like story</Text>
         <Text style={S.subtitle}>My comments</Text>
       </View>

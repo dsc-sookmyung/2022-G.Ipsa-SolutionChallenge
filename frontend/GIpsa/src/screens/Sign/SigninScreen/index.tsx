@@ -112,6 +112,7 @@ const SigninScreen = ({ route, navigation }) => {
       });
 
     console.log('user: ' + JSON.stringify(user));
+    global.User = user;
     navigation.navigate('Main');
   };
 
