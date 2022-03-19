@@ -1,11 +1,11 @@
 import { ScrollView, Text } from 'react-native';
 import React from 'react';
+import moment from 'moment';
 
 import S from './Styles';
 import { MainTabScreenProps } from 'navigator/types';
 import { StoryTopic } from 'shared/components';
 import { useStories } from 'shared/hook/useStories';
-import moment from 'moment';
 
 export type HomeScreenParams = {
   a: number;
@@ -24,9 +24,8 @@ const HomeScreen = ({ navigation, route }: MainTabScreenProps<'Home'>) => {
 
   return (
     <ScrollView style={S.container}>
-      <Text style={S.title}>HomeScreen</Text>
-      <StoryTopic title="최신 업로드 스토리" stories={timeSortedStories} />
-      <StoryTopic title="인기 스토리" stories={likeSortedStories} />
+      <StoryTopic title="Weekly New Stories" stories={timeSortedStories} />
+      <StoryTopic title="Weekly Best Stories" stories={likeSortedStories} />
     </ScrollView>
   );
 };

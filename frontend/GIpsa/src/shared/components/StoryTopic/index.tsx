@@ -1,9 +1,10 @@
 import React, { FC } from 'react';
-import { Text, View, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 
 import S from './Styles';
 import { Story } from 'shared/types';
 import { StoryCard } from '..';
+import MyText from '../MyText';
 
 export interface StoryTopicProps {
   title: string;
@@ -16,7 +17,9 @@ const StoryTopic: FC<StoryTopicProps> = ({
 }: StoryTopicProps) => {
   return (
     <View style={S.container}>
-      <Text style={S.title}>{title}</Text>
+      <MyText fontWeight="regular" fontSize={16}>
+        {title}
+      </MyText>
       <ScrollView style={S.storyCardContainer} horizontal persistentScrollbar>
         {stories?.map((story) => (
           <StoryCard key={story.id} story={story} />

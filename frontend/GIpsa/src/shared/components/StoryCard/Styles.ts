@@ -8,12 +8,6 @@ const S = StyleSheet.create({
     marginBottom: 16,
     borderRadius: 8,
   },
-  title: {
-    fontSize: 18,
-  },
-  creator: {
-    fontSize: 12,
-  },
 });
 
 export default S;
