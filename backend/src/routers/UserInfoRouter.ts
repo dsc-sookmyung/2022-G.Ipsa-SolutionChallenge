@@ -78,7 +78,21 @@ router.get('/', async (req: Request, res:Response)=>{
     }
     await connection.close();
 
+});
+
+router.get('/', async (req: Request, res:Response)=>{
+    const keyword = req.query.keyword;
+    if (keyword){
+        const searchedUser = await UserInfo.find({nickname: Like(`%${keyword}%`)})
+        res.send(searchedUser)
+    }
+    else{
+        const searchedUser = await UserInfo.find()
+        res.send(searchedUser)
+    }
 })
 
+
 export {
-    router as UserInfoRouter};
+    router as UserInfoRouter
+}

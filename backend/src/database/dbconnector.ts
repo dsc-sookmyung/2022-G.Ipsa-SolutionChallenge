@@ -12,7 +12,7 @@ const Options: ConnectionOptions = {
     logging: true,
     entities: [
         path.join(__dirname, "./entities/*.*")
-    ],
+    ]
 }
 
 export default Options

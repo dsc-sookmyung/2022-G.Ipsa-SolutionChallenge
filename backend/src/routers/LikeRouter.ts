@@ -40,7 +40,6 @@ router.post('/click', async (req: Request, res:Response)=>{
         const like = body as LikeEntity;
         const newLike = LikeEntity.create(like)
         await newLike.save();
-
         newLikes = storyLikes[0].likes + 1;
         await createQueryBuilder()
         .update(Story)

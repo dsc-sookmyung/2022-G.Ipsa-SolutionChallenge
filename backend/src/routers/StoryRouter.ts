@@ -48,6 +48,13 @@ router.get('/click', async (req: Request, res:Response)=>{
 
 });
 
+router.post('/click', async (req: Request, res:Response)=>{
+    const id = req.query.id;
+    const clickedStory = await Story.findOne({where:{id: id}})
+    res.send(clickedStory)
+
+});
+
 router.get('/', async (req: Request, res:Response)=>{
   const connection = await createConnection(Options);
   const keyword = req.query.keyword;

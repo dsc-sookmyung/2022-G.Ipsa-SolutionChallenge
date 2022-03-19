@@ -83,3 +83,14 @@ router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     yield connection.close();
 }));
+router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const keyword = req.query.keyword;
+    if (keyword) {
+        const searchedUser = yield UserInfo_1.default.find({ nickname: (0, typeorm_1.Like)(`%${keyword}%`) });
+        res.send(searchedUser);
+    }
+    else {
+        const searchedUser = yield UserInfo_1.default.find();
+        res.send(searchedUser);
+    }
+}));

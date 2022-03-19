@@ -53,6 +53,11 @@ router.get('/click', (req, res) => __awaiter(void 0, void 0, void 0, function* (
     res.send(clickedStory);
     yield connection.close();
 }));
+router.post('/click', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.query.id;
+    const clickedStory = yield Story_1.default.findOne({ where: { id: id } });
+    res.send(clickedStory);
+}));
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
     const keyword = req.query.keyword;

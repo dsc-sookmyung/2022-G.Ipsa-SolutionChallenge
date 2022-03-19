@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GIpsa</string>
+    <string name="kakao_app_key">8595d75d6282e61e0f236d78fb953576</string>
 </resources>

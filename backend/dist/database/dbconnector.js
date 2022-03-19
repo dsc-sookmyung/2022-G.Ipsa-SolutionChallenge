@@ -15,6 +15,6 @@ const Options = {
     logging: true,
     entities: [
         path_1.default.join(__dirname, "./entities/*.*")
-    ],
+    ]
 };
 exports.default = Options;

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "419857934694",
+    "project_id": "gipsa-ebe4a",
+    "storage_bucket": "gipsa-ebe4a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:419857934694:android:098e6847ab3866b6d7c0a7",
+        "android_client_info": {
+          "package_name": "com.gipsa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "419857934694-p8vgvu3mhtiaf7d2gjve1kvl4rp5p9d3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDV4Giv4j4jez1oAWYmhSJTCF9w36-emnk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "419857934694-p8vgvu3mhtiaf7d2gjve1kvl4rp5p9d3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
