@@ -9,7 +9,7 @@ import { useLikedStories } from 'shared/hook/useLikedStories';
 const LikeScreen = ({ navigation }) => {
   const user = global.User[0] as User;
 
-  const { stories } = useLikedStories('' + 1); //user.id);
+  const { stories } = useLikedStories('' + user.id);
   console.log(stories);
 
   return (

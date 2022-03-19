@@ -7,5 +7,5 @@ export type { StoryCardProps } from './StoryCard';
 export { default as MyStories } from './MyStories';
 export type { MyStoriesProps } from './MyStories';
 
-export { default as StoryCardHoriz } from './StoryCardHoriz';
-export type { StoryCardHorizProps } from './StoryCardHoriz';
+export { default as StoryCardHorizontal } from './StoryCardHorizontal';
+export type { StoryCardHorizontalProps } from './StoryCardHorizontal';
