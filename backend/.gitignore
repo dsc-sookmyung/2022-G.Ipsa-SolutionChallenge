@@ -1,5 +1,7 @@
 node_modules/
 gipsa-solutionchallenge2022-a8f20048ed9f.json
 dist/
+
+yarn-error.log
 # build/
 # src/swagger/
