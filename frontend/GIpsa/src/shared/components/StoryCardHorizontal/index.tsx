@@ -3,14 +3,16 @@ import { Image, Text, View } from 'react-native';
 
 import S from './Styles';
 import { Story } from 'shared/types';
+import MyText from '../MyText';
+import moment from 'moment';
 
-export interface StoryCardHorizProps {
+export interface StoryCardHorizontalProps {
   story: Story;
 }
 
-const StoryCardHoriz: FC<StoryCardHorizProps> = ({
+const StoryCardHorizontal: FC<StoryCardHorizontalProps> = ({
   story,
-}: StoryCardHorizProps) => {
+}: StoryCardHorizontalProps) => {
   return (
     <View style={S.container}>
       <View style={S.container2}>
@@ -21,12 +23,16 @@ const StoryCardHoriz: FC<StoryCardHorizProps> = ({
           }}
         />
         <View style={S.container3}>
-          <Text style={S.title}>{story.title}</Text>
-          <Text style={S.creator}>{story.createdAt.toDateString()}</Text>
+          <MyText fontSize={18} fontWeight="bold">
+            {story.title}
+          </MyText>
+          <MyText fontSize={14} fontWeight="medium">
+            {moment(story.createdAt).format('YYYY.MM.DD')}
+          </MyText>
         </View>
       </View>
     </View>
   );
 };
 
-export default StoryCardHoriz;
+export default StoryCardHorizontal;

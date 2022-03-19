@@ -9,7 +9,7 @@ export function useUsers(keyword?: string) {
     error,
     mutate,
   } = useSWRNative<{ data: User[] }>(
-    `/user/${qs.stringify(keyword)}`,
+    `/user?${qs.stringify({ keyword })}`,
     api.client.get
   );
   const loading = fetchingData === undefined;

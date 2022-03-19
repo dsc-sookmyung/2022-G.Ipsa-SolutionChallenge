@@ -10,10 +10,10 @@ export function useStories(keyword?: string) {
     error,
     mutate,
   } = useSWRNative<{ data: Story[] }>(
-    `/story/${qs.stringify(keyword)}`,
+    `/story?${qs.stringify({ keyword })}`,
     api.client.get
   );
-
+  console.log(keyword);
   const loading = fetchingData === undefined;
   const stories = fetchingData?.data;
 

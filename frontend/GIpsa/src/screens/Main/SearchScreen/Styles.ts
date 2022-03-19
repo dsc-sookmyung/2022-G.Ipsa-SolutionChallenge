@@ -7,9 +7,8 @@ const S = StyleSheet.create({
     backgroundColor: colors.background,
     height: '100%',
   },
-  title: {
-    fontSize: 24,
-    fontWeight: '600',
+  results: {
+    paddingTop: 28,
   },
 });
 

@@ -14,7 +14,7 @@ export interface MyTextProps {
 
 const MyText: FC<MyTextProps> = ({
   children,
-  fontWeight = 'regular',
+  fontWeight = 'medium',
   fontSize = 16,
   color = colors.gray11,
   font = 'Noto',
