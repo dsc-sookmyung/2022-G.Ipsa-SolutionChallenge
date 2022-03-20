@@ -4,6 +4,10 @@ const S = StyleSheet.create({
   container: {
     paddingHorizontal: 24,
   },
+  container2: {
+    marginBottom: 30,
+    alignItems: 'center',
+  },
   title: {
     fontSize: 35,
     fontWeight: '600',

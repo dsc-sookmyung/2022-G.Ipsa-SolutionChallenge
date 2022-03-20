@@ -28,6 +28,7 @@ import {
 import { User } from 'shared/types';
 import { useUsersEmail } from 'shared/hook/useUsersEmail';
 import { useECheck } from 'shared/hook/useECheck';
+import * as Progress from 'react-native-progress';
 
 const LoginScreen = ({ navigation }) => {
   // /* google
@@ -47,6 +48,9 @@ const LoginScreen = ({ navigation }) => {
   const [error, setError] = useState<Error>();
   const [email, setEmail] = useState('');
   const { usersEmail } = useUsersEmail(email);
+  const [userIn, setUserIn] = useState<User>();
+  const [clicked, setClicked] = useState(false);
+
   const signOut = async () => {
     try {
       await GoogleSignin.revokeAccess();
@@ -61,30 +65,21 @@ const LoginScreen = ({ navigation }) => {
   const LogInWithGoogle = async () => {
     try {
       await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      setUserInfo(userInfo);
+      const GuserInfo = await GoogleSignin.signIn();
+      setUserInfo(GuserInfo);
       setIsLoggedIn(true);
-
-      setEmail(userInfo?.user.email);
+      setClicked(true);
+      setEmail(GuserInfo?.user.email);
       const user: User = {
-        email: userInfo?.user.email,
-        profileImageSrc: userInfo?.user.photo as string,
+        email: GuserInfo?.user.email,
+        profileImageSrc: GuserInfo?.user.photo as string,
 
         birth: new Date(),
         showBirth: false,
         isCreator: false,
         nickname: '',
       };
-
-      console.log('email: ' + email);
-      console.log('emailCheck: ' + emailCheck);
-
-      if (emailCheck == 1) {
-        navigation.navigate('Main');
-        global.User = usersEmail;
-      } else if (emailCheck == 0) {
-        navigation.navigate('Signin', { user: user });
-      }
+      setUserIn(user);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // when user cancels sign in process,
@@ -149,7 +144,7 @@ const LoginScreen = ({ navigation }) => {
 
     const KuserInfo: KakaoProfile = profile as KakaoProfile;
     setEmail(KuserInfo.email);
-
+    setClicked(true);
     const user: User = {
       email: KuserInfo.email,
       profileImageSrc: KuserInfo.profileImageUrl,
@@ -159,16 +154,23 @@ const LoginScreen = ({ navigation }) => {
       isCreator: false,
       nickname: '',
     };
-    console.log('email: ' + email);
-    console.log('emailCheck: ' + emailCheck);
-
-    if (emailCheck == 1) {
-      navigation.navigate('Main');
-      global.User = usersEmail; // email 검색 되면 되는 것
-    } else if (emailCheck == 0) {
-      navigation.navigate('Signin', { user: user });
-    }
+    setUserIn(user);
   };
+
+  useEffect(() => {
+    if (userIn) {
+      console.log('email: ' + email);
+      console.log('emailCheck: ' + emailCheck);
+      console.log(usersEmail);
+
+      if (emailCheck == 1) {
+        global.User = usersEmail;
+        navigation.navigate('Main');
+      } else if (emailCheck == 0) {
+        navigation.navigate('Signin', { user: userIn });
+      }
+    }
+  }, [email, emailCheck]);
 
   //   type KakaoProfile = {
   //     id: string;
@@ -236,6 +238,11 @@ const LoginScreen = ({ navigation }) => {
       <Text style={S.title}>Log In</Text>
 
       <View style={S.container}>
+        {clicked && emailCheck != 1 && (
+          <View style={S.container2}>
+            <Progress.Circle size={30} indeterminate={true} />
+          </View>
+        )}
         <TouchableOpacity
           style={S.signInButton}
           onPress={() => signInWithKakao()}
@@ -245,7 +252,6 @@ const LoginScreen = ({ navigation }) => {
             style={S.signInButton}
           />
         </TouchableOpacity>
-
         <TouchableOpacity
           style={S.signInButton}
           onPress={() => LogInWithGoogle()}
