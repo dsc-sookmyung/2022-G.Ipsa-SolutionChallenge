@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native';
 import React from 'react';
 
-const CreateScreen = () => {
+const RecordScreen = () => {
   return (
     <View>
-      <Text>CreateScreen</Text>
+      <Text>RecordScreen</Text>
     </View>
   );
 };
 
-export default CreateScreen;
+export default RecordScreen;
