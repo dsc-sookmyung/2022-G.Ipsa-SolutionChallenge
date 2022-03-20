@@ -1,9 +1,11 @@
 import { StyleSheet } from 'react-native';
+import { colors } from 'shared/utils/colors';
 
 const S = StyleSheet.create({
   container: {
     // marginRight: 31,
     // marginTop: 108,
+    backgroundColor: colors.background,
   },
   container2: {
     flexDirection: 'row',
@@ -18,9 +20,7 @@ const S = StyleSheet.create({
     marginBottom: 24,
     borderRadius: 1,
   },
-  title: {
-    fontSize: 18,
-  },
+
   creator: {
     marginLeft: 2,
     fontSize: 14,

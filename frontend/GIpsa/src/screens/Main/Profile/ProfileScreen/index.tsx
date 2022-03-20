@@ -3,12 +3,11 @@ import React, { useEffect, useState } from 'react';
 import S from './Styles';
 import { User } from 'shared/types/user';
 import { isRegularExpressionLiteral } from 'typescript';
+import MyText from 'shared/components/MyText';
 
 const ProfileScreen = ({ navigation }) => {
   const [isProfile, setIsProfile] = useState(true);
   const user = global.User[0] as User;
-
-  console.log('global.User[0]' + global.User[0]);
 
   useEffect(() => {
     if (user.profileImageSrc == '') {
@@ -17,45 +16,52 @@ const ProfileScreen = ({ navigation }) => {
   }, [user]);
 
   return (
-    <View>
-      <Text style={S.title}>My Page</Text>
-      {isProfile && (
-        <Image source={{ uri: user.profileImageSrc }} style={S.profileImg} />
-      )}
-      {!isProfile && (
-        <Image
-          source={require('../../../../shared/assets/images/default-profile.jpg')}
-          style={S.profileImg}
-        />
-      )}
-
-      <Text style={S.userName}>{user.nickname}</Text>
-      {user.isCreator && (
-        <TouchableOpacity
-          style={S.signInButton}
-          onPress={() => navigation.navigate('UploadedScreen')}
-        >
+    <View style={S.maincontainer}>
+      <View style={S.centercontainer}>
+        {isProfile && (
+          <Image source={{ uri: user.profileImageSrc }} style={S.profileImg} />
+        )}
+        {!isProfile && (
           <Image
-            source={require('../../../../shared/assets/images/mystory.jpg')}
-            style={S.signInButton}
+            source={require('../../../../shared/assets/images/default-profile.jpg')}
+            style={S.profileImg}
           />
-        </TouchableOpacity>
-      )}
-
+        )}
+      </View>
+      <View style={S.subcontainer}>
+        <MyText fontSize={20} fontWeight={'bold'}>
+          {user.nickname}
+        </MyText>
+      </View>
+      <View style={S.centercontainer}>
+        {user.isCreator && (
+          <TouchableOpacity
+            style={S.signInButton}
+            onPress={() => navigation.navigate('UploadedScreen')}
+          >
+            <Image
+              source={require('../../../../shared/assets/images/mystory.jpg')}
+              style={S.signInButton}
+            />
+          </TouchableOpacity>
+        )}
+      </View>
       <View style={S.container2}>
-        <Text
-          style={S.subtitle}
+        <TouchableOpacity
+          style={S.touchableText}
           onPress={() => navigation.navigate('FollowerScreen')}
         >
-          My following teller
-        </Text>
-        <Text
-          style={S.subtitle}
+          <MyText fontSize={16}>My following teller</MyText>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={S.touchableText}
           onPress={() => navigation.navigate('LikeScreen')}
         >
-          My like story
-        </Text>
-        <Text style={S.subtitle}>My comments</Text>
+          <MyText fontSize={16}>My like story</MyText>
+        </TouchableOpacity>
+        <TouchableOpacity style={S.touchableText}>
+          <MyText fontSize={16}>My comments</MyText>
+        </TouchableOpacity>
       </View>
     </View>
   );

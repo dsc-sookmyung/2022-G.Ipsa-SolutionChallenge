@@ -5,6 +5,7 @@ import { User } from 'shared/types/user';
 
 import { MyStories } from 'shared/components';
 import { useLikedStories } from 'shared/hook/useLikedStories';
+import MyText from 'shared/components/MyText';
 
 const LikeScreen = ({ navigation }) => {
   const user = global.User[0] as User;
@@ -13,10 +14,16 @@ const LikeScreen = ({ navigation }) => {
   console.log(stories);
 
   return (
-    <View>
-      <Text style={S.title}>My Liked Stories</Text>
-      <View style={{ alignItems: 'center' }}>
-        <Text style={S.text1}>Liked Stories</Text>
+    <View style={S.maincontainer}>
+      <View style={S.titlecontainer}>
+        <MyText fontSize={24} fontWeight={'bold'}>
+          My Liked Stories
+        </MyText>
+      </View>
+      <View style={S.subcontainer}>
+        <MyText fontSize={16} fontWeight={'medium'}>
+          Liked Stories
+        </MyText>
       </View>
       <ScrollView style={S.container}>
         <MyStories stories={stories} title={''} />

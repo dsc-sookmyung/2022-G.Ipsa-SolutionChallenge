@@ -1,46 +1,26 @@
 import { StyleSheet } from 'react-native';
+import { colors } from 'shared/utils/colors';
 
 const S = StyleSheet.create({
+  maincontainer: {
+    backgroundColor: colors.background,
+  },
+  titlecontainer: { alignItems: 'center', marginTop: 41 },
+  subcontainer: { alignItems: 'center', marginTop: 31 },
+  centercontainer: { alignItems: 'center' },
   container: {
     paddingHorizontal: 24,
     paddingVertical: 24,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: '600',
-    textAlign: 'center',
-    marginTop: 41,
-  },
-  userName: {
-    fontSize: 20,
-    fontWeight: '600',
-    textAlign: 'center',
-    marginTop: 31,
-  },
-  signInButton: {
-    width: 304,
-    height: 80,
-    marginLeft: 28,
-    marginTop: 21,
+  numMargin: {
+    marginTop: 9,
   },
   dateAlign: {
     marginTop: 56,
-    marginLeft: 52,
-    marginRight: 52,
+    alignContent: 'center',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  numbers: {
-    fontSize: 36,
-    fontWeight: '700',
-    color: '#F98B65',
-    textAlign: 'center',
-  },
-  text1: {
-    fontSize: 16,
-    fontWeight: '400',
-    textAlign: 'center',
+    justifyContent: 'space-around',
   },
 });
 
