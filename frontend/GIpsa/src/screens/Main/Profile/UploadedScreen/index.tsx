@@ -8,6 +8,7 @@ import { Story } from 'shared/types';
 import { useStories } from 'shared/hook/useStories';
 import { useStoryCount } from 'shared/hook/useStoryCount';
 import { useFollowerCount } from 'shared/hook/useFollowerCount';
+import MyText from 'shared/components/MyText';
 
 const UploadedScreen = ({ navigation }) => {
   const user = global.User[0] as User;
@@ -51,16 +52,28 @@ const UploadedScreen = ({ navigation }) => {
   //});
 
   return (
-    <View>
-      <Text style={S.title}>My Uploaded Story</Text>
+    <View style={S.maincontainer}>
+      <View style={S.titlecontainer}>
+        <MyText fontSize={24} fontWeight={'bold'}>
+          My Uploaded Story
+        </MyText>
+      </View>
       <View style={S.dateAlign}>
-        <View>
-          <Text style={S.text1}>Content</Text>
-          <Text style={S.numbers}>{storycount}</Text>
+        <View style={S.centercontainer}>
+          <MyText fontSize={16}>Content</MyText>
+          <View style={S.numMargin}>
+            <MyText fontSize={36} fontWeight={'bold'} color={'#F98B65'}>
+              {storycount}
+            </MyText>
+          </View>
         </View>
-        <View>
-          <Text style={S.text1}>Follower</Text>
-          <Text style={S.numbers}>{followercount}</Text>
+        <View style={S.centercontainer}>
+          <MyText fontSize={16}>Follower</MyText>
+          <View style={S.numMargin}>
+            <MyText fontSize={36} fontWeight={'bold'} color={'#F98B65'}>
+              {followercount}
+            </MyText>
+          </View>
         </View>
       </View>
       <ScrollView style={S.container}>

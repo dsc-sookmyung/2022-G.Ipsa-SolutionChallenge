@@ -1,52 +1,67 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import S from './Styles';
 import { User } from 'shared/types/user';
+import { isRegularExpressionLiteral } from 'typescript';
+import MyText from 'shared/components/MyText';
 
 const ProfileScreen = ({ navigation }) => {
-  //const user: User = {
-  //  email: 'ryann3@naver.com',
-  //  profileImageSrc:
-  //    'https://k.kakaocdn.net/dn/vXU15/btrrr6F36R6/dDTklzgUtdGkHiRFZ5Mdm1/img_640x640.jpg',
-  //  birth: new Date(1909, 9, 9),
-  //  showBirth: false,
-  //  isCreator: true,
-  //  nickname: 'Nana',
-  //};
-
+  const [isProfile, setIsProfile] = useState(true);
   const user = global.User[0] as User;
 
-  return (
-    <View>
-      <Text style={S.title}>My Page</Text>
-      <Image source={{ uri: user.profileImageSrc }} style={S.profileImg} />
-      <Text style={S.userName}>{user.nickname}</Text>
-      {user.isCreator && (
-        <TouchableOpacity
-          style={S.signInButton}
-          onPress={() => navigation.navigate('UploadedScreen')}
-        >
-          <Image
-            source={require('../../../../shared/assets/images/mystory.jpg')}
-            style={S.signInButton}
-          />
-        </TouchableOpacity>
-      )}
+  useEffect(() => {
+    if (user.profileImageSrc == '') {
+      setIsProfile(false);
+    }
+  }, [user]);
 
+  return (
+    <View style={S.maincontainer}>
+      <View style={S.centercontainer}>
+        {isProfile && (
+          <Image source={{ uri: user.profileImageSrc }} style={S.profileImg} />
+        )}
+        {!isProfile && (
+          <Image
+            source={require('../../../../shared/assets/images/default-profile.jpg')}
+            style={S.profileImg}
+          />
+        )}
+      </View>
+      <View style={S.subcontainer}>
+        <MyText fontSize={20} fontWeight={'bold'}>
+          {user.nickname}
+        </MyText>
+      </View>
+      <View style={S.centercontainer}>
+        {user.isCreator && (
+          <TouchableOpacity
+            style={S.signInButton}
+            onPress={() => navigation.navigate('UploadedScreen')}
+          >
+            <Image
+              source={require('../../../../shared/assets/images/mystory.jpg')}
+              style={S.signInButton}
+            />
+          </TouchableOpacity>
+        )}
+      </View>
       <View style={S.container2}>
-        <Text
-          style={S.subtitle}
+        <TouchableOpacity
+          style={S.touchableText}
           onPress={() => navigation.navigate('FollowerScreen')}
         >
-          My following teller
-        </Text>
-        <Text
-          style={S.subtitle}
+          <MyText fontSize={16}>My following teller</MyText>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={S.touchableText}
           onPress={() => navigation.navigate('LikeScreen')}
         >
-          My like story
-        </Text>
-        <Text style={S.subtitle}>My comments</Text>
+          <MyText fontSize={16}>My like story</MyText>
+        </TouchableOpacity>
+        <TouchableOpacity style={S.touchableText}>
+          <MyText fontSize={16}>My comments</MyText>
+        </TouchableOpacity>
       </View>
     </View>
   );
