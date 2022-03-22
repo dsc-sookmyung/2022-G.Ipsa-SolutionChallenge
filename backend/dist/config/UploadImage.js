@@ -48,12 +48,12 @@ const Storage_1 = require("./Storage");
 // }
 const bucketName = 'gipsa-upload';
 const bucket = Storage_1.Storage.bucket(bucketName);
-function getPublicUrl(filename) {
-    return 'https://storage.googleapis.com/' + bucketName + '/' + filename;
+function getPublicUrl(foldername, filename) {
+    return 'https://storage.googleapis.com/' + bucketName + foldername + filename;
 }
 let ImgUpload = {};
 exports.UploadImage = ImgUpload;
-ImgUpload.uploadImage = (req, res) => {
+ImgUpload.uploadThumbnail = (req, res) => {
     // Can optionally add a path to the gcsname below by concatenating it before the filename
     // const gcsname = req.file.originalname;
     const file = bucket.file(req);
@@ -69,7 +69,7 @@ ImgUpload.uploadImage = (req, res) => {
     stream.on('finish', () => {
         // req.file.cloudStorageObject = gcsname;
         // req.file.cloudStoragePublicUrl = getPublicUrl(gcsname);
-        res.send(getPublicUrl(req));
+        res.send(getPublicUrl('/storySrc/', req));
     });
     stream.end();
 };
@@ -89,7 +89,7 @@ ImgUpload.uploadAudio = (req, res) => {
     stream.on('finish', () => {
         // req.file.cloudStorageObject = gcsname;
         // req.file.cloudStoragePublicUrl = getPublicUrl(gcsname);
-        res.send(getPublicUrl(req));
+        res.send(getPublicUrl('/storySrc/', req));
     });
     stream.end();
 };

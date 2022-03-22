@@ -11,23 +11,34 @@ const router = express.Router();
 const multerMid = multer({
     storage: multer.memoryStorage(),
       limits: {
-        fileSize: 5 * 1024 * 1024,
+        fileSize: 10 * 1024 * 1024,
       },
   });
 router.use(multerMid.single('file'))
 
-router.post('/create', multerMid.single('file'), async (req: Request, res:Response)=>{
+router.post('/create', async (req: Request, res:Response)=>{
   const connection = await createConnection(Options);
   const body = req['body']
   const audioFileUri = body.audioFileSrc;
   const thumbnailImageUri = body.thumbnailImageSrc;
 
   const audioUrl = await UploadImage.uploadAudio(audioFileUri)
-  const imageUrl = await UploadImage.uploadImage(thumbnailImageUri)
+  const imageUrl = await UploadImage.uploadThumbnail(thumbnailImageUri)
   console.log(imageUrl);
   
   body.audioFileSrc = audioUrl;
   body.thumbnailImageSrc = imageUrl;
+  
+  const story = body as Story;
+  const newStory = Story.create(story)
+  await newStory.save();
+  res.send(newStory)
+  await connection.close();
+});
+
+router.post('/testcreate', async (req: Request, res:Response)=>{
+  const connection = await createConnection(Options);
+  const body = req['body']
   
   const story = body as Story;
   const newStory = Story.create(story)
