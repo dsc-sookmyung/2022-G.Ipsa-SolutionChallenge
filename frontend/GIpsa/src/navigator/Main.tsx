@@ -3,12 +3,13 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import HomeScreen from 'screens/Main/HomeScreen';
-import RecordScreen from 'screens/Main/CreateScreen';
+import RecordScreen from 'screens/Main/CreateScreen/RecordScreen';
 import SearchScreen from 'screens/Main/SearchScreen';
 import MyTabHeader from 'shared/components/MyTabHeader';
 import { colors } from 'shared/utils/colors';
 import { MyText } from 'shared/components';
 import Profile from './Profile';
+import Create from './Create';
 
 const Tab = createBottomTabNavigator();
 
@@ -46,7 +47,7 @@ const Main = () => {
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Record" component={RecordScreen} />
+      <Tab.Screen name="Record" component={Create} />
       <Tab.Screen name="Search" component={SearchScreen} />
       <Tab.Screen name="My page" component={Profile} />
     </Tab.Navigator>

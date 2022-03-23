@@ -44,7 +44,6 @@ const LoginScreen = ({ navigation }) => {
   }
 
   const [userInfo, setUserInfo] = useState<GUser>();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [error, setError] = useState<Error>();
   const [email, setEmail] = useState('');
   const { usersEmail } = useUsersEmail(email);
@@ -55,7 +54,6 @@ const LoginScreen = ({ navigation }) => {
     try {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
-      setIsLoggedIn(false);
     } catch (error) {
       Alert.alert('Something else went wrong... ');
       console.log(error);
@@ -67,7 +65,6 @@ const LoginScreen = ({ navigation }) => {
       await GoogleSignin.hasPlayServices();
       const GuserInfo = await GoogleSignin.signIn();
       setUserInfo(GuserInfo);
-      setIsLoggedIn(true);
       setClicked(true);
       setEmail(GuserInfo?.user.email);
       const user: User = {
@@ -120,19 +117,16 @@ const LoginScreen = ({ navigation }) => {
   // /* kakao
 
   const [userInfoKakao, setUserInfoKakao] = useState<KakaoProfile>();
-  const [isLoggedInKakao, setIsLoggedInKakao] = useState(false);
 
   const { emailCheck } = useECheck(email);
 
   const signInWithKakao = async (): Promise<void> => {
     const token: KakaoOAuthToken = await login();
-    setIsLoggedInKakao(true);
     getKakaoProfile();
     // setUserInfoKakao(JSON.stringify(token));
   };
   const signOutWithKakao = async (): Promise<void> => {
     const message = await logout();
-    setIsLoggedInKakao(false);
     // setUserInfoKakao("message: \n"+message);
   };
 

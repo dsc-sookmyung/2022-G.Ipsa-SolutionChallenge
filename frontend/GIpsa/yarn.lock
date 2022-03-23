@@ -1312,6 +1312,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-8.1.0.tgz#91ac77588363ded53c417ca67e989f2b56c63d57"
   integrity sha512-hDXtkqp6UmUEctcUheNwWwg3YZke1hGYj1Eu4A92EtotOLHI3u4C9RJr6unYPChR2+Pr0r1u20WiZAuXBInxog==
 
+"@react-native-community/slider@^4.2.1":
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-4.2.1.tgz#8f1c8cf62de1bd91ce1e32585f7eb666f21e5025"
+  integrity sha512-6HUS5HbB9bvEN4GiwBlxECgPWQIugHE+kfnxqX2jHUl1SE57MRpw00m1qVs4hXtEPQndBl6mAQiGbKCOtLPVbg==
+
 "@react-native-firebase/app@^14.5.1":
   version "14.5.1"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-14.5.1.tgz#48acd6a497fd5a71c1a602c944ab788a0c5df706"
@@ -6125,6 +6130,11 @@ react-native-svg@*:
   dependencies:
     css-select "^4.2.1"
     css-tree "^1.0.0-alpha.39"
+
+react-native-track-player@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-track-player/-/react-native-track-player-2.1.2.tgz#34d387b8c1b2e6895f569d35137d2bc6524a9f85"
+  integrity sha512-tZw9/4Ft7EtKtWDZuregBEXjXv++7WT7BvaXDk+lKCL/e3FQI5zyiwECfM18sk6raeMs7ItBxNsDKryCf9mMUA==
 
 react-native-vector-icons@^9.1.0:
   version "9.1.0"
