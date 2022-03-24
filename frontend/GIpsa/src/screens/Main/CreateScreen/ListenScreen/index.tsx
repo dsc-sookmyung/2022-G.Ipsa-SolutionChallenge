@@ -21,11 +21,6 @@ import TrackPlayer, {
   useProgress,
   useTrackPlayerEvents,
 } from 'react-native-track-player';
-
-// @ts-ignore
-import playlistData from './react/data/playlist.json';
-// @ts-ignore
-import localTrack from './react/resources/pure.m4a';
 import { Story } from 'shared/types';
 
 const setupIfNecessary = async () => {
@@ -154,7 +149,6 @@ const ListenScreen = ({ navigation }) => {
         <Slider
           style={S.progressContainer}
           value={progress.position}
-          color
           minimumValue={0}
           maximumValue={progress.duration}
           thumbTintColor="#F98B65"
