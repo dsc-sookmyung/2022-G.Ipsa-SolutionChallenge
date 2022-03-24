@@ -62,9 +62,6 @@ const S = StyleSheet.create({
     width: 380,
     marginTop: 25,
     flexDirection: 'row',
-    //backgroundColor: '#000000',
-    //maximumTrackTintColor: 'red',
-    //minimumTrackTintColor: 'yellow',
   },
   progressLabelContainer: {
     width: 370,

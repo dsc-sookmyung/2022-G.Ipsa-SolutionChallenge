@@ -2,6 +2,7 @@ import { MyText } from 'shared/components';
 import S from './Styles';
 import React, { useEffect, useState } from 'react';
 import {
+  Button,
   Image,
   SafeAreaView,
   StatusBar,
@@ -59,10 +60,10 @@ const setupIfNecessary = async () => {
       creatorId: 53,
       title: 'shumdang',
       thumbnailImageSrc:
-        'https://storage.cloud.google.com/gipsa-upload/storySrc/shumdang.jpg',
+        'https://storage.googleapis.com/gipsa-upload/storySrc/shumdang.jpg',
       category: 'animation',
       audioFileSrc:
-        'https://storage.cloud.google.com/gipsa-upload/storySrc/%EC%95%84%EC%9D%B4%EC%9C%A0-02-Zeze-CHAT-SHIRE-320.mp3',
+        'https://storage.googleapis.com/gipsa-upload/storySrc/%EC%95%84%EC%9D%B4%EC%9C%A0-02-Zeze-CHAT-SHIRE-320.mp3',
       likes: 0,
       createdAt: new Date('2022-03-22T17:51:13.931Z'),
       duration: 190,
@@ -72,10 +73,10 @@ const setupIfNecessary = async () => {
       creatorId: 54,
       title: 'ddangddang',
       thumbnailImageSrc:
-        'https://storage.cloud.google.com/gipsa-upload/storySrc/ddangddang.jpg',
+        'https://storage.googleapis.com/gipsa-upload/storySrc/ddangddang.jpg',
       category: 'animation',
       audioFileSrc:
-        'https://storage.cloud.google.com/gipsa-upload/storySrc/%EC%95%84%EC%9D%B4%EC%9C%A0-05-Red%20Queen%20(Feat.%20Zion.T)-CHAT-SHIRE-320.mp3',
+        'https://storage.googleapis.com/gipsa-upload/storySrc/%EC%95%84%EC%9D%B4%EC%9C%A0-05-Red%20Queen%20(Feat.%20Zion.T)-CHAT-SHIRE-320.mp3',
       likes: 0,
       createdAt: new Date('2022-03-22T17:52:44.587Z'),
       duration: 216,
@@ -84,14 +85,11 @@ const setupIfNecessary = async () => {
 
   for (let i = 0; i < stories.length; i++) {
     await TrackPlayer.add({
-      url: 'https://drive.google.com/uc?export=download&id=1V-c_WmanMA9i5BwfkmTs-605BQDsfyzC',
-      // stories[i].audioFileSrc,
+      url: stories[i].audioFileSrc,
       title: stories[i].title,
       artist: '' + stories[i].creatorId,
-      artwork:
-        'https://i.scdn.co/image/e5c7b168be89098eb686e02152aaee9d3a24e5b6',
-      //stories[i].thumbnailImageSrc,
-      duration: 106, // stories[i].duration,
+      artwork: stories[i].thumbnailImageSrc,
+      duration: stories[i].duration,
     });
   }
 
@@ -190,6 +188,15 @@ const ListenScreen = ({ navigation }) => {
           <Text style={S.secondaryActionButton}>Next</Text>
         </TouchableWithoutFeedback>
       </View>
+      <Button
+        title="Remove audios"
+        onPress={() => {
+          TrackPlayer.reset();
+          setTrackArtist('');
+          setTrackArtwork('');
+          setTrackTitle('');
+        }}
+      />
     </SafeAreaView>
   );
 };
