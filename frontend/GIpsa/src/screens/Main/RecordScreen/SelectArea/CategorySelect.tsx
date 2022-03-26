@@ -7,7 +7,7 @@ import { MyText } from 'shared/components';
 import { colors } from 'shared/utils/colors';
 
 export interface CategorySelectProps {
-  category?: string;
+  category: string;
   onPress: () => void;
 }
 
@@ -18,7 +18,7 @@ const CategorySelect: FC<CategorySelectProps> = ({
   return (
     <Root activeOpacity={0.9} onPress={onPress}>
       <MyText color={colors.primary} fontWeight="regular">
-        {category || 'Select Category'}
+        {category}
       </MyText>
       <FontAwesome name={'caret-down'} size={20} color={colors.primary} />
     </Root>

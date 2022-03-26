@@ -1,18 +1,21 @@
 import React, { FC, useState } from 'react';
-import { Text, View } from 'react-native';
+import { Modal, Text, View } from 'react-native';
+
+import * as S from './Styles';
 import { MyTextInput } from 'shared/components';
 import { Category } from 'shared/types';
 import CategorySelect from './CategorySelect';
-
-import * as S from './Styles';
+import CategotySelectModal from './CategorySelectModal/Index';
 
 export interface SelectAreaProps {
   title: string;
   imageUri: string;
-  category: Category | undefined;
+  selectedCategory: Category | undefined;
   setTitle: React.Dispatch<React.SetStateAction<string>>;
   setImageUri: React.Dispatch<React.SetStateAction<string>>;
-  setCategory: React.Dispatch<React.SetStateAction<Category | undefined>>;
+  setSelectedCategory: React.Dispatch<
+    React.SetStateAction<Category | undefined>
+  >;
 }
 
 const SelectArea: FC<SelectAreaProps> = ({
@@ -20,13 +23,17 @@ const SelectArea: FC<SelectAreaProps> = ({
   setTitle,
   imageUri,
   setImageUri,
-  category,
-  setCategory,
+  selectedCategory,
+  setSelectedCategory,
 }: SelectAreaProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handlePress = () => {
     setIsModalOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -42,9 +49,19 @@ const SelectArea: FC<SelectAreaProps> = ({
             onChangeText={setTitle}
             placeholder="Enter the title"
           />
-          <CategorySelect category={category?.name} onPress={handlePress} />
+          <CategorySelect
+            category={selectedCategory?.title || 'Select Category'}
+            onPress={handlePress}
+          />
         </S.Container>
       </S.Background>
+
+      <CategotySelectModal
+        visible={isModalOpen}
+        onClose={handleClose}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+      />
     </S.Root>
   );
 };
