@@ -25,7 +25,7 @@ const S = StyleSheet.create({
   },
 
   screenContainer: {
-    marginTop: 100,
+    marginTop: 80,
     flex: 1,
     backgroundColor: '#FDF2E7',
     alignItems: 'center',
@@ -33,6 +33,7 @@ const S = StyleSheet.create({
   contentContainer: {
     flex: 1,
     alignItems: 'center',
+    marginTop: 10,
   },
   queueButton: {
     fontSize: 18,
@@ -70,17 +71,21 @@ const S = StyleSheet.create({
   actionRowContainer: {
     width: '60%',
     flexDirection: 'row',
-    marginBottom: 100,
+    marginTop: 15,
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   primaryActionButton: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#000000',
+    width: 68,
+    height: 68,
   },
   secondaryActionButton: {
-    fontSize: 14,
-    color: '#000000',
+    width: 30,
+    height: 35,
+  },
+  thirdActionButton: {
+    width: 30,
+    height: 30,
   },
   centeredView: {
     flex: 1,
@@ -123,6 +128,42 @@ const S = StyleSheet.create({
     marginBottom: 15,
     textAlign: 'center',
   },
+  topBarContainer: {
+    paddingHorizontal: 20,
+    width: '60%',
+    flexDirection: 'row',
+    marginTop: 15,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  likecontainer: {
+    marginTop: 10,
+    marginStart: 200,
+    marginBottom: 10,
+  },
+  heart: {
+    width: 34,
+    height: 34,
+  },
 });
 
 export default S;
+
+// <View style={S.topBarContainer}>
+//   <TouchableWithoutFeedback
+//     onPress={() => TrackPlayer.JumpBackward()}
+//   >
+//     <Image
+//       style={S.secondaryActionButton}
+//       source={require('../../assets/images/rewind-button.png')}
+//     />
+//   </TouchableWithoutFeedback>
+//   <TouchableWithoutFeedback
+//     onPress={() => TrackPlayer.JumpForward()}
+//   >
+//     <Image
+//       style={S.secondaryActionButton}
+//       source={require('../../assets/images/forward-button.png')}
+//     />
+//   </TouchableWithoutFeedback>
+// </View>;

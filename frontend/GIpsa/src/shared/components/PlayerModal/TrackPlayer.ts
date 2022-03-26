@@ -9,6 +9,7 @@ const start = (story: Story) => {
     title: story.title,
     artist: '' + story.creatorId,
     artwork: story.thumbnailImageSrc,
+    duration: story.duration,
   });
   TrackPlayer.play();
 };

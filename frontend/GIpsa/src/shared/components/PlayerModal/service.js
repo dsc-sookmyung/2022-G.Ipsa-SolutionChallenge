@@ -19,6 +19,13 @@ module.exports = async function setup() {
     TrackPlayer.skipToPrevious();
   });
 
+  TrackPlayer.addEventListener(Event.RemoteJumpForward, () => {
+    TrackPlayer.RemoteJumpForward();
+  });
+  TrackPlayer.addEventListener(Event.RemoteJumpBackward, () => {
+    TrackPlayer.RemoteJumpBackward();
+  });
+
   TrackPlayer.addEventListener(Event.RemoteDuck, async (e) => {
     if (e.permanent === true) {
       TrackPlayer.stop();
