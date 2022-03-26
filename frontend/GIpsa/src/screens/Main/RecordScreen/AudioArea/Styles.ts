@@ -10,6 +10,7 @@ export const Root = styled.View`
 `;
 
 export const Buttons = styled.View`
+  margin-top: 4px;
   flex-direction: row;
   align-items: flex-end;
 `;

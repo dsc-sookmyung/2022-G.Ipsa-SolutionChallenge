@@ -19,11 +19,12 @@ const RecordScreen = () => {
         title={title}
         setTitle={setTitle}
         imageUri={imageUri}
+        audioUri={audioUri}
         setImageUri={setImageUri}
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
       />
-      <AudioArea audioUri={audioUri} setAudioUri={setAudioUri} />
+      <AudioArea setAudioUri={setAudioUri} />
     </View>
   );
 };

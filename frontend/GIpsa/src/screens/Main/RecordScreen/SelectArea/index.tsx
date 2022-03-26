@@ -12,6 +12,7 @@ import { colors } from 'shared/utils/colors';
 export interface SelectAreaProps {
   title: string;
   imageUri: string;
+  audioUri: string;
   selectedCategory: Category | undefined;
   setTitle: React.Dispatch<React.SetStateAction<string>>;
   setImageUri: React.Dispatch<React.SetStateAction<string>>;
