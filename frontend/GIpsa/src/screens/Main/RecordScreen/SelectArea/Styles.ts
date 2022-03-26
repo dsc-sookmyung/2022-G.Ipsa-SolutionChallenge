@@ -20,7 +20,11 @@ export const Container = styled.View`
   justify-content: space-between;
 `;
 
-export const ButtonGroup = styled.View`
+export const Buttons = styled.View`
+  justify-content: space-between;
+`;
+
+export const ImageButtons = styled.View`
   flex-direction: row;
   justify-content: space-between; ;
 `;
@@ -42,4 +46,14 @@ export const SelectImageButton = styled.TouchableOpacity`
   background-color: ${colors.primary};
   height: 36px;
   width: 144px;
+`;
+
+export const DoneButton = styled.TouchableOpacity`
+  margin-top: 16px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2px;
+  background-color: ${colors.primary};
+  height: 36px;
+  width: 100%;
 `;

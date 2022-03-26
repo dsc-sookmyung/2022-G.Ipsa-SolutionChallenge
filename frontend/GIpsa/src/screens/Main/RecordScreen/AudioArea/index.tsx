@@ -2,22 +2,28 @@ import React, { FC, useState } from 'react';
 import { Text, View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
+import DocumentPicker, { types } from 'react-native-document-picker';
 
 import * as S from './Styles';
 import { MyText } from 'shared/components';
 import { colors } from 'shared/utils/colors';
+import { RecordingCondition } from '..';
 
 export interface AudioAreaProps {
   setAudioUri: React.Dispatch<React.SetStateAction<string>>;
+  recordingCondition: RecordingCondition;
+  setRecordingCondition: React.Dispatch<
+    React.SetStateAction<RecordingCondition>
+  >;
 }
 
-const AudioArea: FC<AudioAreaProps> = ({ setAudioUri }: AudioAreaProps) => {
+const AudioArea: FC<AudioAreaProps> = ({
+  setAudioUri,
+  recordingCondition,
+  setRecordingCondition,
+}: AudioAreaProps) => {
   const [recordingTime, setRecordingTime] = useState('00:00');
-  const [recordingCondition, setRecordingCondition] = useState<{
-    beforeRecording: boolean;
-    isRecording: boolean;
-    isFinished: boolean;
-  }>({ beforeRecording: true, isRecording: false, isFinished: false });
+
   const [playingContition, setPlayingContition] = useState<{
     isPlaying: boolean;
     isPaused: boolean;
@@ -28,6 +34,19 @@ const AudioArea: FC<AudioAreaProps> = ({ setAudioUri }: AudioAreaProps) => {
 
   const trimTimeString = (time: string) => {
     return time.split(':').slice(0, 2).join(':');
+  };
+
+  const handleUpload = async () => {
+    const { uri, name } = await DocumentPicker.pickSingle({
+      type: types.audio,
+    });
+    setAudioUri(uri);
+    setRecordingCondition({
+      beforeRecording: false,
+      isRecording: false,
+      isFinished: true,
+    });
+    setRecordingTime(name);
   };
 
   const handleStartRecord = async () => {
@@ -159,7 +178,7 @@ const AudioArea: FC<AudioAreaProps> = ({ setAudioUri }: AudioAreaProps) => {
         <S.RightSide>
           {recordingCondition.beforeRecording && (
             <S.Wrapper>
-              <S.SideButton activeOpacity={0.8}>
+              <S.SideButton activeOpacity={0.8} onPress={handleUpload}>
                 <FontAwesome name={'upload'} size={30} color={colors.primary} />
               </S.SideButton>
               <MyText fontSize={14}>Upload</MyText>

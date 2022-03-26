@@ -19,6 +19,7 @@ export interface SelectAreaProps {
   setSelectedCategory: React.Dispatch<
     React.SetStateAction<Category | undefined>
   >;
+  isFinished: boolean;
 }
 
 const SelectArea: FC<SelectAreaProps> = ({
@@ -28,6 +29,7 @@ const SelectArea: FC<SelectAreaProps> = ({
   setImageUri,
   selectedCategory,
   setSelectedCategory,
+  isFinished,
 }: SelectAreaProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -42,7 +44,7 @@ const SelectArea: FC<SelectAreaProps> = ({
   const handleImageSelect = async () => {
     try {
       const result = await launchImageLibrary({ mediaType: 'photo' });
-      const uri = result.assets?.[0].uri || '';
+      const uri = result.assets?.[0].uri || imageUri;
       setImageUri(uri);
     } catch (error) {
       console.log(error);
@@ -68,21 +70,31 @@ const SelectArea: FC<SelectAreaProps> = ({
               onPress={handlePress}
             />
           </View>
-          <S.ButtonGroup>
-            <S.RandomButton activeOpacity={0.9}>
-              <MyText fontWeight="regular" color={colors.primary}>
-                Random select
-              </MyText>
-            </S.RandomButton>
-            <S.SelectImageButton
-              activeOpacity={0.9}
-              onPress={handleImageSelect}
-            >
-              <MyText fontWeight="regular" color={colors.gray1}>
-                Select Image
-              </MyText>
-            </S.SelectImageButton>
-          </S.ButtonGroup>
+          <S.Buttons>
+            <S.ImageButtons>
+              <S.RandomButton activeOpacity={0.9}>
+                <MyText fontWeight="regular" color={colors.primary}>
+                  Random select
+                </MyText>
+              </S.RandomButton>
+              <S.SelectImageButton
+                activeOpacity={0.9}
+                onPress={handleImageSelect}
+              >
+                <MyText fontWeight="regular" color={colors.gray1}>
+                  Select Image
+                </MyText>
+              </S.SelectImageButton>
+            </S.ImageButtons>
+
+            {isFinished && (
+              <S.DoneButton activeOpacity={0.9}>
+                <MyText fontWeight="regular" color={colors.gray1}>
+                  Done
+                </MyText>
+              </S.DoneButton>
+            )}
+          </S.Buttons>
         </S.Container>
       </S.Background>
 

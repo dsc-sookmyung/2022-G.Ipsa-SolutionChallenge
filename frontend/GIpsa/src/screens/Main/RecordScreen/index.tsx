@@ -5,6 +5,12 @@ import { colors } from 'shared/utils/colors';
 import { Category } from 'shared/types';
 import AudioArea from './AudioArea';
 
+export type RecordingCondition = {
+  beforeRecording: boolean;
+  isRecording: boolean;
+  isFinished: boolean;
+};
+
 const RecordScreen = () => {
   const [title, setTitle] = useState<string>('');
   const [imageUri, setImageUri] = useState<string>('');
@@ -12,6 +18,12 @@ const RecordScreen = () => {
     Category | undefined
   >();
   const [audioUri, setAudioUri] = useState<string>('');
+  const [recordingCondition, setRecordingCondition] =
+    useState<RecordingCondition>({
+      beforeRecording: true,
+      isRecording: false,
+      isFinished: false,
+    });
 
   return (
     <View style={{ height: '100%', backgroundColor: colors.background }}>
@@ -23,8 +35,13 @@ const RecordScreen = () => {
         setImageUri={setImageUri}
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
+        isFinished={recordingCondition.isFinished}
       />
-      <AudioArea setAudioUri={setAudioUri} />
+      <AudioArea
+        setAudioUri={setAudioUri}
+        recordingCondition={recordingCondition}
+        setRecordingCondition={setRecordingCondition}
+      />
     </View>
   );
 };

@@ -28,6 +28,7 @@
     "react": "17.0.2",
     "react-native": "0.67.2",
     "react-native-audio-recorder-player": "^3.3.4",
+    "react-native-document-picker": "^8.0.0",
     "react-native-image-picker": "^4.7.3",
     "react-native-progress": "^5.0.0",
     "react-native-safe-area-context": "^3.4.1",
