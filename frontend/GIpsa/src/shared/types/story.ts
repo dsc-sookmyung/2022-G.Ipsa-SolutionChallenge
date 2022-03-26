@@ -8,4 +8,6 @@ export interface Story {
   audioFileSrc: string;
   createdAt: Date;
   duration?: number;
+  likedStoryId?: number;
+  userId?: number;
 }
