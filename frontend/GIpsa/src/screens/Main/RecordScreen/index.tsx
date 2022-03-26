@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import SelectArea from './SelectArea';
 import { colors } from 'shared/utils/colors';
 import { Category } from 'shared/types';
+import AudioArea from './AudioArea';
 
 const RecordScreen = () => {
   const [title, setTitle] = useState<string>('');
@@ -10,6 +11,7 @@ const RecordScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState<
     Category | undefined
   >();
+  const [audioUri, setAudioUri] = useState<string>('');
 
   return (
     <View style={{ height: '100%', backgroundColor: colors.background }}>
@@ -21,6 +23,7 @@ const RecordScreen = () => {
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
       />
+      <AudioArea audioUri={audioUri} setAudioUri={setAudioUri} />
     </View>
   );
 };
