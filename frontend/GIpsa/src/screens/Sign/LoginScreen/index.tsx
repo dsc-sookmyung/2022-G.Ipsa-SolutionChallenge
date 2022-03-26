@@ -29,7 +29,7 @@ import { User } from 'shared/types';
 import { useUsersEmail } from 'shared/hook/useUsersEmail';
 import { useECheck } from 'shared/hook/useECheck';
 import * as Progress from 'react-native-progress';
-import * as global from 'shared/constants/global_var';
+import { useUserPv } from 'src/provider/UserProvider';
 
 const LoginScreen = ({ navigation }) => {
   // /* google
@@ -50,6 +50,8 @@ const LoginScreen = ({ navigation }) => {
   const { usersEmail } = useUsersEmail(email);
   const [userIn, setUserIn] = useState<User>();
   const [clicked, setClicked] = useState(false);
+
+  const { userpv, setUserpv } = useUserPv();
 
   const signOut = async () => {
     try {
@@ -156,10 +158,17 @@ const LoginScreen = ({ navigation }) => {
     if (userIn) {
       console.log('email: ' + email);
       console.log('emailCheck: ' + emailCheck);
-      console.log(usersEmail);
 
       if (emailCheck == 1) {
-        global.User = usersEmail;
+        console.log(usersEmail);
+        setUserpv(usersEmail[0] as User);
+        // 왜 두번째 시도에서는 array로 들어가지???
+        // try {
+        //   setUserpv(usersEmail[0] as User);
+        // } catch (error) {
+        //   setUserpv(usersEmail as User);
+        // }
+
         navigation.navigate('Main');
       } else if (emailCheck == 0) {
         navigation.navigate('Signin', { user: userIn });

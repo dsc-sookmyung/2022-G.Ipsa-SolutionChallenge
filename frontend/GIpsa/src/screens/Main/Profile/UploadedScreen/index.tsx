@@ -9,13 +9,14 @@ import { useStories } from 'shared/hook/useStories';
 import { useStoryCount } from 'shared/hook/useStoryCount';
 import { useFollowerCount } from 'shared/hook/useFollowerCount';
 import MyText from 'shared/components/MyText';
+import { useUserPv } from 'src/provider/UserProvider';
 
 const UploadedScreen = ({ navigation }) => {
-  const user = global.User[0] as User;
+  const { userpv, setUserpv } = useUserPv();
 
-  const { stories, loading, mutate } = useStories('?creatorId=' + user.id);
-  const { storycount } = useStoryCount('' + user.id);
-  const { followercount } = useFollowerCount('' + user.id);
+  const { stories, loading, mutate } = useStories('?creatorId=' + userpv.id);
+  const { storycount } = useStoryCount('' + userpv.id);
+  const { followercount } = useFollowerCount('' + userpv.id);
   // console.log(stories);
   //const user: User = {
   //  email: 'ryann3@naver.com',
