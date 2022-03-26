@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import HomeScreen from 'screens/Main/HomeScreen';
-import RecordScreen from 'screens/Main/CreateScreen';
+import RecordScreen from 'screens/Main/RecordScreen';
 import SearchScreen from 'screens/Main/SearchScreen';
 import MyTabHeader from 'shared/components/MyTabHeader';
 import { colors } from 'shared/utils/colors';
