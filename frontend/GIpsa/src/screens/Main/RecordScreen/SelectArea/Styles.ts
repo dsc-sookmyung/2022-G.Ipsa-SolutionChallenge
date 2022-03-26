@@ -17,4 +17,29 @@ export const Container = styled.View`
   width: 100%;
   height: 100%;
   padding: 36px 24px;
+  justify-content: space-between;
+`;
+
+export const ButtonGroup = styled.View`
+  flex-direction: row;
+  justify-content: space-between; ;
+`;
+
+export const RandomButton = styled.TouchableOpacity`
+  justify-content: center;
+  align-items: center;
+  border-radius: 2px;
+  background-color: ${colors.background};
+  border: 2px solid ${colors.primary};
+  height: 36px;
+  width: 144px;
+`;
+
+export const SelectImageButton = styled.TouchableOpacity`
+  justify-content: center;
+  align-items: center;
+  border-radius: 2px;
+  background-color: ${colors.primary};
+  height: 36px;
+  width: 144px;
 `;
