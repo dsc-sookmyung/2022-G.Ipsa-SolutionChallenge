@@ -18,6 +18,10 @@ const AudioArea: FC<AudioAreaProps> = ({ setAudioUri }: AudioAreaProps) => {
     isRecording: boolean;
     isFinished: boolean;
   }>({ beforeRecording: true, isRecording: false, isFinished: false });
+  const [playingContition, setPlayingContition] = useState<{
+    isPlaying: boolean;
+    isPaused: boolean;
+  }>({ isPlaying: false, isPaused: false });
   const [audioRecorderPlayer, setAudioRecorderPlayer] = useState(
     new AudioRecorderPlayer()
   );
@@ -28,6 +32,12 @@ const AudioArea: FC<AudioAreaProps> = ({ setAudioUri }: AudioAreaProps) => {
 
   const handleStartRecord = async () => {
     const uri = await audioRecorderPlayer.startRecorder();
+    setAudioUri(uri);
+    setRecordingCondition({
+      beforeRecording: false,
+      isRecording: true,
+      isFinished: false,
+    });
     audioRecorderPlayer.addRecordBackListener((e) => {
       setRecordingTime(
         trimTimeString(
@@ -35,24 +45,16 @@ const AudioArea: FC<AudioAreaProps> = ({ setAudioUri }: AudioAreaProps) => {
         )
       );
     });
-
-    setAudioUri(uri);
-    setRecordingCondition({
-      beforeRecording: false,
-      isRecording: true,
-      isFinished: false,
-    });
   };
 
   const handleStopRecord = async () => {
     await audioRecorderPlayer.stopRecorder();
-    audioRecorderPlayer.removeRecordBackListener();
-
     setRecordingCondition({
       beforeRecording: false,
       isRecording: false,
       isFinished: true,
     });
+    audioRecorderPlayer.removeRecordBackListener();
   };
 
   const handleCancel = () => {
@@ -61,11 +63,68 @@ const AudioArea: FC<AudioAreaProps> = ({ setAudioUri }: AudioAreaProps) => {
       isRecording: false,
       isFinished: false,
     });
+    setPlayingContition({ isPlaying: false, isPaused: false });
     setAudioRecorderPlayer(new AudioRecorderPlayer());
     setRecordingTime('00:00');
   };
 
-  const handlePlay = () => {};
+  const handlePlay = async () => {
+    await audioRecorderPlayer.startPlayer();
+    setRecordingCondition({
+      beforeRecording: false,
+      isRecording: false,
+      isFinished: false,
+    });
+    setPlayingContition({ isPlaying: true, isPaused: false });
+    audioRecorderPlayer.addPlayBackListener((e) => {
+      setRecordingTime(
+        trimTimeString(
+          audioRecorderPlayer.mmssss(Math.floor(e.currentPosition))
+        )
+      );
+      if (e.currentPosition === e.duration) {
+        setRecordingTime('00:00');
+        setPlayingContition({ isPlaying: false, isPaused: false });
+        setRecordingCondition({
+          beforeRecording: false,
+          isRecording: false,
+          isFinished: true,
+        });
+      }
+    });
+  };
+
+  const handlePause = async () => {
+    await audioRecorderPlayer.pausePlayer();
+    setPlayingContition({ isPlaying: false, isPaused: true });
+  };
+
+  const getIconName = () => {
+    if (recordingCondition.beforeRecording) return 'microphone';
+    if (recordingCondition.isRecording) return 'stop';
+    if (recordingCondition.isFinished || playingContition.isPaused)
+      return 'play';
+
+    if (playingContition.isPlaying) return 'pause';
+  };
+
+  const getButtonText = () => {
+    if (recordingCondition.beforeRecording) return 'Record';
+    if (recordingCondition.isRecording) return 'Stop';
+    if (recordingCondition.isFinished || playingContition.isPaused)
+      return 'Play';
+
+    if (playingContition.isPlaying) return 'Pause';
+  };
+
+  const getPressFunction = () => {
+    if (recordingCondition.beforeRecording) return handleStartRecord;
+    if (recordingCondition.isRecording) return handleStopRecord;
+    if (recordingCondition.isFinished || playingContition.isPaused)
+      return handlePlay;
+
+    if (playingContition.isPlaying) return handlePause;
+  };
 
   return (
     <S.Root>
@@ -74,7 +133,9 @@ const AudioArea: FC<AudioAreaProps> = ({ setAudioUri }: AudioAreaProps) => {
       </MyText>
       <S.Buttons>
         <S.LeftSide>
-          {recordingCondition.isFinished && (
+          {(recordingCondition.isFinished ||
+            playingContition.isPlaying ||
+            playingContition.isPaused) && (
             <S.Wrapper>
               <S.SideButton activeOpacity={0.8} onPress={handleCancel}>
                 <FontAwesome name={'close'} size={30} color={colors.primary} />
@@ -85,35 +146,14 @@ const AudioArea: FC<AudioAreaProps> = ({ setAudioUri }: AudioAreaProps) => {
         </S.LeftSide>
 
         <S.Wrapper>
-          <S.CenterButton
-            activeOpacity={0.8}
-            onPress={
-              recordingCondition.isRecording
-                ? handleStopRecord
-                : recordingCondition.isFinished
-                ? handlePlay
-                : handleStartRecord
-            }
-          >
+          <S.CenterButton activeOpacity={0.8} onPress={getPressFunction()}>
             <FontAwesome
-              name={
-                recordingCondition.isRecording
-                  ? 'stop'
-                  : recordingCondition.isFinished
-                  ? 'play'
-                  : 'microphone'
-              }
+              name={getIconName()!}
               size={recordingCondition.isRecording ? 30 : 40}
               color={colors.gray1}
             />
           </S.CenterButton>
-          <MyText fontSize={14}>
-            {recordingCondition.isRecording
-              ? 'Stop'
-              : recordingCondition.isFinished
-              ? 'Play'
-              : 'Record'}
-          </MyText>
+          <MyText fontSize={14}>{getButtonText()}</MyText>
         </S.Wrapper>
 
         <S.RightSide>
