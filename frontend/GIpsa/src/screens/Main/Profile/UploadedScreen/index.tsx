@@ -9,7 +9,9 @@ import { useStories } from 'shared/hook/useStories';
 import { useStoryCount } from 'shared/hook/useStoryCount';
 import { useFollowerCount } from 'shared/hook/useFollowerCount';
 import MyText from 'shared/components/MyText';
+
 import { useUserPv } from 'src/provider/UserProvider';
+
 
 const UploadedScreen = ({ navigation }) => {
   const { userpv, setUserpv } = useUserPv();

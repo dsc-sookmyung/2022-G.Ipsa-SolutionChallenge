@@ -29,7 +29,9 @@ import { User } from 'shared/types';
 import { useUsersEmail } from 'shared/hook/useUsersEmail';
 import { useECheck } from 'shared/hook/useECheck';
 import * as Progress from 'react-native-progress';
+
 import { useUserPv } from 'src/provider/UserProvider';
+
 
 const LoginScreen = ({ navigation }) => {
   // /* google
@@ -68,6 +70,9 @@ const LoginScreen = ({ navigation }) => {
       await GoogleSignin.hasPlayServices();
       const GuserInfo = await GoogleSignin.signIn();
       setUserInfo(GuserInfo);
+
+      setIsLoggedIn(true);
+
       setClicked(true);
       setEmail(GuserInfo?.user.email);
       const user: User = {
@@ -137,7 +142,7 @@ const LoginScreen = ({ navigation }) => {
     const profile = await getProfile();
     setUserInfoKakao(profile as KakaoProfile);
 
-    // ¿©±â userInfo °®°í ´ÙÀ½ ÀåÀ¸·Î ÀÌµ¿ ÇÊ¿ä
+    // ì—¬ê¸° userInfo ê°–ê³  ë‹¤ìŒ ì¥ìœ¼ë¡œ ì´ë™ í•„ìš”
 
     const KuserInfo: KakaoProfile = profile as KakaoProfile;
     setEmail(KuserInfo.email);
@@ -162,12 +167,13 @@ const LoginScreen = ({ navigation }) => {
       if (emailCheck == 1) {
         console.log(usersEmail);
         setUserpv(usersEmail[0] as User);
-        // ¿Ö µÎ¹øÂ° ½Ãµµ¿¡¼­´Â array·Î µé¾î°¡Áö???
+        // ì™œ ë‘ë²ˆì§¸ ì‹œë„ì—ì„œëŠ” arrayë¡œ ë“¤ì–´ê°€ì§€???
         // try {
         //   setUserpv(usersEmail[0] as User);
         // } catch (error) {
         //   setUserpv(usersEmail as User);
         // }
+
 
         navigation.navigate('Main');
       } else if (emailCheck == 0) {
@@ -198,7 +204,7 @@ const LoginScreen = ({ navigation }) => {
 
   // */ kakao
 
-  // ±¸±Û Á¦°ø ·Î±×ÀÎ ¹öÆ°
+  // êµ¬ê¸€ ì œê³µ ë¡œê·¸ì¸ ë²„íŠ¼
   // <GoogleSigninButton
   //   style={S.signInButton}
   //   size={GoogleSigninButton.Size.Wide}
@@ -206,7 +212,7 @@ const LoginScreen = ({ navigation }) => {
   //   onPress={() => LogInWithGoogle()}
   // />
 
-  // ±¸±Û À¯Àú Á¤º¸ ¹× sign out
+  // êµ¬ê¸€ ìœ ì € ì •ë³´ ë° sign out
   // <View style={S.container}>
   //   <Text>google: {userInfo?.user.email}</Text>
 
@@ -221,7 +227,7 @@ const LoginScreen = ({ navigation }) => {
   //   )}
   // </View>
 
-  // Ä«Ä«¿À À¯Àú Á¤º¸ ¹× sign out
+  // ì¹´ì¹´ì˜¤ ìœ ì € ì •ë³´ ë° sign out
   // <View style={S.container}>
   //   <Text>kakao: {(userInfoKakao as KakaoProfile)?.email}</Text>
   //   {isLoggedInKakao === false ? (
@@ -234,7 +240,7 @@ const LoginScreen = ({ navigation }) => {
   //     />
   //   )}
   // </View>
-  // signin ÆäÀÌÁö·Î ÀÌµ¿
+  // signin í˜ì´ì§€ë¡œ ì´ë™
   //  <Button title="Go Signin" onPress={() => navigation.navigate('Signin')} />
 
   return (
