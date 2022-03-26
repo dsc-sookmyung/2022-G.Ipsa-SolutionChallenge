@@ -13,6 +13,8 @@ import { useUsers } from 'shared/hook/useUsers';
 import { LogBox } from 'react-native';
 import { API_ENDPOINT } from 'shared/constants/env';
 
+import UserProvider, { useUserPv } from 'src/provider/UserProvider';
+
 LogBox.ignoreLogs(['EventEmitter.removeListener']);
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -24,6 +26,7 @@ const SigninScreen = ({ route, navigation }) => {
   const [month, setMonth] = useState('');
   const [day, setDay] = useState('');
   const [isSenior, setIsSenior] = useState(false);
+  const { userpv, setUserpv } = useUserPv();
 
   const user: User = route.params.user;
 
@@ -112,7 +115,7 @@ const SigninScreen = ({ route, navigation }) => {
       });
 
     console.log('user: ' + JSON.stringify(user));
-    global.User = user;
+    setUserpv(user);
     navigation.navigate('Main');
   };
 

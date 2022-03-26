@@ -7,7 +7,7 @@ export function useUsersEmail(keyword?: string) {
     data: fetchingData,
     error,
     mutate,
-  } = useSWRNative<{ data: User[] }>(`/user?email=${keyword}`, api.client.get);
+  } = useSWRNative<{ data: User }>(`/user?email=${keyword}`, api.client.get);
   const loading = fetchingData === undefined;
   const usersEmail = fetchingData?.data;
 

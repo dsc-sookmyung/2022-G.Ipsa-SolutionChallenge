@@ -4,66 +4,82 @@ import S from './Styles';
 import { User } from 'shared/types/user';
 import { isRegularExpressionLiteral } from 'typescript';
 import MyText from 'shared/components/MyText';
+import * as Progress from 'react-native-progress';
+import { useisUser } from 'shared/hook/useisUser';
+import UserProvider, { useUserPv } from 'src/provider/UserProvider';
 
 const ProfileScreen = ({ navigation }) => {
   const [isProfile, setIsProfile] = useState(true);
-  const user = global.User[0] as User;
-
+  const { userpv, setUserpv } = useUserPv();
   useEffect(() => {
-    if (user.profileImageSrc == '') {
+    if (userpv.profileImageSrc == '') {
       setIsProfile(false);
     }
-  }, [user]);
+  }, [userpv]);
 
   return (
-    <View style={S.maincontainer}>
-      <View style={S.centercontainer}>
-        {isProfile && (
-          <Image source={{ uri: user.profileImageSrc }} style={S.profileImg} />
-        )}
-        {!isProfile && (
-          <Image
-            source={require('../../../../shared/assets/images/default-profile.jpg')}
-            style={S.profileImg}
-          />
-        )}
-      </View>
-      <View style={S.subcontainer}>
-        <MyText fontSize={20} fontWeight={'bold'}>
-          {user.nickname}
-        </MyText>
-      </View>
-      <View style={S.centercontainer}>
-        {user.isCreator && (
-          <TouchableOpacity
-            style={S.signInButton}
-            onPress={() => navigation.navigate('UploadedScreen')}
-          >
+    <UserProvider>
+      <View style={S.maincontainer}>
+        <View style={S.centercontainer}>
+          {userpv && isProfile && (
             <Image
-              source={require('../../../../shared/assets/images/mystory.jpg')}
-              style={S.signInButton}
+              source={{ uri: userpv.profileImageSrc }}
+              style={S.profileImg}
             />
-          </TouchableOpacity>
+          )}
+          {!isProfile && (
+            <Image
+              source={require('../../../../shared/assets/images/default-profile.jpg')}
+              style={S.profileImg}
+            />
+          )}
+        </View>
+        {!userpv && (
+          <View style={S.container2}>
+            <Progress.Circle size={30} indeterminate={true} />
+          </View>
         )}
+        {userpv && (
+          <View style={S.subcontainer}>
+            <MyText fontSize={20} fontWeight={'bold'}>
+              {userpv.nickname}
+            </MyText>
+          </View>
+        )}
+        {userpv && (
+          <View style={S.centercontainer}>
+            {userpv.isCreator && (
+              <TouchableOpacity
+                style={S.signInButton}
+                onPress={() => navigation.navigate('UploadedScreen')}
+              >
+                <Image
+                  source={require('../../../../shared/assets/images/mystory.jpg')}
+                  style={S.signInButton}
+                />
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
+        <View style={S.container2}>
+          <TouchableOpacity
+            style={S.touchableText}
+            onPress={() => navigation.navigate('FollowerScreen')}
+          >
+            <MyText fontSize={16}>My following teller</MyText>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={S.touchableText}
+            onPress={() => navigation.navigate('LikeScreen')}
+          >
+            <MyText fontSize={16}>My like story</MyText>
+          </TouchableOpacity>
+          <TouchableOpacity style={S.touchableText}>
+            <MyText fontSize={16}>My comments</MyText>
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={S.container2}>
-        <TouchableOpacity
-          style={S.touchableText}
-          onPress={() => navigation.navigate('FollowerScreen')}
-        >
-          <MyText fontSize={16}>My following teller</MyText>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={S.touchableText}
-          onPress={() => navigation.navigate('LikeScreen')}
-        >
-          <MyText fontSize={16}>My like story</MyText>
-        </TouchableOpacity>
-        <TouchableOpacity style={S.touchableText}>
-          <MyText fontSize={16}>My comments</MyText>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </UserProvider>
   );
 };
 

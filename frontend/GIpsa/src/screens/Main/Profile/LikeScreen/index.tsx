@@ -7,11 +7,15 @@ import { MyStories } from 'shared/components';
 import { useLikedStories } from 'shared/hook/useLikedStories';
 import MyText from 'shared/components/MyText';
 
-const LikeScreen = ({ navigation }) => {
-  const user = global.User[0] as User;
+import { useUserPv } from 'src/provider/UserProvider';
 
-  const { stories } = useLikedStories('' + user.id);
-  console.log(stories);
+
+const LikeScreen = ({ navigation }) => {
+  const { userpv, setUserpv } = useUserPv();
+
+  const { likedStories } = useLikedStories(userpv.id);
+
+  console.log(likedStories);
 
   return (
     <View style={S.maincontainer}>
@@ -26,7 +30,7 @@ const LikeScreen = ({ navigation }) => {
         </MyText>
       </View>
       <ScrollView style={S.container}>
-        <MyStories stories={stories} title={''} />
+        <MyStories stories={likedStories} title={''} />
       </ScrollView>
     </View>
   );

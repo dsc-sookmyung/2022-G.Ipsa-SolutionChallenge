@@ -7,4 +7,7 @@ export interface Story {
   thumbnailImageSrc: string;
   audioFileSrc: string;
   createdAt: Date;
+  duration?: number;
+  likedStoryId?: number;
+  userId?: number;
 }
