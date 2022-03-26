@@ -29,6 +29,7 @@ import { User } from 'shared/types';
 import { useUsersEmail } from 'shared/hook/useUsersEmail';
 import { useECheck } from 'shared/hook/useECheck';
 import * as Progress from 'react-native-progress';
+import * as global from 'shared/constants/global_var';
 
 const LoginScreen = ({ navigation }) => {
   // /* google

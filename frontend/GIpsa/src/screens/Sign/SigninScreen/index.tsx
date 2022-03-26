@@ -12,6 +12,7 @@ import { useNnCheck } from 'shared/hook/useNnCheck';
 import { useUsers } from 'shared/hook/useUsers';
 import { LogBox } from 'react-native';
 import { API_ENDPOINT } from 'shared/constants/env';
+import * as global from 'shared/constants/global_var';
 
 LogBox.ignoreLogs(['EventEmitter.removeListener']);
 LogBox.ignoreLogs([
