@@ -53,10 +53,14 @@ function getPublicUrl(filename) {
 }
 let ImgUpload = {};
 exports.UploadImage = ImgUpload;
-ImgUpload.uploadImage = (req, res) => {
+ImgUpload.uploadThumbnail = (req, res) => {
     // Can optionally add a path to the gcsname below by concatenating it before the filename
     // const gcsname = req.file.originalname;
-    const file = bucket.file(req);
+    // var split = req.split('/');
+    // const filename = 'storySrc/' + split[split.length - 1];
+    const filename = req;
+    console.log(filename);
+    const file = bucket.file(filename);
     const stream = file.createWriteStream({
         metadata: {
             // contentType: req.file.mimetype
@@ -64,19 +68,26 @@ ImgUpload.uploadImage = (req, res) => {
         }
     });
     stream.on('error', (err) => {
-        res.send(err);
+        console.log(err.message);
+        console.log('error');
+        // return err.message
     });
     stream.on('finish', () => {
         // req.file.cloudStorageObject = gcsname;
         // req.file.cloudStoragePublicUrl = getPublicUrl(gcsname);
-        res.send(getPublicUrl(req));
+        console.log('finish');
     });
     stream.end();
+    return getPublicUrl(filename);
 };
 ImgUpload.uploadAudio = (req, res) => {
     // Can optionally add a path to the gcsname below by concatenating it before the filename
     // const gcsname = req.file.originalname;
-    const file = bucket.file(req);
+    // var split = req.split('/');
+    // const filename = 'storySrc/' + split[split.length - 1];
+    const filename = req;
+    console.log(filename);
+    const file = bucket.file(filename);
     const stream = file.createWriteStream({
         metadata: {
             // contentType: req.file.mimetype
@@ -84,12 +95,14 @@ ImgUpload.uploadAudio = (req, res) => {
         }
     });
     stream.on('error', (err) => {
-        res.send(err);
+        console.log(err.message);
+        console.log('error');
     });
     stream.on('finish', () => {
         // req.file.cloudStorageObject = gcsname;
         // req.file.cloudStoragePublicUrl = getPublicUrl(gcsname);
-        res.send(getPublicUrl(req));
+        console.log('finish');
     });
     stream.end();
+    return getPublicUrl(filename);
 };

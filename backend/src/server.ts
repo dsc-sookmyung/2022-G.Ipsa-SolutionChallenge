@@ -5,17 +5,12 @@ import {StoryRouter} from './routers/StoryRouter';
 import {LikeRouter} from './routers/LikeRouter';
 import {FollowRouter} from './routers/FollowRouter';
 import {CommentRouter} from './routers/CommentRouter';
-
-import Options from './database/dbconnector';
 import path from 'path';
 import swaggerUi from 'swagger-ui-express' 
 import YAML from 'yamljs'
-import {createConnection} from 'typeorm';
-
 
 class Server {
     private app: express.Application;
-
 
     constructor() {
         this.app = express(); //init the application

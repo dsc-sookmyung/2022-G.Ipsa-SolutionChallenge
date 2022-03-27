@@ -22,24 +22,32 @@ const dbconnector_1 = __importDefault(require("../database/dbconnector"));
 const typeorm_2 = require("typeorm");
 const router = express_1.default.Router();
 exports.StoryRouter = router;
-// const uploadImage : new UploadImage;
 const multerMid = (0, multer_1.default)({
     storage: multer_1.default.memoryStorage(),
     limits: {
-        fileSize: 5 * 1024 * 1024,
+        fileSize: 10 * 1024 * 1024,
     },
 });
 router.use(multerMid.single('file'));
-router.post('/create', multerMid.single('file'), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post('/create', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
     const body = req['body'];
     const audioFileUri = body.audioFileSrc;
     const thumbnailImageUri = body.thumbnailImageSrc;
     const audioUrl = yield UploadImage_1.UploadImage.uploadAudio(audioFileUri);
-    const imageUrl = yield UploadImage_1.UploadImage.uploadImage(thumbnailImageUri);
+    const imageUrl = yield UploadImage_1.UploadImage.uploadThumbnail(thumbnailImageUri);
     console.log(imageUrl);
     body.audioFileSrc = audioUrl;
     body.thumbnailImageSrc = imageUrl;
+    const story = body;
+    const newStory = Story_1.default.create(story);
+    yield newStory.save();
+    res.send(newStory);
+    yield connection.close();
+}));
+router.post('/testcreate', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    const body = req['body'];
     const story = body;
     const newStory = Story_1.default.create(story);
     yield newStory.save();
@@ -54,9 +62,11 @@ router.get('/click', (req, res) => __awaiter(void 0, void 0, void 0, function* (
     yield connection.close();
 }));
 router.post('/click', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
     const id = req.query.id;
     const clickedStory = yield Story_1.default.findOne({ where: { id: id } });
     res.send(clickedStory);
+    yield connection.close();
 }));
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
