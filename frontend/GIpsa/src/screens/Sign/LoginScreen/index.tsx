@@ -31,7 +31,7 @@ import { useECheck } from 'shared/hook/useECheck';
 import * as Progress from 'react-native-progress';
 
 import { useUserPv } from 'src/provider/UserProvider';
-
+import useUserByEmail from 'shared/hook/useUserByEmail';
 
 const LoginScreen = ({ navigation }) => {
   // /* google
@@ -49,7 +49,7 @@ const LoginScreen = ({ navigation }) => {
   const [userInfo, setUserInfo] = useState<GUser>();
   const [error, setError] = useState<Error>();
   const [email, setEmail] = useState('');
-  const { usersEmail } = useUsersEmail(email);
+  const { usersEmail, loading } = useUsersEmail(email);
   const [userIn, setUserIn] = useState<User>();
   const [clicked, setClicked] = useState(false);
 
@@ -70,8 +70,6 @@ const LoginScreen = ({ navigation }) => {
       await GoogleSignin.hasPlayServices();
       const GuserInfo = await GoogleSignin.signIn();
       setUserInfo(GuserInfo);
-
-      setIsLoggedIn(true);
 
       setClicked(true);
       setEmail(GuserInfo?.user.email);
@@ -160,27 +158,20 @@ const LoginScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    if (userIn) {
+    if (userIn && !loading) {
       console.log('email: ' + email);
       console.log('emailCheck: ' + emailCheck);
 
       if (emailCheck == 1) {
         console.log(usersEmail);
         setUserpv(usersEmail[0] as User);
-        // 왜 두번째 시도에서는 array로 들어가지???
-        // try {
-        //   setUserpv(usersEmail[0] as User);
-        // } catch (error) {
-        //   setUserpv(usersEmail as User);
-        // }
-
 
         navigation.navigate('Main');
       } else if (emailCheck == 0) {
         navigation.navigate('Signin', { user: userIn });
       }
     }
-  }, [email, emailCheck]);
+  }, [email, emailCheck, loading]);
 
   //   type KakaoProfile = {
   //     id: string;
