@@ -1,17 +1,15 @@
 import useSWRNative from '@nandorojo/swr-react-native';
 import qs from 'qs';
-
 import api from 'shared/utils/api';
 
-export function useLikedStories(keyword?: number) {
+export function useLiked(keyword: string) {
   const {
     data: fetchingData,
     error,
     mutate,
-  } = useSWRNative(`/like/story?userId=${keyword}`, api.client.get);
-
+  } = useSWRNative(`/like/${keyword}`, api.client.get);
   const loading = fetchingData === undefined;
-  const likedStories = fetchingData?.data;
+  const likeData = fetchingData?.data;
 
-  return { likedStories, loading, error, mutate };
+  return { likeData, loading, error, mutate };
 }
