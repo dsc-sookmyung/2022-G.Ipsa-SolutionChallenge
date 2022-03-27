@@ -49,7 +49,7 @@ const LoginScreen = ({ navigation }) => {
   const [userInfo, setUserInfo] = useState<GUser>();
   const [error, setError] = useState<Error>();
   const [email, setEmail] = useState('');
-  const { userByEmail } = useUserByEmail(email);
+  const { usersEmail, loading } = useUsersEmail(email);
   const [userIn, setUserIn] = useState<User>();
   const [clicked, setClicked] = useState(false);
 
@@ -158,20 +158,20 @@ const LoginScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    if (userIn) {
+    if (userIn && !loading) {
       console.log('email: ' + email);
       console.log('emailCheck: ' + emailCheck);
 
       if (emailCheck == 1) {
-        console.log(userByEmail);
-        setUserpv(userByEmail[0] as User);
+        console.log(usersEmail);
+        setUserpv(usersEmail[0] as User);
 
         navigation.navigate('Main');
       } else if (emailCheck == 0) {
         navigation.navigate('Signin', { user: userIn });
       }
     }
-  }, [email, emailCheck]);
+  }, [email, emailCheck, loading]);
 
   //   type KakaoProfile = {
   //     id: string;

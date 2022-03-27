@@ -166,7 +166,9 @@ const PlayerModal: FC<PlayerModalProps> = ({ stories }: PlayerModalProps) => {
   }, []);
 
   // 좋아요 받아와서 색 지정
-  const { likeData } = useLiked('?userId=' + userpv.id);
+  const { likeData, loading } = useLiked('?userId=' + userpv.id);
+
+  // console.log('' + userpv.id + 'likeData: ' + JSON.stringify(likeData));
 
   useEffect(() => {
     setIsLiked(false);
