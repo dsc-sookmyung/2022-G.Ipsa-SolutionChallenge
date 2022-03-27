@@ -5,10 +5,7 @@ const S = StyleSheet.create({
   maincontainer: {
     backgroundColor: colors.background,
   },
-  container2: {
-    marginBottom: 30,
-    alignItems: 'center',
-  },
+
   subcontainer: { alignItems: 'center', marginTop: 31 },
   centercontainer: { alignItems: 'center', marginTop: 22 },
   signInButton: {

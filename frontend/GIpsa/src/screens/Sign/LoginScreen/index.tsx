@@ -31,7 +31,7 @@ import { useECheck } from 'shared/hook/useECheck';
 import * as Progress from 'react-native-progress';
 
 import { useUserPv } from 'src/provider/UserProvider';
-
+import useUserByEmail from 'shared/hook/useUserByEmail';
 
 const LoginScreen = ({ navigation }) => {
   // /* google
@@ -49,7 +49,7 @@ const LoginScreen = ({ navigation }) => {
   const [userInfo, setUserInfo] = useState<GUser>();
   const [error, setError] = useState<Error>();
   const [email, setEmail] = useState('');
-  const { usersEmail } = useUsersEmail(email);
+  const { userByEmail } = useUserByEmail(email);
   const [userIn, setUserIn] = useState<User>();
   const [clicked, setClicked] = useState(false);
 
@@ -70,8 +70,6 @@ const LoginScreen = ({ navigation }) => {
       await GoogleSignin.hasPlayServices();
       const GuserInfo = await GoogleSignin.signIn();
       setUserInfo(GuserInfo);
-
-      setIsLoggedIn(true);
 
       setClicked(true);
       setEmail(GuserInfo?.user.email);
@@ -165,15 +163,8 @@ const LoginScreen = ({ navigation }) => {
       console.log('emailCheck: ' + emailCheck);
 
       if (emailCheck == 1) {
-        console.log(usersEmail);
-        setUserpv(usersEmail[0] as User);
-        // 왜 두번째 시도에서는 array로 들어가지???
-        // try {
-        //   setUserpv(usersEmail[0] as User);
-        // } catch (error) {
-        //   setUserpv(usersEmail as User);
-        // }
-
+        console.log(userByEmail);
+        setUserpv(userByEmail[0] as User);
 
         navigation.navigate('Main');
       } else if (emailCheck == 0) {

@@ -12,7 +12,7 @@ const ProfileScreen = ({ navigation }) => {
   const [isProfile, setIsProfile] = useState(true);
   const { userpv, setUserpv } = useUserPv();
   useEffect(() => {
-    if (userpv.profileImageSrc == '') {
+    if (userpv?.profileImageSrc == '') {
       setIsProfile(false);
     }
   }, [userpv]);
@@ -21,13 +21,12 @@ const ProfileScreen = ({ navigation }) => {
     <UserProvider>
       <View style={S.maincontainer}>
         <View style={S.centercontainer}>
-          {userpv && isProfile && (
+          {isProfile ? (
             <Image
-              source={{ uri: userpv.profileImageSrc }}
+              source={{ uri: userpv?.profileImageSrc }}
               style={S.profileImg}
             />
-          )}
-          {!isProfile && (
+          ) : (
             <Image
               source={require('../../../../shared/assets/images/default-profile.jpg')}
               style={S.profileImg}
@@ -35,7 +34,7 @@ const ProfileScreen = ({ navigation }) => {
           )}
         </View>
         {!userpv && (
-          <View style={S.container2}>
+          <View style={S.centercontainer}>
             <Progress.Circle size={30} indeterminate={true} />
           </View>
         )}
