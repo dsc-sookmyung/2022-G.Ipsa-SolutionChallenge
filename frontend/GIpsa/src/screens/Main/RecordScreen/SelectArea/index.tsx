@@ -20,6 +20,7 @@ export interface SelectAreaProps {
     React.SetStateAction<Category | undefined>
   >;
   isFinished: boolean;
+  handleDone: () => void;
 }
 
 const SelectArea: FC<SelectAreaProps> = ({
@@ -30,6 +31,7 @@ const SelectArea: FC<SelectAreaProps> = ({
   selectedCategory,
   setSelectedCategory,
   isFinished,
+  handleDone,
 }: SelectAreaProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -88,7 +90,7 @@ const SelectArea: FC<SelectAreaProps> = ({
             </S.ImageButtons>
 
             {isFinished && (
-              <S.DoneButton activeOpacity={0.9}>
+              <S.DoneButton activeOpacity={0.9} onPress={handleDone}>
                 <MyText fontWeight="regular" color={colors.gray1}>
                   Done
                 </MyText>

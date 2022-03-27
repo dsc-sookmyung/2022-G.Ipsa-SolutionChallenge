@@ -10,6 +10,7 @@ import { colors } from 'shared/utils/colors';
 import { RecordingCondition } from '..';
 
 export interface AudioAreaProps {
+  audioUri: string;
   setAudioUri: React.Dispatch<React.SetStateAction<string>>;
   recordingCondition: RecordingCondition;
   setRecordingCondition: React.Dispatch<
@@ -18,6 +19,7 @@ export interface AudioAreaProps {
 }
 
 const AudioArea: FC<AudioAreaProps> = ({
+  audioUri,
   setAudioUri,
   recordingCondition,
   setRecordingCondition,
@@ -37,10 +39,11 @@ const AudioArea: FC<AudioAreaProps> = ({
   };
 
   const handleUpload = async () => {
-    const { uri, name } = await DocumentPicker.pickSingle({
+    const { name, fileCopyUri } = await DocumentPicker.pickSingle({
       type: types.audio,
+      copyTo: 'cachesDirectory',
     });
-    setAudioUri(uri);
+    setAudioUri(fileCopyUri!);
     setRecordingCondition({
       beforeRecording: false,
       isRecording: false,
@@ -76,7 +79,9 @@ const AudioArea: FC<AudioAreaProps> = ({
     audioRecorderPlayer.removeRecordBackListener();
   };
 
-  const handleCancel = () => {
+  const handleCancel = async () => {
+    await audioRecorderPlayer.stopPlayer();
+
     setRecordingCondition({
       beforeRecording: true,
       isRecording: false,
@@ -88,29 +93,34 @@ const AudioArea: FC<AudioAreaProps> = ({
   };
 
   const handlePlay = async () => {
-    await audioRecorderPlayer.startPlayer();
-    setRecordingCondition({
-      beforeRecording: false,
-      isRecording: false,
-      isFinished: false,
-    });
-    setPlayingContition({ isPlaying: true, isPaused: false });
-    audioRecorderPlayer.addPlayBackListener((e) => {
-      setRecordingTime(
-        trimTimeString(
-          audioRecorderPlayer.mmssss(Math.floor(e.currentPosition))
-        )
-      );
-      if (e.currentPosition === e.duration) {
-        setRecordingTime('00:00');
-        setPlayingContition({ isPlaying: false, isPaused: false });
-        setRecordingCondition({
-          beforeRecording: false,
-          isRecording: false,
-          isFinished: true,
-        });
-      }
-    });
+    try {
+      const result = await audioRecorderPlayer.startPlayer(audioUri);
+      console.log('result: ', result);
+      setRecordingCondition({
+        beforeRecording: false,
+        isRecording: false,
+        isFinished: true,
+      });
+      setPlayingContition({ isPlaying: true, isPaused: false });
+      audioRecorderPlayer.addPlayBackListener((e) => {
+        setRecordingTime(
+          trimTimeString(
+            audioRecorderPlayer.mmssss(Math.floor(e.currentPosition))
+          )
+        );
+        if (e.currentPosition === e.duration) {
+          setRecordingTime('00:00');
+          setPlayingContition({ isPlaying: false, isPaused: false });
+          setRecordingCondition({
+            beforeRecording: false,
+            isRecording: false,
+            isFinished: true,
+          });
+        }
+      });
+    } catch (error) {
+      console.log('error: ', error);
+    }
   };
 
   const handlePause = async () => {
@@ -119,30 +129,27 @@ const AudioArea: FC<AudioAreaProps> = ({
   };
 
   const getIconName = () => {
+    if (playingContition.isPlaying) return 'pause';
     if (recordingCondition.beforeRecording) return 'microphone';
     if (recordingCondition.isRecording) return 'stop';
     if (recordingCondition.isFinished || playingContition.isPaused)
       return 'play';
-
-    if (playingContition.isPlaying) return 'pause';
   };
 
   const getButtonText = () => {
+    if (playingContition.isPlaying) return 'Pause';
     if (recordingCondition.beforeRecording) return 'Record';
     if (recordingCondition.isRecording) return 'Stop';
     if (recordingCondition.isFinished || playingContition.isPaused)
       return 'Play';
-
-    if (playingContition.isPlaying) return 'Pause';
   };
 
   const getPressFunction = () => {
+    if (playingContition.isPlaying) return handlePause;
     if (recordingCondition.beforeRecording) return handleStartRecord;
     if (recordingCondition.isRecording) return handleStopRecord;
     if (recordingCondition.isFinished || playingContition.isPaused)
       return handlePlay;
-
-    if (playingContition.isPlaying) return handlePause;
   };
 
   return (
