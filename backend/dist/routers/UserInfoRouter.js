@@ -48,18 +48,6 @@ router.post('/signin', (req, res) => __awaiter(void 0, void 0, void 0, function*
     res.send(newUser);
     yield connection.close();
 }));
-// router.post('/login', async (req: Request, res:Response)=>{
-//     const id = req.query.id;
-//     const checkUserLogin = await UserInfo.find({where: {id:id}, select: ['loginStatus']});
-//     if (!checkUserLogin){
-//         UserInfo.createQueryBuilder()
-//         .update(User)
-//         .set({ firstName: "Timber", lastName: "Saw" })
-//         .where("id = :id", { id: 1 })
-//         .execute();
-//     }
-//     res.send(newUser)
-// });
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
     const keyword = req.query.keyword;
@@ -84,6 +72,7 @@ router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     yield connection.close();
 }));
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
     const keyword = req.query.keyword;
     if (keyword) {
         const searchedUser = yield UserInfo_1.default.find({ nickname: (0, typeorm_1.Like)(`%${keyword}%`) });
@@ -93,4 +82,5 @@ router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const searchedUser = yield UserInfo_1.default.find();
         res.send(searchedUser);
     }
+    yield connection.close();
 }));
