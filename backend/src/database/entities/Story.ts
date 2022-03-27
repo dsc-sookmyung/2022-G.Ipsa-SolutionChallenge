@@ -20,7 +20,7 @@ export default class Story extends BaseEntity {
     @Column({ type: 'text' })
     audioFileSrc!: string;
 
-    @Column({ type: 'int' })
+    @Column({ type: 'int', default: 0 })
     duration!: number;
 
     @Column({ type: 'int', default: 0 })

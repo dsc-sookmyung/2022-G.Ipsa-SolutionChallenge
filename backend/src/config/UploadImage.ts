@@ -1,6 +1,6 @@
 import { NextFunction } from 'express';
 import { format } from 'util';
-import {Storage} from './Storage'
+import { Storage } from './Storage'
 
 // export const uploadImage = (file: { originalname: any; buffer: any; }) => new Promise((resolve, reject) => {
 //   const { originalname, buffer } = file
@@ -61,62 +61,76 @@ import {Storage} from './Storage'
 const bucketName = 'gipsa-upload'
 const bucket = Storage.bucket(bucketName);
 
-function getPublicUrl(foldername: string, filename: string) {
-  return 'https://storage.googleapis.com/' + bucketName + foldername + filename;
+function getPublicUrl(filename: string) {
+  return 'https://storage.googleapis.com/' + bucketName + '/' + filename;
 }
 
-let ImgUpload : any = {};
+let ImgUpload: any = {};
 
 ImgUpload.uploadThumbnail = (req: string, res: any) => {
   // Can optionally add a path to the gcsname below by concatenating it before the filename
   // const gcsname = req.file.originalname;
-  const file = bucket.file(req);
+  // var split = req.split('/');
+  // const filename = 'storySrc/' + split[split.length - 1];
+  const filename = req;
+  console.log(filename);
 
+  const file = bucket.file(filename);
   const stream = file.createWriteStream({
     metadata: {
       // contentType: req.file.mimetype
       contentType: 'image/jpeg'
-
     }
   });
 
   stream.on('error', (err) => {
-    res.send( err);
+    console.log(err.message);
+    console.log('error')
+    // return err.message
   });
 
   stream.on('finish', () => {
     // req.file.cloudStorageObject = gcsname;
     // req.file.cloudStoragePublicUrl = getPublicUrl(gcsname);
-    res.send(getPublicUrl('/storySrc/', req));
+    console.log('finish')
   });
 
   stream.end();
+  return getPublicUrl(filename);
+
 }
 
 ImgUpload.uploadAudio = (req: string, res: any) => {
   // Can optionally add a path to the gcsname below by concatenating it before the filename
   // const gcsname = req.file.originalname;
-  const file = bucket.file(req);
+  // var split = req.split('/');
+  // const filename = 'storySrc/' + split[split.length - 1];
+  const filename = req;
+  console.log(filename);
 
+  const file = bucket.file(filename);
   const stream = file.createWriteStream({
     metadata: {
       // contentType: req.file.mimetype
       contentType: 'audio/mpeg'
-
     }
   });
 
   stream.on('error', (err) => {
-    res.send( err);
+    console.log(err.message);
+    console.log('error')
   });
 
   stream.on('finish', () => {
     // req.file.cloudStorageObject = gcsname;
     // req.file.cloudStoragePublicUrl = getPublicUrl(gcsname);
-    res.send(getPublicUrl('/storySrc/', req));
+    console.log('finish')
+
   });
 
   stream.end();
+  return getPublicUrl(filename);
+
 }
 
-export { ImgUpload as UploadImage};
+export { ImgUpload as UploadImage };
