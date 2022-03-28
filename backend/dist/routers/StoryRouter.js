@@ -17,59 +17,68 @@ const express_1 = __importDefault(require("express"));
 const typeorm_1 = require("typeorm");
 const Story_1 = __importDefault(require("../database/entities/Story"));
 const multer_1 = __importDefault(require("multer"));
-const UploadImage_1 = require("../config/UploadImage");
+const FileUpload_1 = require("../config/FileUpload");
 const dbconnector_1 = __importDefault(require("../database/dbconnector"));
 const typeorm_2 = require("typeorm");
 const router = express_1.default.Router();
 exports.StoryRouter = router;
+const connectionManager = (0, typeorm_1.getConnectionManager)();
 const multerMid = (0, multer_1.default)({
     storage: multer_1.default.memoryStorage(),
-    limits: {
-        fileSize: 10 * 1024 * 1024,
-    },
+    // limits: {
+    //   fieldSize: 10 * 1024 * 1024,
+    // },
 });
-router.use(multerMid.single('file'));
 router.post('/create', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    if (!connectionManager.has('default')) {
+        const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    }
     const body = req['body'];
-    const audioFileUri = body.audioFileSrc;
-    const thumbnailImageUri = body.thumbnailImageSrc;
-    const audioUrl = yield UploadImage_1.UploadImage.uploadAudio(audioFileUri);
-    const imageUrl = yield UploadImage_1.UploadImage.uploadThumbnail(thumbnailImageUri);
+    const story = body;
+    const newStory = Story_1.default.create(story);
+    yield newStory.save();
+    res.send(newStory);
+    // await connection.close();
+}));
+function getPublicUrl(filename) {
+    return 'https://storage.googleapis.com/' + 'gipsa-upload/' + filename;
+}
+router.post('/imageUpload', multerMid.single('image'), (req, res) => {
+    var _a;
+    FileUpload_1.FileUpload.uploadThumbnail(req);
+    const imageUrl = getPublicUrl((_a = req.file) === null || _a === void 0 ? void 0 : _a.originalname);
     console.log(imageUrl);
-    body.audioFileSrc = audioUrl;
-    body.thumbnailImageSrc = imageUrl;
-    const story = body;
-    const newStory = Story_1.default.create(story);
-    yield newStory.save();
-    res.send(newStory);
-    yield connection.close();
-}));
-router.post('/testcreate', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
-    const body = req['body'];
-    const story = body;
-    const newStory = Story_1.default.create(story);
-    yield newStory.save();
-    res.send(newStory);
-    yield connection.close();
-}));
+    res.send({ url: imageUrl });
+});
+router.post('/audioUpload', multerMid.single('audio'), (req, res) => {
+    var _a;
+    FileUpload_1.FileUpload.uploadAudio(req);
+    const audioUrl = getPublicUrl((_a = req.file) === null || _a === void 0 ? void 0 : _a.originalname);
+    console.log(audioUrl);
+    res.send({ url: audioUrl });
+});
 router.get('/click', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    if (!connectionManager.has('default')) {
+        const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    }
     const id = req.query.id;
     const clickedStory = yield Story_1.default.findOne({ where: { id: id } });
     res.send(clickedStory);
-    yield connection.close();
+    // await connection.close();
 }));
 router.post('/click', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    if (!connectionManager.has('default')) {
+        const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    }
     const id = req.query.id;
     const clickedStory = yield Story_1.default.findOne({ where: { id: id } });
     res.send(clickedStory);
-    yield connection.close();
+    // await connection.close();
 }));
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    if (!connectionManager.has('default')) {
+        const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    }
     const keyword = req.query.keyword;
     const creatorId = req.query.creatorId;
     if (keyword) {
@@ -84,10 +93,12 @@ router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const searchedStory = yield Story_1.default.find();
         res.send(searchedStory);
     }
-    yield connection.close();
+    // await connection.close();
 }));
 router.get('/cnt', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    if (!connectionManager.has('default')) {
+        const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    }
     const keyword = req.query.keyword;
     const creatorId = req.query.creatorId;
     if (keyword) {
@@ -102,5 +113,5 @@ router.get('/cnt', (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const searchedStory = yield Story_1.default.findAndCount();
         res.send(searchedStory[1].toString());
     }
-    yield connection.close();
+    // await connection.close();
 }));
