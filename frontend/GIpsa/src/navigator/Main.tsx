@@ -9,7 +9,6 @@ import MyTabHeader from 'shared/components/MyTabHeader';
 import { colors } from 'shared/utils/colors';
 import { MyText } from 'shared/components';
 import Profile from './Profile';
-import Create from './Create';
 import GlobalPlayerProvider, {
   useGlobalPlayerPv,
 } from 'src/provider/GlobalPlayerProvider';
@@ -54,7 +53,7 @@ const Main = () => {
         })}
       >
         <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Record" component={Create} />
+        <Tab.Screen name="Record" component={RecordScreen} />
         <Tab.Screen name="Search" component={SearchScreen} />
         <Tab.Screen name="My page" component={Profile} />
       </Tab.Navigator>
