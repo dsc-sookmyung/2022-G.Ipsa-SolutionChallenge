@@ -12,7 +12,7 @@ const ProfileScreen = ({ navigation }) => {
   const [isProfile, setIsProfile] = useState(true);
   const { userpv, setUserpv } = useUserPv();
   useEffect(() => {
-    if (userpv?.profileImageSrc == '') {
+    if (userpv?.profileImageSrc == 'string') {
       setIsProfile(false);
     }
   }, [userpv]);
@@ -20,7 +20,7 @@ const ProfileScreen = ({ navigation }) => {
   return (
     <View style={S.maincontainer}>
       <View style={S.centercontainer}>
-        {isProfile ? (
+        {isProfile && userpv?.profileImageSrc != 'string' ? (
           <Image
             source={{ uri: userpv?.profileImageSrc }}
             style={S.profileImg}
