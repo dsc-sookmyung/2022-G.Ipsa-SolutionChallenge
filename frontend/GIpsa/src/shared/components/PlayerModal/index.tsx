@@ -31,6 +31,10 @@ import { API_ENDPOINT } from 'shared/constants/env';
 import { useLikedStories } from 'shared/hook/useLikedStories';
 import { useUserPv } from 'src/provider/UserProvider';
 import { useGlobalPlayerPv } from 'src/provider/GlobalPlayerProvider';
+import * as Progress from 'react-native-progress';
+import { LogBox } from 'react-native';
+import { usePlayerPv } from 'src/provider/PlayerProvider';
+LogBox.ignoreLogs(['Warning: Possible Unhandled Promise Rejection']); // Ignore log notification by message
 
 const togglePlayback = async (playbackState: State) => {
   const currentTrack = await TrackPlayer.getCurrentTrack();
@@ -84,9 +88,10 @@ export interface PlayerModalProps {
 
 const PlayerModal: FC<PlayerModalProps> = ({ stories }: PlayerModalProps) => {
   const { userpv, setUserpv } = useUserPv();
+  const { mplayerShow, setmPlayerShow } = usePlayerPv();
 
   // 파일 리스트로 더하기(디폴트: 좋아요 누른 스토리들)
-  const { likedStories } = useLikedStories(userpv?.id);
+  const { likedStories, loading } = useLikedStories(userpv?.id);
 
   const setupIfNecessary = async () => {
     // if app was relaunched and music was already playing, we don't setup again. -> SET UP AGAIN
@@ -126,7 +131,6 @@ const PlayerModal: FC<PlayerModalProps> = ({ stories }: PlayerModalProps) => {
       });
     }
 
-    //await TrackPlayer.add(likedStories);
     for (let i = 0; i < likedStories.length; i++) {
       await TrackPlayer.add({
         id: likedStories[i].id,
@@ -171,7 +175,7 @@ const PlayerModal: FC<PlayerModalProps> = ({ stories }: PlayerModalProps) => {
   }, []);
 
   // 좋아요 받아와서 색 지정
-  const { likeData, loading } = useLiked('?userId=' + userpv?.id);
+  const { likeData } = useLiked('?userId=' + userpv?.id);
 
   // console.log('' + userpv.id + 'likeData: ' + JSON.stringify(likeData));
 
@@ -186,7 +190,7 @@ const PlayerModal: FC<PlayerModalProps> = ({ stories }: PlayerModalProps) => {
 
   // 좋아요 변경
   const like = {
-    userId: userpv.id,
+    userId: userpv?.id,
     likedStoryId: trackId,
   };
 
@@ -230,6 +234,7 @@ const PlayerModal: FC<PlayerModalProps> = ({ stories }: PlayerModalProps) => {
         onRequestClose={() => {
           setModalVisible(!modalVisible);
           setPlayerShow(true);
+          setmPlayerShow(false);
           console.log('Modal closed, playerShow: ' + playerShow);
         }}
         style={{ flexDirection: 'column', alignItems: 'flex-end' }}
@@ -238,9 +243,13 @@ const PlayerModal: FC<PlayerModalProps> = ({ stories }: PlayerModalProps) => {
           <StatusBar barStyle={'light-content'} />
           <View style={S.contentContainer}>
             <View style={S.titleText}>
-              <MyText fontSize={18} fontWeight="bold">
-                {trackTitle}
-              </MyText>
+              {!loading && trackTitle ? (
+                <MyText fontSize={18} fontWeight="bold">
+                  {trackTitle}
+                </MyText>
+              ) : (
+                <Progress.Circle size={20} indeterminate={true} />
+              )}
             </View>
             <View style={S.artistText}>
               <MyText fontSize={14} fontWeight="light">

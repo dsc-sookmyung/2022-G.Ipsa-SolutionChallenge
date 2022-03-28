@@ -33,6 +33,7 @@ import { useUserPv } from 'src/provider/UserProvider';
 import { useGlobalPlayerPv } from 'src/provider/GlobalPlayerProvider';
 import PlayerModal from '../PlayerModal';
 import * as Progress from 'react-native-progress';
+import { usePlayerPv } from 'src/provider/PlayerProvider';
 
 const togglePlayback = async (playbackState: State) => {
   const currentTrack = await TrackPlayer.getCurrentTrack();
@@ -82,7 +83,7 @@ async function jumpBackward() {
 
 const GlobalPlayer = () => {
   const { userpv, setUserpv } = useUserPv();
-  const [isM, setIsM] = useState(false);
+  const { mplayerShow, setmPlayerShow } = usePlayerPv();
 
   // 파일 리스트로 더하기(디폴트: 좋아요 누른 스토리들)
   const { likedStories } = useLikedStories(userpv?.id);
@@ -162,10 +163,10 @@ const GlobalPlayer = () => {
 
   return (
     <SafeAreaView style={S.container}>
-      {isM && <PlayerModal />}
+      {mplayerShow && <PlayerModal stories={null} />}
       <SafeAreaView style={S.screenContainer}>
         {/* <Image style={S.artwork} source={{ uri: `${trackArtwork}` }} /> */}
-        <TouchableOpacity onPress={() => setIsM(true)}>
+        <TouchableOpacity onPress={() => setmPlayerShow(true)}>
           <View style={S.contentContainer}>
             <View style={S.titleText}>
               {isLoaded ? (
