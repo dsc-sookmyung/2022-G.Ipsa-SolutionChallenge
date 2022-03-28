@@ -6,7 +6,7 @@ const S = StyleSheet.create({
     width: 360,
     height: 55,
     position: 'absolute',
-    top: 550,
+    bottom: 0,
     backgroundColor: '#FFFFFF',
     flexDirection: 'column',
     alignItems: 'flex-end',
