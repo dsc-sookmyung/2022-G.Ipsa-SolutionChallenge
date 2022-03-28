@@ -32,6 +32,7 @@ import { useLikedStories } from 'shared/hook/useLikedStories';
 import { useUserPv } from 'src/provider/UserProvider';
 import { useGlobalPlayerPv } from 'src/provider/GlobalPlayerProvider';
 import PlayerModal from '../PlayerModal';
+import * as Progress from 'react-native-progress';
 
 const togglePlayback = async (playbackState: State) => {
   const currentTrack = await TrackPlayer.getCurrentTrack();
@@ -146,10 +147,18 @@ const GlobalPlayer = () => {
       setTrackId(id);
     }
   });
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     setupIfNecessary();
   }, []);
+
+  useEffect(() => {
+    setIsLoaded(false);
+    if (trackId != null) {
+      setIsLoaded(true);
+    }
+  }, [trackId]);
 
   return (
     <SafeAreaView style={S.container}>
@@ -159,10 +168,15 @@ const GlobalPlayer = () => {
         <TouchableOpacity onPress={() => setIsM(true)}>
           <View style={S.contentContainer}>
             <View style={S.titleText}>
-              <MyText fontSize={18} fontWeight="bold">
-                {trackTitle}
-              </MyText>
+              {isLoaded ? (
+                <MyText fontSize={18} fontWeight="bold">
+                  {trackTitle}
+                </MyText>
+              ) : (
+                <Progress.Circle size={20} indeterminate={true} />
+              )}
             </View>
+
             <View style={S.artistText}>
               <MyText fontSize={14} fontWeight="light">
                 {trackArtist}
