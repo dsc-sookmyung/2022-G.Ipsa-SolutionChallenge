@@ -20,15 +20,13 @@ export default class Story extends BaseEntity {
     @Column({ type: 'text' })
     audioFileSrc!: string;
 
-    @Column({ type: 'int', default: 0 })
+    @Column({ type: 'int', nullable: true })
     duration!: number;
 
     @Column({ type: 'int', default: 0 })
     likes!: number;
 
     @Column({
-        // type: 'date',
-        // default: ()=> 'NOW()'
         type: "timestamp", default: () => "CURRENT_TIMESTAMP"
     })
     createdAt!: string;

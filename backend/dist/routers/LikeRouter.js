@@ -21,8 +21,11 @@ const dbconnector_1 = __importDefault(require("../database/dbconnector"));
 const typeorm_2 = require("typeorm");
 const router = express_1.default.Router();
 exports.LikeRouter = router;
+const connectionManager = (0, typeorm_1.getConnectionManager)();
 router.post('/click', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    if (!connectionManager.has('default')) {
+        const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    }
     const body = req.body;
     const likedStoryId = body.likedStoryId;
     const userId = body.userId;
@@ -31,14 +34,13 @@ router.post('/click', (req, res) => __awaiter(void 0, void 0, void 0, function* 
     let newLikes;
     if (searchLike) {
         //좋아요가 존재. 좋아요를 취소해야함
-        yield (0, typeorm_1.createQueryBuilder)()
+        yield (0, typeorm_1.createQueryBuilder)(LikeEntity_1.default)
             .delete()
-            .from(LikeEntity_1.default)
             .where({ userId: userId, likedStoryId: likedStoryId })
             .execute();
         newLikes = storyLikes[0].likes - 1;
-        yield (0, typeorm_1.createQueryBuilder)()
-            .update(Story_1.default)
+        yield (0, typeorm_1.createQueryBuilder)(Story_1.default)
+            .update()
             .set({ likes: newLikes })
             .where({ id: likedStoryId })
             .execute();
@@ -50,17 +52,19 @@ router.post('/click', (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const newLike = LikeEntity_1.default.create(like);
         yield newLike.save();
         newLikes = storyLikes[0].likes + 1;
-        yield (0, typeorm_1.createQueryBuilder)()
-            .update(Story_1.default)
+        yield (0, typeorm_1.createQueryBuilder)(Story_1.default)
+            .update()
             .set({ likes: newLikes })
             .where({ id: likedStoryId })
             .execute();
         res.send('new like');
     }
-    yield connection.close();
+    // await connection.close();
 }));
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    if (!connectionManager.has('default')) {
+        const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    }
     const userId = req.query.userId;
     const storyId = req.query.storyId;
     if (userId) {
@@ -75,10 +79,12 @@ router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const searchedLike = yield LikeEntity_1.default.find();
         res.send(searchedLike);
     }
-    yield connection.close();
+    // await connection.close();
 }));
 router.get('/cnt', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    if (!connectionManager.has('default')) {
+        const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    }
     const userId = req.query.userId;
     const storyId = req.query.storyId;
     if (userId) {
@@ -93,16 +99,17 @@ router.get('/cnt', (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const searchedLike = yield LikeEntity_1.default.findAndCount();
         res.send(searchedLike[1].toString());
     }
-    yield connection.close();
+    // await connection.close();
 }));
 router.get('/story', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    if (!connectionManager.has('default')) {
+        const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    }
     const userId = req.query.userId;
-    const searchedStory = yield (0, typeorm_1.createQueryBuilder)()
-        .from(Story_1.default, 'story')
+    const searchedStory = yield (0, typeorm_1.createQueryBuilder)(Story_1.default, 'story')
         .innerJoin(LikeEntity_1.default, 'le', 'story.id = le.likedStoryId')
         .where("le.userId = :userId", { userId: userId })
         .getRawMany();
     res.send(searchedStory);
-    yield connection.close();
+    // await connection.close();
 }));

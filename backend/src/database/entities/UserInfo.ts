@@ -1,28 +1,25 @@
-import {Column, Entity, BaseEntity, PrimaryGeneratedColumn} from 'typeorm';
+import { Column, Entity, BaseEntity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export default class UserInfo extends BaseEntity{
+export default class UserInfo extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column({type: 'text', unique: true})
+    @Column({ type: 'text', unique: true })
     email!: string;
 
-    @Column({type: 'text'})
+    @Column({ type: 'text' })
     birth!: string;
 
-    @Column({type: 'boolean'})
+    @Column({ type: 'boolean' })
     showBirth!: boolean;
 
-    @Column({type: 'boolean'})
+    @Column({ type: 'boolean' })
     isCreator!: boolean;
 
-    @Column({type: 'text'})
+    @Column({ type: 'text' })
     nickname!: string;
 
-    @Column({type: 'text'})
+    @Column({ type: 'text', default: "" })
     profileImageSrc!: string;
-
-    // @Column({type: 'boolean'})
-    // loginStatus!: boolean;
 }
