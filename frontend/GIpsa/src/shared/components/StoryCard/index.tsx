@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Image, Text, View } from 'react-native';
 
 import S from './Styles';
@@ -6,6 +6,7 @@ import { Story } from 'shared/types';
 import MyText from '../MyText';
 import { TouchableOpacity } from 'react-native';
 import PlayerModal from '../PlayerModal';
+import { useGlobalPlayerPv } from 'src/provider/GlobalPlayerProvider';
 
 export interface StoryCardProps {
   story: Story;
@@ -13,6 +14,7 @@ export interface StoryCardProps {
 
 const StoryCard: FC<StoryCardProps> = ({ story }: StoryCardProps) => {
   const [isM, setIsM] = useState(false);
+  const { playerShow, setPlayerShow } = useGlobalPlayerPv();
 
   const stories: Story[] = [];
   stories.push(story);

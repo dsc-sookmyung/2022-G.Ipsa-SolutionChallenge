@@ -6,6 +6,8 @@ import S from './Styles';
 import { MainTabScreenProps } from 'navigator/types';
 import { StoryTopic } from 'shared/components';
 import { useStories } from 'shared/hook/useStories';
+import GlobalPlayer from 'shared/components/GlobalPlayer';
+import { useGlobalPlayerPv } from 'src/provider/GlobalPlayerProvider';
 
 export type HomeScreenParams = {
   a: number;
@@ -13,6 +15,7 @@ export type HomeScreenParams = {
 
 const HomeScreen = ({ navigation, route }: MainTabScreenProps<'Home'>) => {
   const { stories, loading, mutate } = useStories();
+  const { playerShow, setPlayerShow } = useGlobalPlayerPv();
 
   const timeSortedStories = stories?.sort(
     (a, b) =>
@@ -26,6 +29,7 @@ const HomeScreen = ({ navigation, route }: MainTabScreenProps<'Home'>) => {
     <ScrollView style={S.container}>
       <StoryTopic title="Weekly New Stories" stories={timeSortedStories} />
       <StoryTopic title="Weekly Best Stories" stories={likeSortedStories} />
+      {playerShow && <GlobalPlayer />}
     </ScrollView>
   );
 };
