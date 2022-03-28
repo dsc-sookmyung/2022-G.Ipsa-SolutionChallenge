@@ -4,48 +4,61 @@ import S from './Styles';
 import { User } from 'shared/types/user';
 import { isRegularExpressionLiteral } from 'typescript';
 import MyText from 'shared/components/MyText';
+import * as Progress from 'react-native-progress';
+import { useisUser } from 'shared/hook/useisUser';
+import UserProvider, { useUserPv } from 'src/provider/UserProvider';
 
 const ProfileScreen = ({ navigation }) => {
   const [isProfile, setIsProfile] = useState(true);
-  const user = global.User[0] as User;
-
+  const { userpv, setUserpv } = useUserPv();
   useEffect(() => {
-    if (user.profileImageSrc == '') {
+    if (userpv?.profileImageSrc == '') {
       setIsProfile(false);
     }
-  }, [user]);
+  }, [userpv]);
 
   return (
     <View style={S.maincontainer}>
       <View style={S.centercontainer}>
-        {isProfile && (
-          <Image source={{ uri: user.profileImageSrc }} style={S.profileImg} />
-        )}
-        {!isProfile && (
+        {isProfile ? (
+          <Image
+            source={{ uri: userpv?.profileImageSrc }}
+            style={S.profileImg}
+          />
+        ) : (
           <Image
             source={require('../../../../shared/assets/images/default-profile.jpg')}
             style={S.profileImg}
           />
         )}
       </View>
-      <View style={S.subcontainer}>
-        <MyText fontSize={20} fontWeight={'bold'}>
-          {user.nickname}
-        </MyText>
-      </View>
-      <View style={S.centercontainer}>
-        {user.isCreator && (
-          <TouchableOpacity
-            style={S.signInButton}
-            onPress={() => navigation.navigate('UploadedScreen')}
-          >
-            <Image
-              source={require('../../../../shared/assets/images/mystory.jpg')}
+      {!userpv && (
+        <View style={S.centercontainer}>
+          <Progress.Circle size={30} indeterminate={true} />
+        </View>
+      )}
+      {userpv && (
+        <View style={S.subcontainer}>
+          <MyText fontSize={20} fontWeight={'bold'}>
+            {userpv.nickname}
+          </MyText>
+        </View>
+      )}
+      {userpv && (
+        <View style={S.centercontainer}>
+          {userpv.isCreator && (
+            <TouchableOpacity
               style={S.signInButton}
-            />
-          </TouchableOpacity>
-        )}
-      </View>
+              onPress={() => navigation.navigate('UploadedScreen')}
+            >
+              <Image
+                source={require('../../../../shared/assets/images/mystory.jpg')}
+                style={S.signInButton}
+              />
+            </TouchableOpacity>
+          )}
+        </View>
+      )}
       <View style={S.container2}>
         <TouchableOpacity
           style={S.touchableText}

@@ -3,6 +3,7 @@ import { colors } from 'shared/utils/colors';
 
 const S = StyleSheet.create({
   container: {
+    flex: 1,
     paddingHorizontal: 24,
     paddingVertical: 24,
     backgroundColor: colors.background,

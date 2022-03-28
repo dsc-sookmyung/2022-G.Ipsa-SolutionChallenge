@@ -3,15 +3,15 @@ import qs from 'qs';
 
 import api from 'shared/utils/api';
 
-export function useLikedStories(keyword?: string) {
+export function useLikedStories(keyword?: number) {
   const {
     data: fetchingData,
     error,
     mutate,
-  } = useSWRNative(`like/story?userId=${keyword}`, api.client.get);
+  } = useSWRNative(`/like/story?userId=${keyword}`, api.client.get);
 
   const loading = fetchingData === undefined;
-  const stories = fetchingData?.data;
+  const likedStories = fetchingData?.data;
 
-  return { stories, loading, error, mutate };
+  return { likedStories, loading, error, mutate };
 }
