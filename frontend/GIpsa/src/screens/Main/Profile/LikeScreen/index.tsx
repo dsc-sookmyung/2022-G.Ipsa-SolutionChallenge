@@ -9,7 +9,6 @@ import MyText from 'shared/components/MyText';
 
 import { useUserPv } from 'src/provider/UserProvider';
 
-
 const LikeScreen = ({ navigation }) => {
   const { userpv, setUserpv } = useUserPv();
 

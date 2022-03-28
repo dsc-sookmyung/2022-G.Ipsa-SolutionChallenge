@@ -20,36 +20,45 @@ const dbconnector_1 = __importDefault(require("../database/dbconnector"));
 const typeorm_2 = require("typeorm");
 const router = express_1.default.Router();
 exports.UserInfoRouter = router;
+const connectionManager = (0, typeorm_2.getConnectionManager)();
 router.get('/emailCheck', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    if (!connectionManager.has('default')) {
+        const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    }
     const email = req.query.email;
     const userCount = yield UserInfo_1.default.findAndCount({ where: { email: email } });
     if (userCount[1] > 0)
         res.send('1');
     else
         res.send('0');
-    yield connection.close();
+    // await connection.close();
 }));
 router.get('/nicknameCheck', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    if (!connectionManager.has('default')) {
+        const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    }
     const nickname = req.query.nickname;
     const userCount = yield UserInfo_1.default.findAndCount({ where: { nickname: nickname } });
     if (userCount[1] > 0)
         res.send('1');
     else
         res.send('0');
-    yield connection.close();
+    // await connection.close();
 }));
 router.post('/signin', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    if (!connectionManager.has('default')) {
+        const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    }
     const user = req['body'];
     const newUser = UserInfo_1.default.create(user);
     yield newUser.save();
     res.send(newUser);
-    yield connection.close();
+    // await connection.close();
 }));
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    if (!connectionManager.has('default')) {
+        const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    }
     const keyword = req.query.keyword;
     const email = req.query.email;
     const id = req.query.id;
@@ -69,10 +78,12 @@ router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const searchedUser = yield UserInfo_1.default.find();
         res.send(searchedUser);
     }
-    yield connection.close();
+    // await connection.close();
 }));
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    if (!connectionManager.has('default')) {
+        const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    }
     const keyword = req.query.keyword;
     if (keyword) {
         const searchedUser = yield UserInfo_1.default.find({ nickname: (0, typeorm_1.Like)(`%${keyword}%`) });
@@ -82,5 +93,5 @@ router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const searchedUser = yield UserInfo_1.default.find();
         res.send(searchedUser);
     }
-    yield connection.close();
+    // await connection.close();
 }));
