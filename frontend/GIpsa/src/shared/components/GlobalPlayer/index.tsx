@@ -125,7 +125,6 @@ const GlobalPlayer = () => {
     TrackPlayer.setRepeatMode(RepeatMode.Queue);
   };
 
-  const { playerShow, setPlayerShow } = useGlobalPlayerPv();
   const playbackState = usePlaybackState();
   const progress = useProgress();
 
@@ -133,7 +132,6 @@ const GlobalPlayer = () => {
   const [trackTitle, setTrackTitle] = useState<string>();
   const [trackArtist, setTrackArtist] = useState<string>();
   const [trackId, setTrackId] = useState<number>();
-  const [isLiked, setIsLiked] = useState(false);
 
   useTrackPlayerEvents([Event.PlaybackTrackChanged], async (event) => {
     if (

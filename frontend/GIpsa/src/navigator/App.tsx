@@ -8,22 +8,22 @@ import UserProvider from 'src/provider/UserProvider';
 import GlobalPlayerProvider, {
   useGlobalPlayerPv,
 } from 'src/provider/GlobalPlayerProvider';
+import GlobalPlayer from 'shared/components/GlobalPlayer';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   // TODO: 유저 로그인 정보 확인 후 Sign 화면 render X -> 바로 Main 으로 가게
-
+  const { playerShow, setPlayerShow } = useGlobalPlayerPv();
+  console.log('App.tsx playerShow: ' + playerShow);
   return (
-    <NavigationContainer>
-      <UserProvider>
-        <GlobalPlayerProvider>
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Sign" component={Sign} />
-            <Stack.Screen name="Main" component={Main} />
-          </Stack.Navigator>
-        </GlobalPlayerProvider>
-      </UserProvider>
-    </NavigationContainer>
+    <UserProvider>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Sign" component={Sign} />
+          <Stack.Screen name="Main" component={Main} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </UserProvider>
   );
 }

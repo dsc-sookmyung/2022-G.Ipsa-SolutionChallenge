@@ -230,6 +230,7 @@ const PlayerModal: FC<PlayerModalProps> = ({ stories }: PlayerModalProps) => {
         onRequestClose={() => {
           setModalVisible(!modalVisible);
           setPlayerShow(true);
+          console.log('Modal closed, playerShow: ' + playerShow);
         }}
         style={{ flexDirection: 'column', alignItems: 'flex-end' }}
       >
