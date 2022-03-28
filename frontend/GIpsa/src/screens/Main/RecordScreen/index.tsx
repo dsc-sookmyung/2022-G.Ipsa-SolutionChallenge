@@ -1,11 +1,13 @@
 import { View, Text } from 'react-native';
 import React, { useState } from 'react';
+// import FormData from 'form-data';
 
 import SelectArea from './SelectArea';
 import AudioArea from './AudioArea';
 import { Category } from 'shared/types';
 import { colors } from 'shared/utils/colors';
 import api from 'shared/utils/api';
+import { API_ENDPOINT } from 'shared/constants/env';
 
 export type RecordingCondition = {
   beforeRecording: boolean;
@@ -28,29 +30,25 @@ const RecordScreen = () => {
     });
 
   const trimUri = (uri: string) => uri.split('cache/')[1];
+  const boundary = '--------------------------515890814546601021194782';
 
   const uploadImage = async () => {
     try {
       const image = {
         uri: imageUri,
-        type: 'image/jpg',
+        type: 'image/jpeg',
         name: trimUri(imageUri),
       };
       const body = new FormData();
       body.append('image', image);
 
-      const { data } = await api.client.post<string>(
-        '/story/imageUpload',
+      const res = await fetch(`${API_ENDPOINT}/story/imageUpload`, {
+        method: 'POST',
         body,
-        {
-          headers: {
-            // Accept: 'application/json',
-            // 'Content-Type': 'multipart/form-data; boundary:****************',
-          },
-        }
-      );
+      });
 
-      return data;
+      const { url } = await res.json();
+      return url;
     } catch (error) {
       console.log('Image upload error: ', error);
     }
@@ -61,23 +59,17 @@ const RecordScreen = () => {
       const audio = {
         uri: audioUri,
         type: 'audio/mp3',
-        name: trimUri(audioUri),
+        name: trimUri(audioUri).split('/')[1],
       };
       const body = new FormData();
       body.append('audio', audio);
-
-      const { data } = await api.client.post<string>(
-        '/story/audioUpload',
+      const res = await fetch(`${API_ENDPOINT}/story/audioUpload`, {
+        method: 'POST',
         body,
-        {
-          headers: {
-            // Accept: 'application/json',
-            // 'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
+      });
 
-      return data;
+      const { url } = await res.json();
+      return url;
     } catch (error) {
       console.log('Audio upload error: ', error);
     }

@@ -4,10 +4,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Sign from './Sign';
 import Main from './Main';
+import { LogBox } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  LogBox.ignoreLogs(['Remote debugger']);
+
   // TODO: 유저 로그인 정보 확인 후 Sign 화면 render X -> 바로 Main 으로 가게
   return (
     <NavigationContainer>
