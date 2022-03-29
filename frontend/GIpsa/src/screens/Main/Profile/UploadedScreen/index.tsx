@@ -10,48 +10,14 @@ import { useStoryCount } from 'shared/hook/useStoryCount';
 import { useFollowerCount } from 'shared/hook/useFollowerCount';
 import MyText from 'shared/components/MyText';
 
-import { useUserPv } from 'src/provider/UserProvider';
+import { useCurrentUser } from 'src/provider/UserProvider';
 
 const UploadedScreen = ({ navigation }) => {
-  const { userpv, setUserpv } = useUserPv();
+  const { currentUser } = useCurrentUser();
 
-  const { stories, loading, mutate } = useStories('?creatorId=' + userpv.id);
-  const { storycount } = useStoryCount('' + userpv.id);
-  const { followercount } = useFollowerCount('' + userpv.id);
-  // console.log(stories);
-  //const user: User = {
-  //  email: 'ryann3@naver.com',
-  //  profileImageSrc:
-  //    'https://k.kakaocdn.net/dn/vXU15/btrrr6F36R6/dDTklzgUtdGkHiRFZ5Mdm1/img_640x640.jpg',
-  //  birth: new Date(1909, 9, 9),
-  //  showBirth: false,
-  //  isCreator: true,
-  //  nickname: 'Nana',
-  //};
-  //test
-  //const storyys: Story[] = [];
-  //storyys.push({
-  //  id: 12,
-  //  creatorId: 13,
-  //  category: 'sth',
-  //  audioFileSrc: '',
-  //  likes: 2,
-  //  title: 'title1',
-  //  thumbnailImageSrc:
-  //    'https://k.kakaocdn.net/dn/chFJvJ/btrlY5GSAEx/KdKaCGcO2kyMpE5mM1cwp1/img_640x640.jpg',
-  //  createdAt: new Date(2020, 9, 9),
-  //});
-  //storyys.push({
-  //  id: 13,
-  //  creatorId: 14,
-  //  category: 'sth',
-  //  audioFileSrc: '',
-  //  likes: 3,
-  //  title: 'title2',
-  //  thumbnailImageSrc:
-  //    'https://k.kakaocdn.net/dn/vXU15/btrrr6F36R6/dDTklzgUtdGkHiRFZ5Mdm1/img_640x640.jpg',
-  //  createdAt: new Date(2021, 3, 9),
-  //});
+  const { stories } = useStories(undefined, currentUser?.id);
+  const { storycount } = useStoryCount(currentUser?.id);
+  const { followercount } = useFollowerCount(currentUser?.id);
 
   return (
     <View style={S.maincontainer}>
