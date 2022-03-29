@@ -11,8 +11,7 @@ import PlayingBar from 'shared/components/PlayingBar';
 const Stack = createNativeStackNavigator();
 
 const Profile = () => {
-  const { isPlayingBarShow: playerShow, setIsPlayingBarShow: setPlayerShow } =
-    usePlayingBarShow();
+  const { isPlayingBarShow } = usePlayingBarShow();
 
   return (
     <>
@@ -22,7 +21,7 @@ const Profile = () => {
         <Stack.Screen name="FollowerScreen" component={FollowerScreen} />
         <Stack.Screen name="LikeScreen" component={LikeScreen} />
       </Stack.Navigator>
-      {playerShow && <PlayingBar />}
+      {isPlayingBarShow && <PlayingBar />}
     </>
   );
 };

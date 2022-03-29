@@ -3,7 +3,6 @@ import {
   Image,
   Modal,
   SafeAreaView,
-  StatusBar,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -24,13 +23,14 @@ import * as Progress from 'react-native-progress';
 
 import S from './Styles';
 import { MyText } from 'shared/components';
-import { Story } from 'shared/types';
 import { useLiked } from 'shared/hook/useLiked';
 import { API_ENDPOINT } from 'shared/constants/env';
 import { useLikedStories } from 'shared/hook/useLikedStories';
 import { useCurrentUser } from 'src/provider/UserProvider';
-import { usePlayingBarShow } from 'src/provider/PlayingBarProvider';
 import { useMusicPlayerShow } from 'src/provider/MusicPlayerProvider';
+import { usePlayingStory } from 'src/provider/PlayingStoryProvider';
+import api from 'shared/utils/api';
+import { Story } from 'shared/types';
 
 LogBox.ignoreLogs(['Warning: Possible Unhandled Promise Rejection']); // Ignore log notification by message
 
@@ -80,25 +80,17 @@ async function jumpBackward() {
   }
 }
 
-export interface MusicPlayerModalProps {
-  stories?: Story[] | null;
-}
-
-const MusicPlayerModal: FC<MusicPlayerModalProps> = ({
-  stories,
-}: MusicPlayerModalProps) => {
+const MusicPlayerModal = () => {
   const { currentUser } = useCurrentUser();
+  const { playingStory } = usePlayingStory();
   const { isMusicPlayerShow, setIsMusicPlayerShow } = useMusicPlayerShow();
 
-  const { likedStories, loading } = useLikedStories(currentUser?.id);
+  useEffect(() => {
+    setupTrackPlayer();
+  }, [playingStory]);
 
-  const setupIfNecessary = async () => {
-    // if app was relaunched and music was already playing, we don't setup again. -> SET UP AGAIN
-    // const currentTrack = await TrackPlayer.getCurrentTrack();
-    // if (currentTrack !== null) {
-    //   return;
-    // }
-    if (!stories) {
+  const setupTrackPlayer = async () => {
+    if (!playingStory) {
       return;
     }
 
@@ -119,23 +111,25 @@ const MusicPlayerModal: FC<MusicPlayerModalProps> = ({
       compactCapabilities: [Capability.Play, Capability.Pause],
     });
 
-    for (let i = 0; i < stories?.length; i++) {
-      await TrackPlayer.add({
-        id: stories[i].id,
-        url: stories[i].audioFileSrc,
-        title: stories[i].title,
-        artist: '' + stories[i].creatorId,
-        artwork: stories[i].thumbnailImageSrc,
-        duration: stories[i].duration,
-      });
-    }
+    await TrackPlayer.add({
+      id: playingStory.id,
+      url: playingStory.audioFileSrc,
+      title: playingStory.title,
+      artist: String(playingStory.creatorId),
+      artwork: playingStory.thumbnailImageSrc,
+      duration: playingStory.duration,
+    });
+
+    const { data: likedStories } = await api.client.get<Story[]>(
+      `/like/story?userId=${currentUser?.id}`
+    );
 
     for (let i = 0; i < likedStories.length; i++) {
       await TrackPlayer.add({
         id: likedStories[i].id,
         url: likedStories[i].audioFileSrc,
         title: likedStories[i].title,
-        artist: '' + likedStories[i].creatorId,
+        artist: String(likedStories[i].creatorId),
         artwork: likedStories[i].thumbnailImageSrc,
         duration: likedStories[i].duration,
       });
@@ -147,13 +141,13 @@ const MusicPlayerModal: FC<MusicPlayerModalProps> = ({
   const playbackState = usePlaybackState();
   const progress = useProgress();
 
-  const [trackArtwork, setTrackArtwork] = useState<string | number>();
+  const [trackArtwork, setTrackArtwork] = useState<string | number | undefined>(
+    playingStory?.thumbnailImageSrc
+  );
   const [trackTitle, setTrackTitle] = useState<string>();
   const [trackArtist, setTrackArtist] = useState<string>();
   const [trackId, setTrackId] = useState<number>();
   const [isLiked, setIsLiked] = useState(false);
-  const { isPlayingBarShow: playerShow, setIsPlayingBarShow: setPlayerShow } =
-    usePlayingBarShow();
 
   useTrackPlayerEvents([Event.PlaybackTrackChanged], async (event) => {
     if (
@@ -169,13 +163,7 @@ const MusicPlayerModal: FC<MusicPlayerModalProps> = ({
     }
   });
 
-  useEffect(() => {
-    setupIfNecessary();
-  }, []);
-
   const { likeData } = useLiked('?userId=' + currentUser?.id);
-
-  // console.log('' + userpv.id + 'likeData: ' + JSON.stringify(likeData));
 
   useEffect(() => {
     setIsLiked(false);
@@ -186,7 +174,6 @@ const MusicPlayerModal: FC<MusicPlayerModalProps> = ({
     }
   }, [trackId]);
 
-  // ���ƿ� ����
   const like = {
     userId: currentUser?.id,
     likedStoryId: trackId,
@@ -234,91 +221,91 @@ const MusicPlayerModal: FC<MusicPlayerModalProps> = ({
         }}
         style={{ flexDirection: 'column', alignItems: 'flex-end' }}
       >
-        <SafeAreaView style={S.screenContainer}>
-          <StatusBar barStyle={'light-content'} />
-          <View style={S.contentContainer}>
-            <View style={S.titleText}>
-              {!loading && trackTitle ? (
+        <View style={S.background}>
+          <SafeAreaView style={S.screenContainer}>
+            <View style={S.contentContainer}>
+              <View style={S.titleText}>
                 <MyText fontSize={18} fontWeight="bold">
                   {trackTitle}
                 </MyText>
-              ) : (
-                <Progress.Circle size={20} indeterminate={true} />
-              )}
-            </View>
-            <View style={S.artistText}>
-              <MyText fontSize={14} fontWeight="light">
-                {trackArtist}
-              </MyText>
-            </View>
-            <Image style={S.artwork} source={{ uri: `${trackArtwork}` }} />
-            <Slider
-              style={S.progressContainer}
-              value={progress.position}
-              minimumValue={0}
-              maximumValue={progress.duration}
-              thumbTintColor="#F98B65"
-              minimumTrackTintColor="#F98B65"
-              maximumTrackTintColor="#DDDDDD"
-              onSlidingComplete={async (value) => {
-                await TrackPlayer.seekTo(value);
-              }}
-            />
-            <View style={S.progressLabelContainer}>
-              <Text style={S.progressLabelText}>
-                {new Date(progress.position * 1000).toISOString().substr(14, 5)}
-              </Text>
-              <Text style={S.progressLabelText}>
-                {new Date((progress.duration - progress.position) * 1000)
-                  .toISOString()
-                  .substr(14, 5)}
-              </Text>
-            </View>
-          </View>
-          <View style={S.actionRowContainer}>
-            <TouchableWithoutFeedback
-              onPress={() => TrackPlayer.skipToPrevious()}
-            >
-              <Image
-                style={S.thirdActionButton}
-                source={require('../../assets/images/rewind-button.png')}
+              </View>
+              <View style={S.artistText}>
+                <MyText fontSize={14} fontWeight="light">
+                  {trackArtist}
+                </MyText>
+              </View>
+              <Image style={S.artwork} source={{ uri: `${trackArtwork}` }} />
+              <Slider
+                style={S.progressContainer}
+                value={progress.position}
+                minimumValue={0}
+                maximumValue={progress.duration}
+                thumbTintColor="#F98B65"
+                minimumTrackTintColor="#F98B65"
+                maximumTrackTintColor="#DDDDDD"
+                onSlidingComplete={async (value) => {
+                  await TrackPlayer.seekTo(value);
+                }}
               />
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={() => jumpBackward()}>
-              <Image
-                style={S.secondaryActionButton}
-                source={require('../../assets/images/back15s.png')}
-              />
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback
-              onPress={() => togglePlayback(playbackState)}
-            >
-              {playbackState === State.Playing ? (
+              <View style={S.progressLabelContainer}>
+                <Text style={S.progressLabelText}>
+                  {new Date(progress.position * 1000)
+                    .toISOString()
+                    .substr(14, 5)}
+                </Text>
+                <Text style={S.progressLabelText}>
+                  {new Date((progress.duration - progress.position) * 1000)
+                    .toISOString()
+                    .substr(14, 5)}
+                </Text>
+              </View>
+            </View>
+            <View style={S.actionRowContainer}>
+              <TouchableWithoutFeedback
+                onPress={() => TrackPlayer.skipToPrevious()}
+              >
                 <Image
-                  style={S.primaryActionButton}
-                  source={require('../../assets/images/pause-button.png')}
+                  style={S.thirdActionButton}
+                  source={require('../../assets/images/rewind-button.png')}
                 />
-              ) : (
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback onPress={() => jumpBackward()}>
                 <Image
-                  style={S.primaryActionButton}
-                  source={require('../../assets/images/play-button.png')}
+                  style={S.secondaryActionButton}
+                  source={require('../../assets/images/back15s.png')}
                 />
-              )}
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={() => jumpForward()}>
-              <Image
-                style={S.secondaryActionButton}
-                source={require('../../assets/images/front10s.png')}
-              />
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={() => TrackPlayer.skipToNext()}>
-              <Image
-                style={S.thirdActionButton}
-                source={require('../../assets/images/forward-button.png')}
-              />
-            </TouchableWithoutFeedback>
-          </View>
-          {/* <Button
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback
+                onPress={() => togglePlayback(playbackState)}
+              >
+                {playbackState === State.Playing ? (
+                  <Image
+                    style={S.primaryActionButton}
+                    source={require('../../assets/images/pause-button.png')}
+                  />
+                ) : (
+                  <Image
+                    style={S.primaryActionButton}
+                    source={require('../../assets/images/play-button.png')}
+                  />
+                )}
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback onPress={() => jumpForward()}>
+                <Image
+                  style={S.secondaryActionButton}
+                  source={require('../../assets/images/front10s.png')}
+                />
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback
+                onPress={() => TrackPlayer.skipToNext()}
+              >
+                <Image
+                  style={S.thirdActionButton}
+                  source={require('../../assets/images/forward-button.png')}
+                />
+              </TouchableWithoutFeedback>
+            </View>
+            {/* <Button
             title="Remove audios"
             onPress={() => {
               TrackPlayer.reset();
@@ -327,29 +314,23 @@ const MusicPlayerModal: FC<MusicPlayerModalProps> = ({
               setTrackTitle('');
             }}
           /> */}
-          <View style={S.likecontainer}>
-            <TouchableOpacity onPress={() => chaneLike()}>
-              {isLiked ? (
-                <Image
-                  style={S.heart}
-                  source={require('../../assets/images/heart-fill.png')}
-                />
-              ) : (
-                <Image
-                  style={S.heart}
-                  source={require('../../assets/images/heart-empty.png')}
-                />
-              )}
-            </TouchableOpacity>
-          </View>
-        </SafeAreaView>
-
-        {/* <Pressable
-          style={[S.button, S.buttonClose]}
-          onPress={() => setModalVisible(!modalVisible)}
-        >
-          <Text style={S.textStyle}>Hide Modal</Text>
-        </Pressable> */}
+            <View style={S.likecontainer}>
+              <TouchableOpacity onPress={() => chaneLike()}>
+                {isLiked ? (
+                  <Image
+                    style={S.heart}
+                    source={require('../../assets/images/heart-fill.png')}
+                  />
+                ) : (
+                  <Image
+                    style={S.heart}
+                    source={require('../../assets/images/heart-empty.png')}
+                  />
+                )}
+              </TouchableOpacity>
+            </View>
+          </SafeAreaView>
+        </View>
       </Modal>
     </SafeAreaView>
   );

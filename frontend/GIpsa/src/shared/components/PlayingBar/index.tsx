@@ -71,12 +71,8 @@ async function jumpBackward() {
 
 const PlayingBar = () => {
   const { currentUser } = useCurrentUser();
-  const {
-    isMusicPlayerShow: mplayerShow,
-    setIsMusicPlayerShow: setmPlayerShow,
-  } = useMusicPlayerShow();
+  const { setIsMusicPlayerShow } = useMusicPlayerShow();
 
-  // ���� ����Ʈ�� ���ϱ�(����Ʈ: ���ƿ� ���� ���丮��)
   const { likedStories } = useLikedStories(currentUser?.id);
 
   const setupIfNecessary = async () => {
@@ -156,7 +152,7 @@ const PlayingBar = () => {
     <SafeAreaView style={S.container}>
       <SafeAreaView style={S.screenContainer}>
         {/* <Image style={S.artwork} source={{ uri: `${trackArtwork}` }} /> */}
-        <TouchableOpacity onPress={() => setmPlayerShow(true)}>
+        <TouchableOpacity onPress={() => setIsMusicPlayerShow(true)}>
           <View style={S.contentContainer}>
             <View style={S.titleText}>
               {isLoaded ? (
