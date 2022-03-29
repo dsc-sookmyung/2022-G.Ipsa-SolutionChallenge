@@ -53,6 +53,7 @@ Seniors can convey their various experiences and thoughts through bind. They can
 In addition, we are also planning to expand this app in the future, expecting effects such as bringing economic benefits to seniors through educating professional senior creators.
 Also, we are considering to add a recommendation system for users.
 
+</br>
 
 ## Demo
 
