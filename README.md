@@ -20,6 +20,7 @@
 - Service Designer: Soyeon Kim
 
 
+</br>
 
 ## About BIND
 ### Intended to reduce the hatred of elderly and ageism, prevalent in society. 
@@ -28,7 +29,7 @@ Based on various experiences and papers, we thought that the "Old Normal", in wh
 
 </br>
 
-### Core function: record and upload audios 
+### Core function: Record and upload audios 
 There are two kinds of users. A teller(senior), and a listener(junior). BIND allows seniors to record their own stories and juniors to listen to them so that they can feel close to each other and realize that the elderly are just people around them. As a result, we believe this app will help reduce ageism. 
 Juniors can find and listen to stories, and seniors can record their own stories and see junior's reactions to it. As seniors record their stories, they will be able to look back over time and stop their hatred of old age by thinking about what time has brought to them.
 
