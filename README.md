@@ -9,13 +9,11 @@
 </p>
 
 ## Team G.Ipsa
-***
-Team
+
 - Lead/FE: [Ryanne Keum](https://github.com/NayeonKeum)
 - FE: [Jaehyun Song](https://github.com/tommyjr1)
 - BE: [Jongyoon Choi](https://github.com/JYBESiU)
 - Service Designer: Soyeon Kim
-***
 
 
 
@@ -49,9 +47,7 @@ Seniors can convey their various experiences and thoughts through bind. They can
 ## Future plans
 In addition, we are also planning to expand this app in the future, expecting effects such as bringing economic benefits to seniors through educating professional senior creators.
 Also, we are considering to add a recommendation system for users.
-![12  listen to]()
-![11  upload-select-cat]()
-![10  record+upload]()
+
 
 ## Demo
 |Login|Signin|Home|
@@ -70,7 +66,7 @@ Also, we are considering to add a recommendation system for users.
 
 
 
-|Record and Upload||
+|Record and Upload|
 |------|
 |<img src="https://user-images.githubusercontent.com/68985625/160627121-2eb078a3-4cd4-4625-8ee7-a7294ea870c1.png" width="750">|
 
