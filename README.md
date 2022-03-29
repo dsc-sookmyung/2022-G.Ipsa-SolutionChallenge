@@ -10,7 +10,6 @@
 <img src="https://user-images.githubusercontent.com/68985625/160627141-839284ac-ec2a-4f99-a17c-2f7690d36861.png" width=10%>
 </p>
 
-</br>
 
 ## Team G.Ipsa
 
