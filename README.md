@@ -91,4 +91,6 @@ yarn start
 yarn android
 ```
 
+## 🔐 Notice
+Unauthorized theft, distribution and use of images, logos and text used in this project is prohibited.
 
