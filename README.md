@@ -4,9 +4,13 @@
 
 #### Bind generations to make a better world (aka. **B**ack **I**n **T**he **D**ays)
 
+</br>
+
 <p align='center'>
-<img src="https://user-images.githubusercontent.com/68985625/160627141-839284ac-ec2a-4f99-a17c-2f7690d36861.png" width=30%>
+<img src="https://user-images.githubusercontent.com/68985625/160627141-839284ac-ec2a-4f99-a17c-2f7690d36861.png" width=10%>
 </p>
+
+</br>
 
 ## Team G.Ipsa
 
@@ -68,7 +72,7 @@ Also, we are considering to add a recommendation system for users.
 
 |Record and Upload|
 |------|
-|<img src="https://user-images.githubusercontent.com/68985625/160627121-2eb078a3-4cd4-4625-8ee7-a7294ea870c1.png" width="750">|
+|<img src="https://user-images.githubusercontent.com/68985625/160627121-2eb078a3-4cd4-4625-8ee7-a7294ea870c1.png" width="800">|
 
 
 |Upload - Select category|Listen to|
