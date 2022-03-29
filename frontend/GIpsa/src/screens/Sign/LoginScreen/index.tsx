@@ -75,7 +75,9 @@ const LoginScreen = ({ navigation }) => {
       setEmail(GuserInfo?.user.email);
       const user: User = {
         email: GuserInfo?.user.email,
-        profileImageSrc: GuserInfo?.user.photo as string,
+        profileImageSrc: GuserInfo?.user.photo
+          ? GuserInfo?.user.photo
+          : 'string',
 
         birth: new Date(),
         showBirth: false,

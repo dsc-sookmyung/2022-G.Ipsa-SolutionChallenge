@@ -1,9 +1,3 @@
 .gcloudignore
 .gitignore
 node_modules/
-dist
-<<<<<<< HEAD
-
-=======
-src/swagger/
->>>>>>> master

@@ -6,6 +6,7 @@ const S = StyleSheet.create({
     paddingHorizontal: 24,
     backgroundColor: colors.background,
     height: '100%',
+    alignItems: 'center',
   },
   results: {
     paddingTop: 28,

@@ -1,21 +1,16 @@
-import express, { Application, Router, Request, Response} from 'express';
+import express, { Application, Router, Request, Response } from 'express';
 import bodyParser from 'body-parser';
-import {UserInfoRouter} from './routers/UserInfoRouter';
-import {StoryRouter} from './routers/StoryRouter';
-import {LikeRouter} from './routers/LikeRouter';
-import {FollowRouter} from './routers/FollowRouter';
-import {CommentRouter} from './routers/CommentRouter';
-
-import Options from './database/dbconnector';
+import { UserInfoRouter } from './routers/UserInfoRouter';
+import { StoryRouter } from './routers/StoryRouter';
+import { LikeRouter } from './routers/LikeRouter';
+import { FollowRouter } from './routers/FollowRouter';
+import { CommentRouter } from './routers/CommentRouter';
 import path from 'path';
-import swaggerUi from 'swagger-ui-express' 
+import swaggerUi from 'swagger-ui-express'
 import YAML from 'yamljs'
-import {createConnection} from 'typeorm';
-
 
 class Server {
     private app: express.Application;
-
 
     constructor() {
         this.app = express(); //init the application
@@ -25,14 +20,14 @@ class Server {
     }
 
     private config() {
-        // this.app.use(bodyParser.urlencoded({ extended:true }));
-        // this.app.use(bodyParser.json({ limit: '1mb' })); // 100kb default
+        // this.app.use(bodyParser.urlencoded({ extended: false }));
+        // this.app.use(bodyParser.json());
         this.app.use(express.json())
-        this.app.enable('trust proxy')
+        this.app.disable('x-powered-by')
     }
 
     public routerConfig() {
-        this.app.get('/', (req: Request, res: Response)=>{
+        this.app.get('/', (req: Request, res: Response) => {
             res.send('hello')
         })
 

@@ -9,5 +9,5 @@ import TrackPlayer from 'react-native-track-player';
 
 AppRegistry.registerComponent(appName, () => App);
 TrackPlayer.registerPlaybackService(() =>
-  require('./src/screens/Main/CreateScreen/ListenScreen/service')
+  require('./src/shared/components/TrackPlayer/service')
 );

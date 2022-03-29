@@ -15,3 +15,6 @@ export type { StoryCardHorizontalProps } from './StoryCardHorizontal';
 
 export { default as TellerCard } from './TellerCard';
 export type { TellerCardProps } from './TellerCard';
+
+export { default as MyTextInput } from './MyTextInput';
+export type { MyTextInputProps } from './MyTextInput';

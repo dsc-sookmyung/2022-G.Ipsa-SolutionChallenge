@@ -10,16 +10,20 @@
     "@types/pg": "^8.6.4",
     "@types/swagger-ui-express": "^4.1.3",
     "@types/yamljs": "^0.2.31",
+    "@typescript-eslint/eslint-plugin": "^5.15.0",
+    "@typescript-eslint/parser": "^5.15.0",
+    "eslint": "^8.11.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "nodemon": "^2.0.15",
+    "prettier": "^2.6.0",
     "ts-node": "^10.5.0",
     "typescript": "^4.5.5"
   },
   "scripts": {
-    "api-docs": "swagger-cli bundle ./src/swagger/openapi.yaml --outfile ./build/swagger.yaml --type yaml",
     "gcp-build": "tsc -p .",
     "start": "node dist/app.js",
-    "predev": "yarn api-docs",
-    "dev": "tsc && nodemon --watch src/ --exec ts-node src/app.ts"
+    "dev": "tsc && nodemon --exec ts-node src/app.ts"
   },
   "dependencies": {
     "@google-cloud/storage": "^5.18.2",
