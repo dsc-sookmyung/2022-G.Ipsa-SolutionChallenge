@@ -14,8 +14,7 @@ import { usePlayingBarShow } from 'src/provider/PlayingBarProvider';
 
 const SearchScreen = () => {
   const [searchText, setSearchText] = useState<string>('');
-  const { isPlayingBarShow: playerShow, setIsPlayingBarShow: setPlayerShow } =
-    usePlayingBarShow();
+  const { isPlayingBarShow } = usePlayingBarShow();
 
   const { stories } = useStories(searchText);
   const { users } = useUsers(searchText);
@@ -31,7 +30,7 @@ const SearchScreen = () => {
           <StoryReselts stories={stories} />
         </ScrollView>
       )}
-      {playerShow && <PlayingBar />}
+      {isPlayingBarShow && <PlayingBar />}
     </View>
   );
 };
