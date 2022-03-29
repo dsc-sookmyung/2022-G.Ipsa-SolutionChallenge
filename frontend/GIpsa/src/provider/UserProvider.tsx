@@ -9,22 +9,22 @@ import React, {
 import { User } from 'shared/types';
 
 export const UserContext = createContext<{
-  userpv: User | null;
-  setUserpv: Dispatch<React.SetStateAction<User | null>>;
+  currentUser: User | undefined;
+  setCurrentUser: Dispatch<React.SetStateAction<User | undefined>>;
 }>({
-  userpv: null,
-  setUserpv: () => {},
+  currentUser: undefined,
+  setCurrentUser: () => {},
 });
 
 const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [userpv, setUserpv] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<User | undefined>();
 
-  const value = useMemo(() => ({ userpv, setUserpv }), [userpv]);
+  const value = useMemo(() => ({ currentUser, setCurrentUser }), [currentUser]);
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
 
-export function useUserPv() {
+export function useCurrentUser() {
   return useContext(UserContext);
 }
 

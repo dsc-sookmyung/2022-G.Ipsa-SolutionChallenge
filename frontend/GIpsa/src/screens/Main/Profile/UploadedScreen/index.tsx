@@ -10,10 +10,10 @@ import { useStoryCount } from 'shared/hook/useStoryCount';
 import { useFollowerCount } from 'shared/hook/useFollowerCount';
 import MyText from 'shared/components/MyText';
 
-import { useUserPv } from 'src/provider/UserProvider';
+import { useCurrentUser } from 'src/provider/UserProvider';
 
 const UploadedScreen = ({ navigation }) => {
-  const { userpv, setUserpv } = useUserPv();
+  const { currentUser: userpv, setCurrentUser: setUserpv } = useCurrentUser();
 
   const { stories, loading, mutate } = useStories('?creatorId=' + userpv.id);
   const { storycount } = useStoryCount('' + userpv.id);

@@ -9,18 +9,18 @@ import MyTabHeader from 'shared/components/MyTabHeader';
 import { colors } from 'shared/utils/colors';
 import { MyText } from 'shared/components';
 import Profile from './Profile';
-import GlobalPlayerProvider, {
-  useGlobalPlayerPv,
-} from 'src/provider/GlobalPlayerProvider';
+import PlayingBarProvider, {
+  usePlayingBarShow,
+} from 'src/provider/PlayingBarProvider';
 import GlobalPlayer from 'shared/components/GlobalPlayer';
-import PlayerProvider from 'src/provider/PlayerProvider';
+import MusicPlayerProvider from 'src/provider/MusicPlayerProvider';
 
 const Tab = createBottomTabNavigator();
 
 const Main = () => {
   return (
-    <GlobalPlayerProvider>
-      <PlayerProvider>
+    <PlayingBarProvider>
+      <MusicPlayerProvider>
         <Tab.Navigator
           screenOptions={({ route }) => ({
             header: MyTabHeader,
@@ -59,8 +59,8 @@ const Main = () => {
           <Tab.Screen name="Search" component={SearchScreen} />
           <Tab.Screen name="My page" component={Profile} />
         </Tab.Navigator>
-      </PlayerProvider>
-    </GlobalPlayerProvider>
+      </MusicPlayerProvider>
+    </PlayingBarProvider>
   );
 };
 

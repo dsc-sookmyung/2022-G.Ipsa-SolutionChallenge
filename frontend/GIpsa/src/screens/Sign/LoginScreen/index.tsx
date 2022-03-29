@@ -7,31 +7,25 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import S from './Styles';
-import { MainTabScreenProps } from 'navigator/types';
 import {
   GoogleSignin,
-  GoogleSigninButton,
   statusCodes,
   User as GUser,
 } from '@react-native-google-signin/google-signin';
-import { isConditionalExpression } from 'typescript';
 import {
   getProfile,
   KakaoOAuthToken,
   KakaoProfile,
-  KakaoProfileNoneAgreement,
   login,
   logout,
 } from '@react-native-seoul/kakao-login';
+import * as Progress from 'react-native-progress';
 
+import S from './Styles';
 import { User } from 'shared/types';
 import { useUsersEmail } from 'shared/hook/useUsersEmail';
 import { useECheck } from 'shared/hook/useECheck';
-import * as Progress from 'react-native-progress';
-
-import { useUserPv } from 'src/provider/UserProvider';
-import useUserByEmail from 'shared/hook/useUserByEmail';
+import { useCurrentUser } from 'src/provider/UserProvider';
 
 const LoginScreen = ({ navigation }) => {
   // /* google
@@ -46,30 +40,18 @@ const LoginScreen = ({ navigation }) => {
     });
   }
 
-  const [userInfo, setUserInfo] = useState<GUser>();
   const [error, setError] = useState<Error>();
   const [email, setEmail] = useState('');
   const { usersEmail, loading } = useUsersEmail(email);
   const [userIn, setUserIn] = useState<User>();
   const [clicked, setClicked] = useState(false);
 
-  const { userpv, setUserpv } = useUserPv();
-
-  const signOut = async () => {
-    try {
-      await GoogleSignin.revokeAccess();
-      await GoogleSignin.signOut();
-    } catch (error) {
-      Alert.alert('Something else went wrong... ');
-      console.log(error);
-    }
-  };
+  const { setCurrentUser } = useCurrentUser();
 
   const LogInWithGoogle = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const GuserInfo = await GoogleSignin.signIn();
-      setUserInfo(GuserInfo);
 
       setClicked(true);
       setEmail(GuserInfo?.user.email);
@@ -85,7 +67,7 @@ const LoginScreen = ({ navigation }) => {
         nickname: '',
       };
       setUserIn(user);
-    } catch (error) {
+    } catch (error: any) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // when user cancels sign in process,
         Alert.alert('Process Cancelled');
@@ -100,29 +82,8 @@ const LoginScreen = ({ navigation }) => {
         Alert.alert('Something else went wrong... ', error.toString());
         setError(error);
       }
-      // Alert.alert('Something else went wrong... in googlesignin');
-      // console.log(error);
     }
   };
-
-  // google User
-  // {
-  //   idToken: string,
-  //   serverAuthCode: string,
-  //   scopes: Array<string>, // on iOS this is empty array if no additional scopes are defined
-  //   user: {}
-  //     email: string,
-  //     id: string,
-  //     givenName: string,
-  //     familyName: string,
-  //     photo: string, // url
-  //     name: string // full name
-  //   }
-  // }
-
-  // */ google
-
-  // /* kakao
 
   const [userInfoKakao, setUserInfoKakao] = useState<KakaoProfile>();
 
@@ -166,7 +127,7 @@ const LoginScreen = ({ navigation }) => {
 
       if (emailCheck == 1) {
         console.log(usersEmail);
-        setUserpv(usersEmail[0] as User);
+        setCurrentUser(usersEmail?.[0]);
 
         navigation.navigate('Main');
       } else if (emailCheck == 0) {
@@ -174,67 +135,6 @@ const LoginScreen = ({ navigation }) => {
       }
     }
   }, [email, emailCheck, loading]);
-
-  //   type KakaoProfile = {
-  //     id: string;
-  //     email: string;
-  //     nickname: string;
-  //     profileImageUrl: string;
-  //     thumbnailImageUrl: string;
-  //     phoneNumber: string;
-  //     ageRange: string;
-  //     birthday: string;
-  //     birthdayType: string;
-  //     birthyear: string;
-  //     gender: string;
-  //     isEmailValid: boolean;
-  //     isEmailVerified: boolean;
-  //     isKorean: boolean;
-  //     ageRangeNeedsAgreement?: boolean | undefined;
-  //     ... 6 more ...;
-  //     profileNeedsAgreement?: boolean | undefined;
-  // }
-
-  // */ kakao
-
-  // 구글 제공 로그인 버튼
-  // <GoogleSigninButton
-  //   style={S.signInButton}
-  //   size={GoogleSigninButton.Size.Wide}
-  //   color={GoogleSigninButton.Color.Dark}
-  //   onPress={() => LogInWithGoogle()}
-  // />
-
-  // 구글 유저 정보 및 sign out
-  // <View style={S.container}>
-  //   <Text>google: {userInfo?.user.email}</Text>
-
-  //   {isLoggedIn === false ? (
-  //     <Text>You must google sign in!</Text>
-  //   ) : (
-  //     <Button
-  //       onPress={() => signOut()}
-  //       title="Sign out Google"
-  //       color="#332211"
-  //     />
-  //   )}
-  // </View>
-
-  // 카카오 유저 정보 및 sign out
-  // <View style={S.container}>
-  //   <Text>kakao: {(userInfoKakao as KakaoProfile)?.email}</Text>
-  //   {isLoggedInKakao === false ? (
-  //     <Text>You must kakao sign in!</Text>
-  //   ) : (
-  //     <Button
-  //       onPress={() => signOutWithKakao()}
-  //       title="Sign out Kakao"
-  //       color="#332211"
-  //     />
-  //   )}
-  // </View>
-  // signin 페이지로 이동
-  //  <Button title="Go Signin" onPress={() => navigation.navigate('Signin')} />
 
   return (
     <View style={S.container}>

@@ -29,11 +29,11 @@ import { Story, User } from 'shared/types';
 import { useLiked } from 'shared/hook/useLiked';
 import { API_ENDPOINT } from 'shared/constants/env';
 import { useLikedStories } from 'shared/hook/useLikedStories';
-import { useUserPv } from 'src/provider/UserProvider';
-import { useGlobalPlayerPv } from 'src/provider/GlobalPlayerProvider';
+import { useCurrentUser } from 'src/provider/UserProvider';
+import { usePlayingBarShow } from 'src/provider/PlayingBarProvider';
 import PlayerModal from '../PlayerModal';
 import * as Progress from 'react-native-progress';
-import { usePlayerPv } from 'src/provider/PlayerProvider';
+import { useMusicPlayerShow } from 'src/provider/MusicPlayerProvider';
 
 const togglePlayback = async (playbackState: State) => {
   const currentTrack = await TrackPlayer.getCurrentTrack();
@@ -82,10 +82,13 @@ async function jumpBackward() {
 }
 
 const GlobalPlayer = () => {
-  const { userpv, setUserpv } = useUserPv();
-  const { mplayerShow, setmPlayerShow } = usePlayerPv();
+  const { currentUser: userpv, setCurrentUser: setUserpv } = useCurrentUser();
+  const {
+    isMusicPlayerShow: mplayerShow,
+    setIsMusicPlayerShow: setmPlayerShow,
+  } = useMusicPlayerShow();
 
-  // ÆÄÀÏ ¸®½ºÆ®·Î ´õÇÏ±â(µðÆúÆ®: ÁÁ¾Æ¿ä ´©¸¥ ½ºÅä¸®µé)
+  // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½Ï±ï¿½(ï¿½ï¿½ï¿½ï¿½Æ®: ï¿½ï¿½ï¿½Æ¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ä¸®ï¿½ï¿½)
   const { likedStories } = useLikedStories(userpv?.id);
 
   const setupIfNecessary = async () => {

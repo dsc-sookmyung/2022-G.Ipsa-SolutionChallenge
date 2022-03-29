@@ -6,7 +6,7 @@ import { Story } from 'shared/types';
 import MyText from '../MyText';
 import { TouchableOpacity } from 'react-native';
 import PlayerModal from '../PlayerModal';
-import { useGlobalPlayerPv } from 'src/provider/GlobalPlayerProvider';
+import { usePlayingBarShow } from 'src/provider/PlayingBarProvider';
 
 export interface StoryCardProps {
   story: Story;
@@ -14,7 +14,8 @@ export interface StoryCardProps {
 
 const StoryCard: FC<StoryCardProps> = ({ story }: StoryCardProps) => {
   const [isM, setIsM] = useState(false);
-  const { playerShow, setPlayerShow } = useGlobalPlayerPv();
+  const { isPlayingBarShow: playerShow, setIsPlayingBarShow: setPlayerShow } =
+    usePlayingBarShow();
 
   const stories: Story[] = [];
   stories.push(story);

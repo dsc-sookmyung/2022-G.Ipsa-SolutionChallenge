@@ -7,7 +7,7 @@ import { Category } from 'shared/types';
 import { colors } from 'shared/utils/colors';
 import api from 'shared/utils/api';
 import { API_ENDPOINT } from 'shared/constants/env';
-import { useUserPv } from 'src/provider/UserProvider';
+import { useCurrentUser } from 'src/provider/UserProvider';
 import { MainTabScreenProps } from 'navigator/types';
 
 export type RecordingCondition = {
@@ -17,7 +17,7 @@ export type RecordingCondition = {
 };
 
 const RecordScreen = ({ navigation }) => {
-  const { userpv } = useUserPv();
+  const { currentUser: userpv } = useCurrentUser();
   const [title, setTitle] = useState<string>('');
   const [imageUri, setImageUri] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<

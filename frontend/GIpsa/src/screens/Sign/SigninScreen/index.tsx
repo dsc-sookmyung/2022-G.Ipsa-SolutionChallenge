@@ -13,7 +13,7 @@ import { useUsers } from 'shared/hook/useUsers';
 import { LogBox } from 'react-native';
 import { API_ENDPOINT } from 'shared/constants/env';
 
-import UserProvider, { useUserPv } from 'src/provider/UserProvider';
+import UserProvider, { useCurrentUser } from 'src/provider/UserProvider';
 
 LogBox.ignoreLogs(['EventEmitter.removeListener']);
 LogBox.ignoreLogs([
@@ -26,7 +26,7 @@ const SigninScreen = ({ route, navigation }) => {
   const [month, setMonth] = useState('');
   const [day, setDay] = useState('');
   const [isSenior, setIsSenior] = useState(false);
-  const { userpv, setUserpv } = useUserPv();
+  const { currentUser: userpv, setCurrentUser: setUserpv } = useCurrentUser();
 
   const user: User = route.params.user;
 

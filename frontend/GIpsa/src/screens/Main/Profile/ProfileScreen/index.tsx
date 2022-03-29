@@ -6,11 +6,11 @@ import { isRegularExpressionLiteral } from 'typescript';
 import MyText from 'shared/components/MyText';
 import * as Progress from 'react-native-progress';
 import { useisUser } from 'shared/hook/useisUser';
-import UserProvider, { useUserPv } from 'src/provider/UserProvider';
+import UserProvider, { useCurrentUser } from 'src/provider/UserProvider';
 
 const ProfileScreen = ({ navigation }) => {
   const [isProfile, setIsProfile] = useState(true);
-  const { userpv, setUserpv } = useUserPv();
+  const { currentUser: userpv, setCurrentUser: setUserpv } = useCurrentUser();
   useEffect(() => {
     if (userpv?.profileImageSrc == 'string') {
       setIsProfile(false);

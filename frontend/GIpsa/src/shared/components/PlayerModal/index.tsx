@@ -1,19 +1,14 @@
-import { MyText } from 'shared/components';
-import S from './Styles';
 import React, { FC, useEffect, useState } from 'react';
 import {
-  Alert,
-  Button,
   Image,
   Modal,
-  Pressable,
   SafeAreaView,
   StatusBar,
-  StyleSheet,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  LogBox,
 } from 'react-native';
 import Slider from '@react-native-community/slider';
 import TrackPlayer, {
@@ -25,15 +20,18 @@ import TrackPlayer, {
   useProgress,
   useTrackPlayerEvents,
 } from 'react-native-track-player';
-import { Story, User } from 'shared/types';
+import * as Progress from 'react-native-progress';
+
+import S from './Styles';
+import { MyText } from 'shared/components';
+import { Story } from 'shared/types';
 import { useLiked } from 'shared/hook/useLiked';
 import { API_ENDPOINT } from 'shared/constants/env';
 import { useLikedStories } from 'shared/hook/useLikedStories';
-import { useUserPv } from 'src/provider/UserProvider';
-import { useGlobalPlayerPv } from 'src/provider/GlobalPlayerProvider';
-import * as Progress from 'react-native-progress';
-import { LogBox } from 'react-native';
-import { usePlayerPv } from 'src/provider/PlayerProvider';
+import { useCurrentUser } from 'src/provider/UserProvider';
+import { usePlayingBarShow } from 'src/provider/PlayingBarProvider';
+import { useMusicPlayerShow } from 'src/provider/MusicPlayerProvider';
+
 LogBox.ignoreLogs(['Warning: Possible Unhandled Promise Rejection']); // Ignore log notification by message
 
 const togglePlayback = async (playbackState: State) => {
@@ -87,11 +85,10 @@ export interface PlayerModalProps {
 }
 
 const PlayerModal: FC<PlayerModalProps> = ({ stories }: PlayerModalProps) => {
-  const { userpv, setUserpv } = useUserPv();
-  const { mplayerShow, setmPlayerShow } = usePlayerPv();
+  const { currentUser } = useCurrentUser();
+  const { isMusicPlayerShow, setIsMusicPlayerShow } = useMusicPlayerShow();
 
-  // ÆÄÀÏ ¸®½ºÆ®·Î ´õÇÏ±â(µðÆúÆ®: ÁÁ¾Æ¿ä ´©¸¥ ½ºÅä¸®µé)
-  const { likedStories, loading } = useLikedStories(userpv?.id);
+  const { likedStories, loading } = useLikedStories(currentUser?.id);
 
   const setupIfNecessary = async () => {
     // if app was relaunched and music was already playing, we don't setup again. -> SET UP AGAIN
@@ -145,7 +142,6 @@ const PlayerModal: FC<PlayerModalProps> = ({ stories }: PlayerModalProps) => {
     TrackPlayer.setRepeatMode(RepeatMode.Queue);
   };
 
-  const [modalVisible, setModalVisible] = useState(true);
   const playbackState = usePlaybackState();
   const progress = useProgress();
 
@@ -154,7 +150,8 @@ const PlayerModal: FC<PlayerModalProps> = ({ stories }: PlayerModalProps) => {
   const [trackArtist, setTrackArtist] = useState<string>();
   const [trackId, setTrackId] = useState<number>();
   const [isLiked, setIsLiked] = useState(false);
-  const { playerShow, setPlayerShow } = useGlobalPlayerPv();
+  const { isPlayingBarShow: playerShow, setIsPlayingBarShow: setPlayerShow } =
+    usePlayingBarShow();
 
   useTrackPlayerEvents([Event.PlaybackTrackChanged], async (event) => {
     if (
@@ -174,8 +171,7 @@ const PlayerModal: FC<PlayerModalProps> = ({ stories }: PlayerModalProps) => {
     setupIfNecessary();
   }, []);
 
-  // ÁÁ¾Æ¿ä ¹Þ¾Æ¿Í¼­ »ö ÁöÁ¤
-  const { likeData } = useLiked('?userId=' + userpv?.id);
+  const { likeData } = useLiked('?userId=' + currentUser?.id);
 
   // console.log('' + userpv.id + 'likeData: ' + JSON.stringify(likeData));
 
@@ -188,9 +184,9 @@ const PlayerModal: FC<PlayerModalProps> = ({ stories }: PlayerModalProps) => {
     }
   }, [trackId]);
 
-  // ÁÁ¾Æ¿ä º¯°æ
+  // ï¿½ï¿½ï¿½Æ¿ï¿½ ï¿½ï¿½ï¿½ï¿½
   const like = {
-    userId: userpv?.id,
+    userId: currentUser?.id,
     likedStoryId: trackId,
   };
 
@@ -230,12 +226,9 @@ const PlayerModal: FC<PlayerModalProps> = ({ stories }: PlayerModalProps) => {
       <Modal
         animationType="slide"
         transparent={true}
-        visible={modalVisible}
+        visible={isMusicPlayerShow}
         onRequestClose={() => {
-          setModalVisible(!modalVisible);
-          setPlayerShow(true);
-          setmPlayerShow(false);
-          console.log('Modal closed, playerShow: ' + playerShow);
+          setIsMusicPlayerShow(false);
         }}
         style={{ flexDirection: 'column', alignItems: 'flex-end' }}
       >

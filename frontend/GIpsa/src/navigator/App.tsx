@@ -5,16 +5,17 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Sign from './Sign';
 import Main from './Main';
 import UserProvider from 'src/provider/UserProvider';
-import GlobalPlayerProvider, {
-  useGlobalPlayerPv,
-} from 'src/provider/GlobalPlayerProvider';
+import PlayingBarProvider, {
+  usePlayingBarShow,
+} from 'src/provider/PlayingBarProvider';
 import GlobalPlayer from 'shared/components/GlobalPlayer';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  // TODO: 유저 로그인 정보 확인 후 Sign 화면 render X -> 바로 Main 으로 가게
-  const { playerShow, setPlayerShow } = useGlobalPlayerPv();
+  const { isPlayingBarShow: playerShow, setIsPlayingBarShow: setPlayerShow } =
+    usePlayingBarShow();
+
   console.log('App.tsx playerShow: ' + playerShow);
   return (
     <UserProvider>

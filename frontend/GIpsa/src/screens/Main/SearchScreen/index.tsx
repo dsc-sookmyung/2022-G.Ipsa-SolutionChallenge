@@ -10,11 +10,12 @@ import TellerReselts from './TellerResults';
 import { useStories } from 'shared/hook/useStories';
 import { useUsers } from 'shared/hook/useUsers';
 import GlobalPlayer from 'shared/components/GlobalPlayer';
-import { useGlobalPlayerPv } from 'src/provider/GlobalPlayerProvider';
+import { usePlayingBarShow } from 'src/provider/PlayingBarProvider';
 
 const SearchScreen = () => {
   const [searchText, setSearchText] = useState<string>('');
-  const { playerShow, setPlayerShow } = useGlobalPlayerPv();
+  const { isPlayingBarShow: playerShow, setIsPlayingBarShow: setPlayerShow } =
+    usePlayingBarShow();
 
   const { stories } = useStories(searchText);
   const { users } = useUsers(searchText);

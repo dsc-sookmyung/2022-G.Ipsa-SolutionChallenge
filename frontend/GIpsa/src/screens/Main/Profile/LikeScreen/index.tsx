@@ -7,10 +7,10 @@ import { MyStories } from 'shared/components';
 import { useLikedStories } from 'shared/hook/useLikedStories';
 import MyText from 'shared/components/MyText';
 
-import { useUserPv } from 'src/provider/UserProvider';
+import { useCurrentUser } from 'src/provider/UserProvider';
 
 const LikeScreen = ({ navigation }) => {
-  const { userpv, setUserpv } = useUserPv();
+  const { currentUser: userpv, setCurrentUser: setUserpv } = useCurrentUser();
 
   const { likedStories } = useLikedStories(userpv.id);
 
