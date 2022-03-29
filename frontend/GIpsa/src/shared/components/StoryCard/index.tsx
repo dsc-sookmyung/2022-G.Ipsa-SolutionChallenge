@@ -5,7 +5,7 @@ import S from './Styles';
 import { Story } from 'shared/types';
 import MyText from '../MyText';
 import { TouchableOpacity } from 'react-native';
-import PlayerModal from '../PlayerModal';
+import MusicPlayerModal from '../MusicPlayerModal';
 import { usePlayingBarShow } from 'src/provider/PlayingBarProvider';
 
 export interface StoryCardProps {
@@ -14,15 +14,13 @@ export interface StoryCardProps {
 
 const StoryCard: FC<StoryCardProps> = ({ story }: StoryCardProps) => {
   const [isM, setIsM] = useState(false);
-  const { isPlayingBarShow: playerShow, setIsPlayingBarShow: setPlayerShow } =
-    usePlayingBarShow();
 
   const stories: Story[] = [];
   stories.push(story);
 
   return (
     <View style={S.container}>
-      {isM && <PlayerModal stories={stories} />}
+      {isM && <MusicPlayerModal stories={stories} />}
       <TouchableOpacity onPress={() => setIsM(!isM)}>
         <Image
           style={S.thumbnail}

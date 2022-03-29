@@ -12,7 +12,7 @@ import Profile from './Profile';
 import PlayingBarProvider, {
   usePlayingBarShow,
 } from 'src/provider/PlayingBarProvider';
-import GlobalPlayer from 'shared/components/GlobalPlayer';
+import PlayingBar from 'shared/components/PlayingBar';
 import MusicPlayerProvider from 'src/provider/MusicPlayerProvider';
 
 const Tab = createBottomTabNavigator();

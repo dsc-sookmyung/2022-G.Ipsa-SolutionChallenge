@@ -80,11 +80,13 @@ async function jumpBackward() {
   }
 }
 
-export interface PlayerModalProps {
+export interface MusicPlayerModalProps {
   stories?: Story[] | null;
 }
 
-const PlayerModal: FC<PlayerModalProps> = ({ stories }: PlayerModalProps) => {
+const MusicPlayerModal: FC<MusicPlayerModalProps> = ({
+  stories,
+}: MusicPlayerModalProps) => {
   const { currentUser } = useCurrentUser();
   const { isMusicPlayerShow, setIsMusicPlayerShow } = useMusicPlayerShow();
 
@@ -352,4 +354,4 @@ const PlayerModal: FC<PlayerModalProps> = ({ stories }: PlayerModalProps) => {
     </SafeAreaView>
   );
 };
-export default PlayerModal;
+export default MusicPlayerModal;

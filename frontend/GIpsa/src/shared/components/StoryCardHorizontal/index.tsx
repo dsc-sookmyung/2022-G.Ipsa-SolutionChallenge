@@ -6,7 +6,7 @@ import { Story } from 'shared/types';
 import MyText from '../MyText';
 import moment from 'moment';
 import { TouchableOpacity } from 'react-native';
-import PlayerModal from '../PlayerModal';
+import MusicPlayerModal from '../MusicPlayerModal';
 
 export interface StoryCardHorizontalProps {
   story: Story;
@@ -22,7 +22,7 @@ const StoryCardHorizontal: FC<StoryCardHorizontalProps> = ({
 
   return (
     <View style={S.container}>
-      {isM && <PlayerModal stories={stories} />}
+      {isM && <MusicPlayerModal stories={stories} />}
       <TouchableOpacity onPress={() => setIsM(!isM)}>
         <View style={S.container2}>
           <Image

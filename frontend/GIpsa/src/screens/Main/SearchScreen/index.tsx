@@ -9,7 +9,7 @@ import TellerReselts from './TellerResults';
 
 import { useStories } from 'shared/hook/useStories';
 import { useUsers } from 'shared/hook/useUsers';
-import GlobalPlayer from 'shared/components/GlobalPlayer';
+import PlayingBar from 'shared/components/PlayingBar';
 import { usePlayingBarShow } from 'src/provider/PlayingBarProvider';
 
 const SearchScreen = () => {
@@ -31,7 +31,7 @@ const SearchScreen = () => {
           <StoryReselts stories={stories} />
         </ScrollView>
       )}
-      {playerShow && <GlobalPlayer />}
+      {playerShow && <PlayingBar />}
     </View>
   );
 };

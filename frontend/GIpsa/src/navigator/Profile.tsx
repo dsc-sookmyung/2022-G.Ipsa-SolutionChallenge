@@ -6,7 +6,7 @@ import UploadedScreen from 'screens/Main/Profile/UploadedScreen';
 import FollowerScreen from 'screens/Main/Profile/FollowerScreen';
 import LikeScreen from 'screens/Main/Profile/LikeScreen';
 import { usePlayingBarShow } from 'src/provider/PlayingBarProvider';
-import GlobalPlayer from 'shared/components/GlobalPlayer';
+import PlayingBar from 'shared/components/PlayingBar';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,7 +22,7 @@ const Profile = () => {
         <Stack.Screen name="FollowerScreen" component={FollowerScreen} />
         <Stack.Screen name="LikeScreen" component={LikeScreen} />
       </Stack.Navigator>
-      {playerShow && <GlobalPlayer />}
+      {playerShow && <PlayingBar />}
     </>
   );
 };

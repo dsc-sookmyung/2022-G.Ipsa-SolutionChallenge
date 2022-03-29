@@ -5,18 +5,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Sign from './Sign';
 import Main from './Main';
 import UserProvider from 'src/provider/UserProvider';
-import PlayingBarProvider, {
-  usePlayingBarShow,
-} from 'src/provider/PlayingBarProvider';
-import GlobalPlayer from 'shared/components/GlobalPlayer';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const { isPlayingBarShow: playerShow, setIsPlayingBarShow: setPlayerShow } =
-    usePlayingBarShow();
-
-  console.log('App.tsx playerShow: ' + playerShow);
   return (
     <UserProvider>
       <NavigationContainer>
