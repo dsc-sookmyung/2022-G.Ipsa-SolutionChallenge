@@ -7,6 +7,8 @@ import { Category } from 'shared/types';
 import { colors } from 'shared/utils/colors';
 import api from 'shared/utils/api';
 import { API_ENDPOINT } from 'shared/constants/env';
+import { useUserPv } from 'src/provider/UserProvider';
+import { MainTabScreenProps } from 'navigator/types';
 
 export type RecordingCondition = {
   beforeRecording: boolean;
@@ -14,7 +16,8 @@ export type RecordingCondition = {
   isFinished: boolean;
 };
 
-const RecordScreen = () => {
+const RecordScreen = ({ navigation }) => {
+  const { userpv } = useUserPv();
   const [title, setTitle] = useState<string>('');
   const [imageUri, setImageUri] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<
@@ -28,15 +31,12 @@ const RecordScreen = () => {
       isFinished: false,
     });
 
-  const trimUri = (uri: string) => uri.split('cache/')[1];
-  const boundary = '--------------------------515890814546601021194782';
-
   const uploadImage = async () => {
     try {
       const image = {
         uri: imageUri,
         type: 'image/jpeg',
-        name: trimUri(imageUri),
+        name: `image-${Date.now()}`,
       };
       const body = new FormData();
       body.append('image', image);
@@ -58,7 +58,7 @@ const RecordScreen = () => {
       const audio = {
         uri: audioUri,
         type: 'audio/mp3',
-        name: trimUri(audioUri).split('/')[1],
+        name: `audio-${Date.now()}`,
       };
       const body = new FormData();
       body.append('audio', audio);
@@ -80,14 +80,15 @@ const RecordScreen = () => {
       const uploadedAudioUri = await uploadAudio();
 
       const payload = {
-        creatorId: 1,
+        creatorId: userpv?.id,
         title,
         thumbnailImageSrc: uploadedImageUri,
         category: selectedCategory?.title,
         audioFileSrc: uploadedAudioUri,
       };
       console.log(payload);
-      await api.client.post('/story/testcreate', payload);
+      await api.client.post('/story/create', payload);
+      navigation.navigate('Home');
     } catch (error) {
       console.log('error: ', error);
     }

@@ -4,7 +4,7 @@ import { HomeScreenParams } from 'screens/Main/HomeScreen';
 
 export type MainTabParams = {
   Home: HomeScreenParams;
-  Create: any;
+  Record: any;
   Search: any;
   Profile: any;
 };
