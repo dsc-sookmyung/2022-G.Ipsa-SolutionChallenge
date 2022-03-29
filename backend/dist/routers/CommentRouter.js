@@ -14,13 +14,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommentRouter = void 0;
 const express_1 = __importDefault(require("express"));
+const typeorm_1 = require("typeorm");
 const Comment_1 = __importDefault(require("../database/entities/Comment"));
 const dbconnector_1 = __importDefault(require("../database/dbconnector"));
-const typeorm_1 = require("typeorm");
+const typeorm_2 = require("typeorm");
 const router = express_1.default.Router();
 exports.CommentRouter = router;
+const connectionManager = (0, typeorm_1.getConnectionManager)();
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const connection = yield (0, typeorm_1.createConnection)(dbconnector_1.default);
+    if (!connectionManager.has('default')) {
+        const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    }
     const userId = req.query.userId;
     const storyId = req.query.storyId;
     if (userId) {
@@ -35,10 +39,12 @@ router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const searchedComment = yield Comment_1.default.find();
         res.send(searchedComment);
     }
-    yield connection.close();
+    // await connection.close();
 }));
 router.post('/create', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const connection = yield (0, typeorm_1.createConnection)(dbconnector_1.default);
+    if (!connectionManager.has('default')) {
+        const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    }
     const body = req.body;
     // const userId = body.userId;
     // const storyId = body.storyId;
@@ -46,5 +52,5 @@ router.post('/create', (req, res) => __awaiter(void 0, void 0, void 0, function*
     const newComment = Comment_1.default.create(comment);
     yield newComment.save();
     res.send('Commented');
-    yield connection.close();
+    // await connection.close();
 }));

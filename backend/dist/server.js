@@ -28,10 +28,10 @@ class Server {
         // this.swagger();
     }
     config() {
-        // this.app.use(bodyParser.urlencoded({ extended:true }));
-        // this.app.use(bodyParser.json({ limit: '1mb' })); // 100kb default
+        // this.app.use(bodyParser.urlencoded({ extended: false }));
+        // this.app.use(bodyParser.json());
         this.app.use(express_1.default.json());
-        this.app.enable('trust proxy');
+        this.app.disable('x-powered-by');
     }
     routerConfig() {
         this.app.get('/', (req, res) => {
