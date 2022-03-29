@@ -42,7 +42,7 @@ Seniors can convey their various experiences and thoughts through bind. They can
 
 ## Technology Stack
 * React Native v0.67.2
-* Node JS
+* Node JS v16.14.2
 * GCP VM instance/Storage
 * Firebase authentication v14.5.1
 
