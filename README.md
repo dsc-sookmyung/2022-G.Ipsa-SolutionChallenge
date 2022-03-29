@@ -14,8 +14,8 @@
 ## Team G.Ipsa
 
 - Lead/FE: [Ryanne Keum](https://github.com/NayeonKeum)
-- FE: [Jaehyun Song](https://github.com/tommyjr1)
-- BE: [Jongyoon Choi](https://github.com/JYBESiU)
+- FE: [Jongyoon Choi](https://github.com/JYBESiU)
+- BE: [Jaehyun Song](https://github.com/tommyjr1)
 - Service Designer: Soyeon Kim
 
 
