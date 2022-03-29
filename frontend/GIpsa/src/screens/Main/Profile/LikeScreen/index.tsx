@@ -10,9 +10,9 @@ import MyText from 'shared/components/MyText';
 import { useCurrentUser } from 'src/provider/UserProvider';
 
 const LikeScreen = ({ navigation }) => {
-  const { currentUser: userpv, setCurrentUser: setUserpv } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
-  const { likedStories } = useLikedStories(userpv.id);
+  const { likedStories } = useLikedStories(currentUser?.id);
 
   console.log(likedStories);
 

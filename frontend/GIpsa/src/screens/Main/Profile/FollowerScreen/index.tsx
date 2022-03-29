@@ -9,10 +9,10 @@ import MyText from 'shared/components/MyText';
 import { useCurrentUser } from 'src/provider/UserProvider';
 
 const FollowerScreen = ({ navigation }) => {
-  const { currentUser: userpv, setCurrentUser: setUserpv } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
 
-  const { followers, loading, mutate } = useFollowers('' + userpv.id);
-  const { followercount } = useFollowerCount('' + userpv.id);
+  const { followers, loading, mutate } = useFollowers(currentUser?.id);
+  const { followercount } = useFollowerCount(currentUser?.id);
 
   return (
     <View style={S.maincontainer}>

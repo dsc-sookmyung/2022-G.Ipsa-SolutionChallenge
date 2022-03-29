@@ -3,7 +3,7 @@ import qs from 'qs';
 
 import api from 'shared/utils/api';
 
-export function useStoryCount(keyword?: string) {
+export function useStoryCount(keyword?: number) {
   const {
     data: fetchingData,
     error,

@@ -17,7 +17,7 @@ export type RecordingCondition = {
 };
 
 const RecordScreen = ({ navigation }) => {
-  const { currentUser: userpv } = useCurrentUser();
+  const { currentUser } = useCurrentUser();
   const [title, setTitle] = useState<string>('');
   const [imageUri, setImageUri] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<
@@ -80,7 +80,7 @@ const RecordScreen = ({ navigation }) => {
       const uploadedAudioUri = await uploadAudio();
 
       const payload = {
-        creatorId: userpv?.id,
+        creatorId: currentUser?.id,
         title,
         thumbnailImageSrc: uploadedImageUri,
         category: selectedCategory?.title,

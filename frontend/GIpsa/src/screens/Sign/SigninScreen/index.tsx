@@ -26,17 +26,9 @@ const SigninScreen = ({ route, navigation }) => {
   const [month, setMonth] = useState('');
   const [day, setDay] = useState('');
   const [isSenior, setIsSenior] = useState(false);
-  const { currentUser: userpv, setCurrentUser: setUserpv } = useCurrentUser();
+  const { setCurrentUser } = useCurrentUser();
 
   const user: User = route.params.user;
-
-  //  id?: number;
-  //  email: string;
-  //  birth: Date;
-  //  showBirth: boolean;
-  //  isCreator: boolean;
-  //  nickname: string;
-  //  profileImageSrc: string;
 
   useEffect(() => {
     user.birth = new Date(year + '-' + month + '-' + day);
@@ -115,7 +107,7 @@ const SigninScreen = ({ route, navigation }) => {
       });
 
     console.log('user: ' + JSON.stringify(user));
-    setUserpv(user);
+    setCurrentUser(user);
     navigation.navigate('Main');
   };
 
