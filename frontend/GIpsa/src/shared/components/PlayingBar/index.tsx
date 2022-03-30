@@ -15,6 +15,7 @@ import TrackPlayer, {
   useProgress,
   useTrackPlayerEvents,
 } from 'react-native-track-player';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as Progress from 'react-native-progress';
 
 import S from './Styles';
@@ -22,6 +23,8 @@ import { MyText } from 'shared/components';
 import { useLikedStories } from 'shared/hook/useLikedStories';
 import { useCurrentUser } from 'src/provider/UserProvider';
 import { useMusicPlayerShow } from 'src/provider/MusicPlayerProvider';
+import { colors } from 'shared/utils/colors';
+import { usePlayingBarShow } from 'src/provider/PlayingBarProvider';
 
 const togglePlayback = async (playbackState: State) => {
   const currentTrack = await TrackPlayer.getCurrentTrack();
@@ -72,13 +75,16 @@ async function jumpBackward() {
 const PlayingBar = () => {
   const { currentUser } = useCurrentUser();
   const { setIsMusicPlayerShow } = useMusicPlayerShow();
+  const { isPlayingBarShow, setIsPlayingBarShow } = usePlayingBarShow();
 
   const { likedStories } = useLikedStories(currentUser?.id);
 
   const setupIfNecessary = async () => {
     // if app was relaunched and music was already playing, we don't setup again. -> SET UP AGAIN
     const currentTrack = await TrackPlayer.getCurrentTrack();
+    console.log('currentTrack: ', currentTrack);
     if (currentTrack !== null) {
+      setIsPlayingBarShow(true);
       return;
     }
 
@@ -115,7 +121,6 @@ const PlayingBar = () => {
   };
 
   const playbackState = usePlaybackState();
-  const progress = useProgress();
 
   const [trackArtwork, setTrackArtwork] = useState<string | number>();
   const [trackTitle, setTrackTitle] = useState<string>();
@@ -135,63 +140,44 @@ const PlayingBar = () => {
       setTrackId(id);
     }
   });
-  const [isLoaded, setIsLoaded] = useState(false);
 
-  useEffect(() => {
-    setupIfNecessary();
-  }, []);
+  // useEffect(() => {
+  //   setupIfNecessary();
+  // }, []);
 
-  useEffect(() => {
-    setIsLoaded(false);
-    if (trackId != null) {
-      setIsLoaded(true);
-    }
-  }, [trackId]);
+  if (!isPlayingBarShow) return null;
 
   return (
     <SafeAreaView style={S.container}>
-      <SafeAreaView style={S.screenContainer}>
-        {/* <Image style={S.artwork} source={{ uri: `${trackArtwork}` }} /> */}
-        <TouchableOpacity onPress={() => setIsMusicPlayerShow(true)}>
-          <View style={S.contentContainer}>
-            <View style={S.titleText}>
-              {isLoaded ? (
-                <MyText fontSize={18} fontWeight="bold">
-                  {trackTitle}
-                </MyText>
-              ) : (
-                <Progress.Circle size={20} indeterminate={true} />
-              )}
-            </View>
+      {/* <Image style={S.artwork} source={{ uri: `${trackArtwork}` }} /> */}
+      <TouchableOpacity
+        onPress={() => setIsMusicPlayerShow(true)}
+        style={S.clickArea}
+      >
+        <MyText fontSize={18} fontWeight="bold">
+          {trackTitle}
+        </MyText>
+        <MyText fontSize={14} fontWeight="light">
+          {trackArtist}
+        </MyText>
+      </TouchableOpacity>
 
-            <View style={S.artistText}>
-              <MyText fontSize={14} fontWeight="light">
-                {trackArtist}
-              </MyText>
-            </View>
-          </View>
-        </TouchableOpacity>
-        <TouchableWithoutFeedback onPress={() => togglePlayback(playbackState)}>
-          {playbackState === State.Playing ? (
-            <Image
-              style={S.primaryActionButton}
-              source={require('../../assets/images/globalstop-btn.png')}
-            />
-          ) : (
-            <Image
-              style={S.primaryActionButton}
-              source={require('../../assets/images/globalplay-btn.png')}
-            />
-          )}
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => jumpForward()}>
-          <Image
-            style={S.secondaryActionButton}
-            source={require('../../assets/images/front10s.png')}
-          />
-        </TouchableWithoutFeedback>
-      </SafeAreaView>
+      <TouchableWithoutFeedback onPress={() => togglePlayback(playbackState)}>
+        <FontAwesome
+          name={playbackState === State.Playing ? 'pause' : 'play'}
+          size={20}
+          color={colors.gray11}
+          style={{ marginRight: 20 }}
+        />
+      </TouchableWithoutFeedback>
+      <TouchableWithoutFeedback onPress={() => jumpForward()}>
+        <Image
+          style={S.secondaryActionButton}
+          source={require('../../assets/images/front10s.png')}
+        />
+      </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 };
+
 export default PlayingBar;

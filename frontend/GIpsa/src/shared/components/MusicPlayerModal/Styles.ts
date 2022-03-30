@@ -55,7 +55,7 @@ const S = StyleSheet.create({
   },
 
   actionRowContainer: {
-    width: '75%',
+    width: '89%',
     flexDirection: 'row',
     marginTop: 15,
     justifyContent: 'space-between',
@@ -76,8 +76,7 @@ const S = StyleSheet.create({
 
   likecontainer: {
     marginTop: 24,
-    width: '100%',
-    paddingRight: 40,
+    width: '90%',
     alignItems: 'flex-end',
   },
   heart: {

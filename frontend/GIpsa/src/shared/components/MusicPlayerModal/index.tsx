@@ -116,7 +116,7 @@ const MusicPlayerModal = () => {
       id: playingStory.id,
       url: playingStory.audioFileSrc,
       title: playingStory.title,
-      artist: String(playingStory.creatorId),
+      artist: String(playingStory.nickname),
       artwork: playingStory.thumbnailImageSrc,
       duration: playingStory.duration,
     });
@@ -130,13 +130,15 @@ const MusicPlayerModal = () => {
         id: likedStories[i].id,
         url: likedStories[i].audioFileSrc,
         title: likedStories[i].title,
-        artist: String(likedStories[i].creatorId),
+        artist: String(likedStories[i].nickname),
         artwork: likedStories[i].thumbnailImageSrc,
         duration: likedStories[i].duration,
       });
     }
 
     TrackPlayer.setRepeatMode(RepeatMode.Queue);
+
+    await TrackPlayer.play();
   };
 
   const playbackState = usePlaybackState();

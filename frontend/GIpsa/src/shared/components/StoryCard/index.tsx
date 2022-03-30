@@ -43,7 +43,7 @@ const StoryCard: FC<StoryCardProps> = ({ story }: StoryCardProps) => {
           fontWeight="medium"
           fontSize={12}
           font="Suit"
-        >{`made by > ${story.creatorId}`}</MyText>
+        >{`made by > ${story.nickname}`}</MyText>
       </TouchableOpacity>
     </View>
   );
