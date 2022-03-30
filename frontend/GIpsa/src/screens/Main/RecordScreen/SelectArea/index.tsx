@@ -8,6 +8,7 @@ import { Category } from 'shared/types';
 import CategorySelect from './CategorySelect';
 import CategotySelectModal from './CategorySelectModal/Index';
 import { colors } from 'shared/utils/colors';
+import { TouchableOpacity } from 'react-native';
 
 export interface SelectAreaProps {
   title: string;
@@ -34,6 +35,7 @@ const SelectArea: FC<SelectAreaProps> = ({
   handleDone,
 }: SelectAreaProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [randomImageNum, setRandomImageNum] = useState(0);
 
   const handlePress = () => {
     setIsModalOpen(true);
@@ -53,11 +55,18 @@ const SelectArea: FC<SelectAreaProps> = ({
     }
   };
 
+  // 0~8 까지 숫자 랜덤 선택, 상대경로 ./Images/random-n.jpg 연결 필요
+  const handleRandomImageSelect = () => {
+    const getRandom = (min: number, max: number) =>
+      Math.floor(Math.random() * (max - min) + min);
+    setRandomImageNum(getRandom(0, 8));
+  };
+
   return (
     <S.Root>
       <S.Background
         source={
-          !imageUri ? require('./default-profile.jpg') : { uri: imageUri }
+          !imageUri ? require('./Images/random-0.jpg') : { uri: imageUri }
         }
       >
         <S.Container>
@@ -74,7 +83,10 @@ const SelectArea: FC<SelectAreaProps> = ({
           </View>
           <S.Buttons>
             <S.ImageButtons>
-              <S.RandomButton activeOpacity={0.9}>
+              <S.RandomButton
+                activeOpacity={0.9}
+                onPress={handleRandomImageSelect}
+              >
                 <MyText fontWeight="regular" color={colors.primary}>
                   Random select
                 </MyText>
