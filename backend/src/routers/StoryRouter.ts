@@ -55,7 +55,7 @@ router.get('/click', async (req: Request, res: Response) => {
   const id = req.query.id;
   const clickedStory = await await createQueryBuilder()
     .from(Story, 'st')
-    .leftJoin(UserInfo, 'ui', 'ui.uid = st.creatorId')
+    .leftJoin(UserInfo, 'ui', 'ui.id = st.creatorId')
     .where('id = :id', { id: id })
     .getRawOne()
   res.send(clickedStory)
@@ -70,24 +70,30 @@ router.get('/', async (req: Request, res: Response) => {
   const creatorId = req.query.creatorId;
   if (keyword) {
     const searchedStory = await createQueryBuilder()
+      .select('*')
+      .addSelect(['st.id as id'])
       .from(Story, 'st')
-      .leftJoin(UserInfo, 'ui', 'ui.uid = st.creatorId')
-      .where('title like :key', { key: `%${keyword}%` })
+      .leftJoin(UserInfo, 'ui', 'ui.id = st.creatorId')
+      .where('st.title ilike :key', { key: `%${keyword}%` })
       .getRawMany()
     res.send(searchedStory)
   }
   else if (creatorId) {
     const searchedStory = await createQueryBuilder()
+      .select('*')
+      .addSelect(['st.id as id'])
       .from(Story, 'st')
-      .leftJoin(UserInfo, 'ui', 'ui.uid = st.creatorId')
-      .where('creatorId = :creatorId', { creatorId: creatorId })
+      .leftJoin(UserInfo, 'ui', "ui.id = st.creatorId")
+      .where("st.creatorId = :creatorId", { creatorId: creatorId })
       .getRawMany()
     res.send(searchedStory)
   }
   else {
     const searchedStory = await createQueryBuilder()
+      .select('*')
+      .addSelect(['st.id as id'])
       .from(Story, 'st')
-      .leftJoin(UserInfo, 'ui', 'st.creatorId= ui.uid')
+      .leftJoin(UserInfo, 'ui', 'st.creatorId= ui.id')
       .getRawMany()
     res.send(searchedStory)
   }

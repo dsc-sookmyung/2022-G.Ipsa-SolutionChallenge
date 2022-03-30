@@ -18,7 +18,7 @@ router.get('/', async (req: Request, res: Response) => {
     //이 유저가 팔로잉하는 크리에이터들 리턴
     const searchedCreator = await createQueryBuilder()
       .from(Follow, 'fl')
-      .leftJoin(UserInfo, 'ui', 'ui.uid = fl.creatorId')
+      .leftJoin(UserInfo, 'ui', 'ui.id = fl.creatorId')
       .where('fl.followerId = :followerId', { followerId: followerId })
       .getRawMany()
     res.send(searchedCreator)
@@ -27,7 +27,7 @@ router.get('/', async (req: Request, res: Response) => {
     //이 유저를 팔로우하는 팔로워들 리턴
     const searchedFollow = await createQueryBuilder()
       .from(Follow, 'fl')
-      .leftJoin(UserInfo, 'ui', 'ui.uid = fl.followerId')
+      .leftJoin(UserInfo, 'ui', 'ui.id = fl.followerId')
       .where('fl.creatorId = :creatorId', { creatorId: creatorId })
       .getRawMany()
     res.send(searchedFollow)
@@ -50,7 +50,7 @@ router.get('/cnt', async (req: Request, res: Response) => {
     //이 유저가 팔로잉하는 크리에이터들 리턴
     const searchedCreator = await createQueryBuilder()
       .from(Follow, 'fl')
-      .leftJoin(UserInfo, 'ui', 'ui.uid = fl.creatorId')
+      .leftJoin(UserInfo, 'ui', 'ui.id = fl.creatorId')
       .where('fl.followerId = :followerId', { followerId: followerId })
       .getCount()
     res.send(searchedCreator.toString())
@@ -59,7 +59,7 @@ router.get('/cnt', async (req: Request, res: Response) => {
     //이 유저를 팔로우하는 팔로워들 리턴
     const searchedFollow = await createQueryBuilder()
       .from(Follow, 'fl')
-      .leftJoin(UserInfo, 'ui', 'ui.uid = fl.followerId')
+      .leftJoin(UserInfo, 'ui', 'ui.id = fl.followerId')
       .where('fl.creatorId = :creatorId', { creatorId: creatorId })
       .getCount()
     res.send(searchedFollow.toString())

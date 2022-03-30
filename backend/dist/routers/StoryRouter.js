@@ -82,20 +82,22 @@ router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const searchedStory = yield (0, typeorm_1.createQueryBuilder)()
             .from(Story_1.default, 'st')
             .leftJoin(UserInfo_1.default, 'ui', 'ui.uid = st.creatorId')
-            .where('title like :key', { key: `%${keyword}%` })
+            .where('st.title like :key', { key: `%${keyword}%` })
             .getRawMany();
         res.send(searchedStory);
     }
     else if (creatorId) {
         const searchedStory = yield (0, typeorm_1.createQueryBuilder)()
             .from(Story_1.default, 'st')
-            .leftJoin(UserInfo_1.default, 'ui', 'ui.uid = st.creatorId')
-            .where('creatorId = :creatorId', { creatorId: creatorId })
+            .leftJoin(UserInfo_1.default, 'ui', "ui.uid = st.creatorId")
+            .where("st.creatorId = :creatorId", { creatorId: creatorId })
             .getRawMany();
         res.send(searchedStory);
     }
     else {
         const searchedStory = yield (0, typeorm_1.createQueryBuilder)()
+            .select('st')
+            .select('ui.uid')
             .from(Story_1.default, 'st')
             .leftJoin(UserInfo_1.default, 'ui', 'st.creatorId= ui.uid')
             .getRawMany();
