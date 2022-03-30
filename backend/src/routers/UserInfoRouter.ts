@@ -46,7 +46,7 @@ router.get('/', async (req: Request, res: Response) => {
     }
     const keyword = req.query.keyword;
     const email = req.query.email;
-    const id = req.query.id;
+    const uid = req.query.uid;
     if (keyword) {
         const searchedUser = await UserInfo.find({ nickname: Like(`%${keyword}%`) })
         res.send(searchedUser)
@@ -55,8 +55,8 @@ router.get('/', async (req: Request, res: Response) => {
         const searchedUser = await UserInfo.find({ where: { email: email } })
         res.send(searchedUser)
     }
-    else if (id) {
-        const searchedUser = await UserInfo.find({ where: { id: id } })
+    else if (uid) {
+        const searchedUser = await UserInfo.find({ where: { uid: uid } })
         res.send(searchedUser)
     }
     else {

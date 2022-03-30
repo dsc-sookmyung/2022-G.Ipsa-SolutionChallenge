@@ -7,6 +7,7 @@ import { FileUpload } from '../config/FileUpload';
 import Options from '../database/dbconnector';
 import { createConnection } from 'typeorm';
 import UserInfo from '../database/entities/UserInfo';
+import LikeEntity from '../database/entities/LikeEntity';
 
 const router = express.Router();
 const connectionManager = getConnectionManager();
@@ -54,8 +55,8 @@ router.get('/click', async (req: Request, res: Response) => {
   const id = req.query.id;
   const clickedStory = await await createQueryBuilder()
     .from(Story, 'st')
-    .leftJoin(UserInfo, 'ui', 'ui.id = st.creatorId')
-    .where('st.id = :id', { id: id })
+    .leftJoin(UserInfo, 'ui', 'ui.uid = st.creatorId')
+    .where('id = :id', { id: id })
     .getRawOne()
   res.send(clickedStory)
   // await connection.close();
@@ -70,23 +71,23 @@ router.get('/', async (req: Request, res: Response) => {
   if (keyword) {
     const searchedStory = await createQueryBuilder()
       .from(Story, 'st')
-      .leftJoin(UserInfo, 'ui', 'ui.id = st.creatorId')
-      .where('st.title like :key', { key: `%${keyword}%` })
+      .leftJoin(UserInfo, 'ui', 'ui.uid = st.creatorId')
+      .where('title like :key', { key: `%${keyword}%` })
       .getRawMany()
     res.send(searchedStory)
   }
   else if (creatorId) {
     const searchedStory = await createQueryBuilder()
       .from(Story, 'st')
-      .leftJoin(UserInfo, 'ui', 'ui.id = st.creatorId')
-      .where('st.creatorId = :creatorId', { creatorId: creatorId })
+      .leftJoin(UserInfo, 'ui', 'ui.uid = st.creatorId')
+      .where('creatorId = :creatorId', { creatorId: creatorId })
       .getRawMany()
     res.send(searchedStory)
   }
   else {
     const searchedStory = await createQueryBuilder()
       .from(Story, 'st')
-      .leftJoin(UserInfo, 'ui', 'ui.id = st.creatorId')
+      .leftJoin(UserInfo, 'ui', 'st.creatorId= ui.uid')
       .getRawMany()
     res.send(searchedStory)
   }
@@ -113,6 +114,25 @@ router.get('/cnt', async (req: Request, res: Response) => {
   }
   // await connection.close();
 })
+
+router.delete('/delete', async (req: Request, res: Response) => {
+  if (!connectionManager.has('default')) {
+    const connection = await createConnection(Options);
+  }
+  const id = req.query.id;
+  await createQueryBuilder()
+    .from(Story, 'st')
+    .delete()
+    .where('id = :id', { id: id })
+    .execute();
+  await createQueryBuilder()
+    .from(LikeEntity, 'le')
+    .delete()
+    .where('likedStoryId = :id', { id: id })
+    .execute();
+  res.send('deleted')
+  // await connection.close();
+});
 
 export {
   router as StoryRouter

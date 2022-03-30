@@ -3,7 +3,7 @@ import { Column, Entity, BaseEntity, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export default class UserInfo extends BaseEntity {
     @PrimaryGeneratedColumn()
-    id!: number;
+    uid!: number;
 
     @Column({ type: 'text', unique: true })
     email!: string;

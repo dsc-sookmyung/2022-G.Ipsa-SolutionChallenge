@@ -97,8 +97,8 @@ router.get('/story', async (req: Request, res: Response) => {
   }
   const userId = req.query.userId;
   const searchedStory = await createQueryBuilder()
-    .from(Story, 'story')
-    .innerJoin(LikeEntity, 'le', 'story.id = le.likedStoryId')
+    .from(LikeEntity, 'le')
+    .innerJoin(Story, 'story', 'story.id = le.likedStoryId')
     .where("le.userId = :userId", { userId: userId })
     .getRawMany()
   res.send(searchedStory)

@@ -21,6 +21,7 @@ const FileUpload_1 = require("../config/FileUpload");
 const dbconnector_1 = __importDefault(require("../database/dbconnector"));
 const typeorm_2 = require("typeorm");
 const UserInfo_1 = __importDefault(require("../database/entities/UserInfo"));
+const LikeEntity_1 = __importDefault(require("../database/entities/LikeEntity"));
 const router = express_1.default.Router();
 exports.StoryRouter = router;
 const connectionManager = (0, typeorm_1.getConnectionManager)();
@@ -65,23 +66,9 @@ router.get('/click', (req, res) => __awaiter(void 0, void 0, void 0, function* (
     const id = req.query.id;
     const clickedStory = yield yield (0, typeorm_1.createQueryBuilder)()
         .from(Story_1.default, 'st')
-        .leftJoin(UserInfo_1.default, 'ui', 'ui.id = st.creatorId')
-        .where('st.id = :id', { id: id })
+        .leftJoin(UserInfo_1.default, 'ui', 'ui.uid = st.creatorId')
+        .where('id = :id', { id: id })
         .getRawOne();
-    res.send(clickedStory);
-    // await connection.close();
-}));
-router.post('/click', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!connectionManager.has('default')) {
-        const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
-    }
-    const id = req.query.id;
-    const clickedStory = yield (0, typeorm_1.createQueryBuilder)()
-        .from(Story_1.default, 'st')
-        .leftJoin(UserInfo_1.default, 'ui', 'ui.id = st.creatorId')
-        .where('st.id = :id', { id: id })
-        .getRawOne();
-    // Story.findOne({ where: { id: id } })
     res.send(clickedStory);
     // await connection.close();
 }));
@@ -92,15 +79,26 @@ router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const keyword = req.query.keyword;
     const creatorId = req.query.creatorId;
     if (keyword) {
-        const searchedStory = yield Story_1.default.find({ title: (0, typeorm_1.Like)(`%${keyword}%`) });
+        const searchedStory = yield (0, typeorm_1.createQueryBuilder)()
+            .from(Story_1.default, 'st')
+            .leftJoin(UserInfo_1.default, 'ui', 'ui.uid = st.creatorId')
+            .where('title like :key', { key: `%${keyword}%` })
+            .getRawMany();
         res.send(searchedStory);
     }
     else if (creatorId) {
-        const searchedStory = yield Story_1.default.find({ where: { creatorId: creatorId } });
+        const searchedStory = yield (0, typeorm_1.createQueryBuilder)()
+            .from(Story_1.default, 'st')
+            .leftJoin(UserInfo_1.default, 'ui', 'ui.uid = st.creatorId')
+            .where('creatorId = :creatorId', { creatorId: creatorId })
+            .getRawMany();
         res.send(searchedStory);
     }
     else {
-        const searchedStory = yield Story_1.default.find();
+        const searchedStory = yield (0, typeorm_1.createQueryBuilder)()
+            .from(Story_1.default, 'st')
+            .leftJoin(UserInfo_1.default, 'ui', 'st.creatorId= ui.uid')
+            .getRawMany();
         res.send(searchedStory);
     }
     // await connection.close();
@@ -123,5 +121,23 @@ router.get('/cnt', (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const searchedStory = yield Story_1.default.findAndCount();
         res.send(searchedStory[1].toString());
     }
+    // await connection.close();
+}));
+router.delete('/delete', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!connectionManager.has('default')) {
+        const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
+    }
+    const id = req.query.id;
+    yield (0, typeorm_1.createQueryBuilder)()
+        .from(Story_1.default, 'st')
+        .delete()
+        .where('id = :id', { id: id })
+        .execute();
+    yield (0, typeorm_1.createQueryBuilder)()
+        .from(LikeEntity_1.default, 'le')
+        .delete()
+        .where('likedStoryId = :id', { id: id })
+        .execute();
+    res.send('deleted');
     // await connection.close();
 }));

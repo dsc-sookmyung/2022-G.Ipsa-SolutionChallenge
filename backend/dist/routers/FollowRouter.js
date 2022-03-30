@@ -32,7 +32,7 @@ router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         //이 유저가 팔로잉하는 크리에이터들 리턴
         const searchedCreator = yield (0, typeorm_1.createQueryBuilder)()
             .from(Follow_1.default, 'fl')
-            .leftJoin(UserInfo_1.default, 'ui', 'ui.id = fl.creatorId')
+            .leftJoin(UserInfo_1.default, 'ui', 'ui.uid = fl.creatorId')
             .where('fl.followerId = :followerId', { followerId: followerId })
             .getRawMany();
         res.send(searchedCreator);
@@ -41,7 +41,7 @@ router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         //이 유저를 팔로우하는 팔로워들 리턴
         const searchedFollow = yield (0, typeorm_1.createQueryBuilder)()
             .from(Follow_1.default, 'fl')
-            .leftJoin(UserInfo_1.default, 'ui', 'ui.id = fl.followerId')
+            .leftJoin(UserInfo_1.default, 'ui', 'ui.uid = fl.followerId')
             .where('fl.creatorId = :creatorId', { creatorId: creatorId })
             .getRawMany();
         res.send(searchedFollow);
@@ -62,7 +62,7 @@ router.get('/cnt', (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         //이 유저가 팔로잉하는 크리에이터들 리턴
         const searchedCreator = yield (0, typeorm_1.createQueryBuilder)()
             .from(Follow_1.default, 'fl')
-            .leftJoin(UserInfo_1.default, 'ui', 'ui.id = fl.creatorId')
+            .leftJoin(UserInfo_1.default, 'ui', 'ui.uid = fl.creatorId')
             .where('fl.followerId = :followerId', { followerId: followerId })
             .getCount();
         res.send(searchedCreator.toString());
@@ -71,7 +71,7 @@ router.get('/cnt', (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         //이 유저를 팔로우하는 팔로워들 리턴
         const searchedFollow = yield (0, typeorm_1.createQueryBuilder)()
             .from(Follow_1.default, 'fl')
-            .leftJoin(UserInfo_1.default, 'ui', 'ui.id = fl.followerId')
+            .leftJoin(UserInfo_1.default, 'ui', 'ui.uid = fl.followerId')
             .where('fl.creatorId = :creatorId', { creatorId: creatorId })
             .getCount();
         res.send(searchedFollow.toString());
