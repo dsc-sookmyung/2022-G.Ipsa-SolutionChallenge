@@ -29,7 +29,6 @@ const HomeScreen = ({ navigation, route }: MainTabScreenProps<'Home'>) => {
     <ScrollView style={S.container}>
       <StoryTopic title="Weekly New Stories" stories={timeSortedStories} />
       <StoryTopic title="Weekly Best Stories" stories={likeSortedStories} />
-      {isPlayingBarShow && <PlayingBar />}
     </ScrollView>
   );
 };

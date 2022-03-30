@@ -1,16 +1,17 @@
 import React, { FC } from 'react';
-import { Text } from 'react-native';
+import { StyleProp, TextPropTypes, TextStyle } from 'react-native';
 import { colors } from 'shared/utils/colors';
 
 import * as S from './Styles';
 
-export interface MyTextProps {
+export type MyTextProps = {
   children: React.ReactNode;
   fontWeight?: 'bold' | 'medium' | 'regular' | 'light';
   fontSize?: number;
   color?: string;
   font?: 'Noto' | 'Suit';
-}
+  style?: StyleProp<TextStyle> | undefined;
+};
 
 const MyText: FC<MyTextProps> = ({
   children,
@@ -18,6 +19,7 @@ const MyText: FC<MyTextProps> = ({
   fontSize = 16,
   color = colors.gray11,
   font = 'Noto',
+  style,
 }: MyTextProps) => {
   return (
     <S.MyText
@@ -25,6 +27,7 @@ const MyText: FC<MyTextProps> = ({
       fontWeight={fontWeight}
       fontSize={fontSize}
       color={color}
+      style={style}
     >
       {children}
     </S.MyText>

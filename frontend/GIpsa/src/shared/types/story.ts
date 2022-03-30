@@ -10,4 +10,5 @@ export interface Story {
   duration?: number;
   likedStoryId?: number;
   userId?: number;
+  nickname?: string;
 }

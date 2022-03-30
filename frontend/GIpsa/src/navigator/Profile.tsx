@@ -21,7 +21,6 @@ const Profile = () => {
         <Stack.Screen name="FollowerScreen" component={FollowerScreen} />
         <Stack.Screen name="LikeScreen" component={LikeScreen} />
       </Stack.Navigator>
-      {isPlayingBarShow && <PlayingBar />}
     </>
   );
 };

@@ -30,7 +30,6 @@ const SearchScreen = () => {
           <StoryReselts stories={stories} />
         </ScrollView>
       )}
-      {isPlayingBarShow && <PlayingBar />}
     </View>
   );
 };

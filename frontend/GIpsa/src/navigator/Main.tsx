@@ -9,9 +9,7 @@ import MyTabHeader from 'shared/components/MyTabHeader';
 import { colors } from 'shared/utils/colors';
 import { MyText } from 'shared/components';
 import Profile from './Profile';
-import PlayingBarProvider, {
-  usePlayingBarShow,
-} from 'src/provider/PlayingBarProvider';
+import PlayingBarProvider from 'src/provider/PlayingBarProvider';
 import PlayingBar from 'shared/components/PlayingBar';
 import MusicPlayerProvider from 'src/provider/MusicPlayerProvider';
 import PlayingStoryProvider from 'src/provider/PlayingStoryProvider';
@@ -28,11 +26,17 @@ const Main = () => {
             screenOptions={({ route }) => ({
               header: MyTabHeader,
               tabBarStyle: {
+                height: 60,
                 backgroundColor: colors.background,
                 paddingBottom: 4,
               },
               tabBarLabel: ({ color }) => (
-                <MyText color={color} fontSize={13} fontWeight="medium">
+                <MyText
+                  color={color}
+                  fontSize={14}
+                  fontWeight="medium"
+                  style={{ marginBottom: 4 }}
+                >
                   {route.name}
                 </MyText>
               ),
@@ -63,6 +67,7 @@ const Main = () => {
             <Tab.Screen name="My page" component={Profile} />
           </Tab.Navigator>
           <MusicPlayerModal />
+          <PlayingBar />
         </MusicPlayerProvider>
       </PlayingBarProvider>
     </PlayingStoryProvider>
