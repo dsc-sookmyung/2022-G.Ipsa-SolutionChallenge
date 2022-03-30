@@ -31,6 +31,7 @@ import { useMusicPlayerShow } from 'src/provider/MusicPlayerProvider';
 import { usePlayingStory } from 'src/provider/PlayingStoryProvider';
 import api from 'shared/utils/api';
 import { Story } from 'shared/types';
+import { colors } from 'shared/utils/colors';
 
 LogBox.ignoreLogs(['Warning: Possible Unhandled Promise Rejection']); // Ignore log notification by message
 
@@ -223,43 +224,39 @@ const MusicPlayerModal = () => {
       >
         <View style={S.background}>
           <SafeAreaView style={S.screenContainer}>
-            <View style={S.contentContainer}>
-              <View style={S.titleText}>
-                <MyText fontSize={18} fontWeight="bold">
-                  {trackTitle}
-                </MyText>
-              </View>
-              <View style={S.artistText}>
-                <MyText fontSize={14} fontWeight="light">
-                  {trackArtist}
-                </MyText>
-              </View>
-              <Image style={S.artwork} source={{ uri: `${trackArtwork}` }} />
-              <Slider
-                style={S.progressContainer}
-                value={progress.position}
-                minimumValue={0}
-                maximumValue={progress.duration}
-                thumbTintColor="#F98B65"
-                minimumTrackTintColor="#F98B65"
-                maximumTrackTintColor="#DDDDDD"
-                onSlidingComplete={async (value) => {
-                  await TrackPlayer.seekTo(value);
-                }}
-              />
-              <View style={S.progressLabelContainer}>
-                <Text style={S.progressLabelText}>
-                  {new Date(progress.position * 1000)
-                    .toISOString()
-                    .substr(14, 5)}
-                </Text>
-                <Text style={S.progressLabelText}>
-                  {new Date((progress.duration - progress.position) * 1000)
-                    .toISOString()
-                    .substr(14, 5)}
-                </Text>
-              </View>
+            <MyText fontSize={24} fontWeight="bold">
+              {trackTitle}
+            </MyText>
+            <View style={S.artistText}>
+              <MyText fontSize={14} font="Suit">
+                {`made by ${trackArtist}`}
+              </MyText>
             </View>
+            <Image style={S.artwork} source={{ uri: `${trackArtwork}` }} />
+
+            <Slider
+              style={S.progressContainer}
+              value={progress.position}
+              minimumValue={0}
+              maximumValue={progress.duration}
+              thumbTintColor={colors.primary}
+              minimumTrackTintColor={colors.primary}
+              maximumTrackTintColor="#DDDDDD"
+              onSlidingComplete={async (value) => {
+                await TrackPlayer.seekTo(value);
+              }}
+            />
+            <View style={S.progressLabelContainer}>
+              <MyText fontSize={13} style={S.progressLabelText}>
+                {new Date(progress.position * 1000).toISOString().substr(14, 5)}
+              </MyText>
+              <MyText fontSize={13} style={S.progressLabelText}>
+                {new Date((progress.duration - progress.position) * 1000)
+                  .toISOString()
+                  .substr(14, 5)}
+              </MyText>
+            </View>
+
             <View style={S.actionRowContainer}>
               <TouchableWithoutFeedback
                 onPress={() => TrackPlayer.skipToPrevious()}
@@ -305,15 +302,7 @@ const MusicPlayerModal = () => {
                 />
               </TouchableWithoutFeedback>
             </View>
-            {/* <Button
-            title="Remove audios"
-            onPress={() => {
-              TrackPlayer.reset();
-              setTrackArtist('');
-              setTrackArtwork('');
-              setTrackTitle('');
-            }}
-          /> */}
+
             <View style={S.likecontainer}>
               <TouchableOpacity onPress={() => chaneLike()}>
                 {isLiked ? (
