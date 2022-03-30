@@ -160,6 +160,20 @@ const SigninScreen = ({ route, navigation }) => {
         />
       </View>
 
+      <TouchableOpacity style={S.startbtntouch} onPress={onPressGoMain}>
+        {availNn ? (
+          <Image
+            source={require('../../../shared/assets/images/start-bind.png')}
+            style={S.startbtn}
+          />
+        ) : (
+          <Image
+            source={require('../../../shared/assets/images/unstart-bind.png')}
+            style={S.startbtn}
+          />
+        )}
+      </TouchableOpacity>
+
       {isSenior && (
         <View style={S.area}>
           <MyText fontSize={13}>
@@ -174,20 +188,6 @@ const SigninScreen = ({ route, navigation }) => {
           </View>
         </View>
       )}
-
-      <TouchableOpacity style={S.startbtntouch} onPress={onPressGoMain}>
-        {availNn ? (
-          <Image
-            source={require('../../../shared/assets/images/start-bind.png')}
-            style={S.startbtn}
-          />
-        ) : (
-          <Image
-            source={require('../../../shared/assets/images/unstart-bind.png')}
-            style={S.startbtn}
-          />
-        )}
-      </TouchableOpacity>
     </View>
   );
 };

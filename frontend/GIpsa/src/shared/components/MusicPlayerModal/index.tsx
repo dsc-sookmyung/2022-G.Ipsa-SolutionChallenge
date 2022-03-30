@@ -25,7 +25,6 @@ import S from './Styles';
 import { MyText } from 'shared/components';
 import { useLiked } from 'shared/hook/useLiked';
 import { API_ENDPOINT } from 'shared/constants/env';
-import { useLikedStories } from 'shared/hook/useLikedStories';
 import { useCurrentUser } from 'src/provider/UserProvider';
 import { useMusicPlayerShow } from 'src/provider/MusicPlayerProvider';
 import { usePlayingStory } from 'src/provider/PlayingStoryProvider';
@@ -231,7 +230,7 @@ const MusicPlayerModal = () => {
             </MyText>
             <View style={S.artistText}>
               <MyText fontSize={14} font="Suit">
-                {`made by ${trackArtist}`}
+                {trackArtist ? `made by ${trackArtist}` : ''}
               </MyText>
             </View>
             <Image style={S.artwork} source={{ uri: `${trackArtwork}` }} />

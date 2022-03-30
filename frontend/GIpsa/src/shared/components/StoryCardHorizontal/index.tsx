@@ -12,10 +12,12 @@ import { usePlayingBarShow } from 'src/provider/PlayingBarProvider';
 
 export interface StoryCardHorizontalProps {
   story: Story;
+  isMine?: boolean;
 }
 
 const StoryCardHorizontal: FC<StoryCardHorizontalProps> = ({
   story,
+  isMine,
 }: StoryCardHorizontalProps) => {
   const { setIsMusicPlayerShow } = useMusicPlayerShow();
   const { setIsPlayingBarShow } = usePlayingBarShow();
@@ -28,29 +30,29 @@ const StoryCardHorizontal: FC<StoryCardHorizontalProps> = ({
   };
 
   return (
-    <View style={S.container}>
-      <TouchableOpacity onPress={handlePress}>
-        <View style={S.container2}>
-          <Image
-            style={S.thumbnail}
-            source={{
-              uri:
-                story.thumbnailImageSrc === 'string'
-                  ? 'https://storage.googleapis.com/gipsa-upload/default-images/random-0.jpg'
-                  : story.thumbnailImageSrc,
-            }}
-          />
-          <View style={S.container3}>
-            <MyText fontSize={18} fontWeight="bold">
-              {story.title}
-            </MyText>
-            <MyText fontSize={14} fontWeight="medium">
-              {moment(story.createdAt).format('YYYY.MM.DD')}
-            </MyText>
-          </View>
+    <TouchableOpacity onPress={handlePress}>
+      <View style={S.container2}>
+        <Image
+          style={S.thumbnail}
+          source={{
+            uri:
+              story.thumbnailImageSrc === 'string'
+                ? 'https://storage.googleapis.com/gipsa-upload/default-images/random-0.jpg'
+                : story.thumbnailImageSrc,
+          }}
+        />
+        <View style={S.container3}>
+          <MyText fontSize={18} fontWeight="bold">
+            {story.title}
+          </MyText>
+          <MyText fontSize={14} fontWeight="medium" style={{ marginTop: 6 }}>
+            {isMine
+              ? moment(story.createdAt).format('YYYY.MM.DD')
+              : `made by ${story.nickname}`}
+          </MyText>
         </View>
-      </TouchableOpacity>
-    </View>
+      </View>
+    </TouchableOpacity>
   );
 };
 

@@ -9,12 +9,9 @@ import TellerReselts from './TellerResults';
 
 import { useStories } from 'shared/hook/useStories';
 import { useUsers } from 'shared/hook/useUsers';
-import PlayingBar from 'shared/components/PlayingBar';
-import { usePlayingBarShow } from 'src/provider/PlayingBarProvider';
 
 const SearchScreen = () => {
   const [searchText, setSearchText] = useState<string>('');
-  const { isPlayingBarShow } = usePlayingBarShow();
 
   const { stories } = useStories(searchText);
   const { users } = useUsers(searchText);

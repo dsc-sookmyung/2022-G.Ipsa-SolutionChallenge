@@ -25,4 +25,4 @@ const TellerReselts: FC<TellerReseltsProps> = ({
   );
 };
 
-export default TellerReselts;
+export default React.memo(TellerReselts);

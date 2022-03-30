@@ -51,7 +51,7 @@ const S = StyleSheet.create({
 
   startbtntouch: {
     pposition: 'absolute',
-    top: 210,
+    top: 340,
     width: '100%',
     height: 48,
     borderRadius: 4,

@@ -66,9 +66,6 @@ const ProfileScreen = ({ navigation }) => {
         >
           <MyText fontSize={16}>My like story</MyText>
         </TouchableOpacity>
-        <TouchableOpacity style={S.touchableText}>
-          <MyText fontSize={16}>My comments</MyText>
-        </TouchableOpacity>
       </View>
     </View>
   );

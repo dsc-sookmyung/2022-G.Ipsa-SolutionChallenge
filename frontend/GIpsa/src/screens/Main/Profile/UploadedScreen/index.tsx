@@ -14,9 +14,12 @@ import { useCurrentUser } from 'src/provider/UserProvider';
 
 const UploadedScreen = ({ navigation }) => {
   const { currentUser } = useCurrentUser();
+  console.log('currentUser: ', currentUser);
 
   const { stories } = useStories(undefined, currentUser?.id);
+
   const { storycount } = useStoryCount(currentUser?.id);
+
   const { followercount } = useFollowerCount(currentUser?.id);
 
   return (
@@ -45,7 +48,7 @@ const UploadedScreen = ({ navigation }) => {
         </View>
       </View>
       <ScrollView style={S.container}>
-        <MyStories title="Stories" stories={stories} />
+        <MyStories stories={stories} />
       </ScrollView>
     </View>
   );
