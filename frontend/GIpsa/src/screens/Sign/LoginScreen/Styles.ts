@@ -9,11 +9,9 @@ const S = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 35,
-    fontWeight: '600',
     marginTop: 166,
     marginBottom: 172,
-    textAlign: 'center',
+    alignItems: 'center',
   },
   signInButton: {
     width: 312,
