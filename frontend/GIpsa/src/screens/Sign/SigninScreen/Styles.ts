@@ -2,74 +2,60 @@ import { StyleSheet } from 'react-native';
 
 const S = StyleSheet.create({
   container: {
-    marginTop: 32,
     paddingHorizontal: 24,
+    position: 'relative',
   },
   title: {
     alignItems: 'center',
-    marginTop: 41,
-    marginBottom: 30,
+    marginTop: 40,
+    marginBottom: 40,
   },
   marginNn: {
     marginTop: 33,
-    marginLeft: 27,
   },
   marginNnInput: {
     marginTop: 3,
-    marginLeft: 26,
-    marginRight: 28,
   },
   marginavail: {
     marginTop: 7,
-    marginLeft: 27,
   },
   defaultMargin: {
     marginTop: 30,
     marginBottom: 30,
-    marginLeft: 27,
   },
   marginB: {
-    marginTop: 10,
-    marginLeft: 27,
+    marginTop: 20,
   },
   tinputYear: {
-    width: 88,
-    height: 36,
+    flex: 3,
+    marginRight: 12,
   },
   tinputMonth: {
-    marginLeft: 36,
-    width: 67,
-    height: 36,
+    flex: 2,
+    marginRight: 12,
   },
   tinputDay: {
-    marginLeft: 36,
-    width: 67,
-    height: 36,
+    flex: 2,
   },
 
   dateAlign: {
     marginTop: 3,
-    marginLeft: 26,
-    marginRight: 40,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
   },
   area: {
     marginTop: 92,
     textAlign: 'center',
-  },
-  textQ: {
     alignItems: 'center',
   },
 
   startbtntouch: {
-    position: 'absolute',
-    top: 656,
-    right: 23,
-    left: 23,
-    width: 314,
+    pposition: 'absolute',
+    top: 210,
+    width: '100%',
     height: 48,
+    borderRadius: 4,
+    overflow: 'hidden',
   },
 
   startbtn: {
@@ -78,9 +64,9 @@ const S = StyleSheet.create({
   },
   checkAlign: {
     marginTop: 17,
-    marginLeft: 70,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

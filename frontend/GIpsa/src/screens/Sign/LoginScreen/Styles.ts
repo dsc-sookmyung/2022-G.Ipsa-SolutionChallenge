@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const S = StyleSheet.create({
   container: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 20,
   },
   container2: {
     marginBottom: 30,
@@ -14,7 +14,7 @@ const S = StyleSheet.create({
     alignItems: 'center',
   },
   signInButton: {
-    width: 312,
+    width: '100%',
     height: 48,
     marginBottom: 43,
   },

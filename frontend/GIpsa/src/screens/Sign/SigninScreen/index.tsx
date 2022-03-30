@@ -68,8 +68,6 @@ const SigninScreen = ({ route, navigation }) => {
   const { nicknameCheck } = useNnCheck(nickName);
 
   useEffect(() => {
-    console.log('nickName: ' + nickName);
-    console.log('nicknameCheck: ' + nicknameCheck);
     if (nicknameCheck == 1) {
       setAvailNn(false);
     } else if (nicknameCheck == 0) {
@@ -100,7 +98,6 @@ const SigninScreen = ({ route, navigation }) => {
           .text()
           .then((responseJson) => {
             const data = responseJson;
-            console.log('data: \n' + data);
           })
           .catch((error) => {
             console.log('error: \n' + error);
@@ -110,7 +107,6 @@ const SigninScreen = ({ route, navigation }) => {
         console.log('Fetch Error: \n', error);
       });
 
-    console.log('user: ' + JSON.stringify(user));
     setCurrentUser(user);
     navigation.navigate('Main');
   };
@@ -122,14 +118,15 @@ const SigninScreen = ({ route, navigation }) => {
           Join
         </MyText>
       </View>
-      <View style={S.marginNn}>
-        <MyText fontSize={14}>Nickname</MyText>
-      </View>
+
+      <MyText fontSize={16}>Nickname</MyText>
+
       <NickNameInput
         style={S.marginNnInput}
         onChangeText={(nickName) => setNickName(nickName)}
         placeholder="Enter nickname..."
       />
+
       <View style={S.marginavail}>
         {availNn ? (
           <MyText fontSize={10}>available</MyText>
@@ -139,28 +136,40 @@ const SigninScreen = ({ route, navigation }) => {
           </MyText>
         )}
       </View>
+
       <View style={S.marginB}>
-        <MyText fontSize={14}>Birth</MyText>
+        <MyText fontSize={16}>Birth</MyText>
       </View>
+
       <View style={S.dateAlign}>
-        <DateInput style={S.tinputYear} onChangeText={yeartyped} />
-        <DateInput style={S.tinputMonth} onChangeText={monthtyped} />
-        <DateInput style={S.tinputDay} onChangeText={daytyped} />
+        <DateInput
+          style={S.tinputYear}
+          onChangeText={yeartyped}
+          placeholder="YYYY"
+        />
+        <DateInput
+          style={S.tinputMonth}
+          onChangeText={monthtyped}
+          placeholder="MM"
+        />
+        <DateInput
+          style={S.tinputDay}
+          onChangeText={daytyped}
+          placeholder="DD"
+        />
       </View>
 
       {isSenior && (
         <View style={S.area}>
-          <View style={S.textQ}>
-            <MyText fontSize={15}>
-              Do you want to make contents as a story teller?
-            </MyText>
-          </View>
+          <MyText fontSize={13}>
+            Do you want to make contents as a story teller?
+          </MyText>
           <View style={S.checkAlign}>
             <CheckBox
               value={isChecked}
               onValueChange={(val) => setIsChecked(val)}
             />
-            <MyText>Yes, I want to share my story</MyText>
+            <MyText fontSize={13}>Yes, I want to share my story</MyText>
           </View>
         </View>
       )}

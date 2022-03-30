@@ -95,7 +95,6 @@ const AudioArea: FC<AudioAreaProps> = ({
   const handlePlay = async () => {
     try {
       const result = await audioRecorderPlayer.startPlayer(audioUri);
-      console.log('result: ', result);
       setRecordingCondition({
         beforeRecording: false,
         isRecording: false,

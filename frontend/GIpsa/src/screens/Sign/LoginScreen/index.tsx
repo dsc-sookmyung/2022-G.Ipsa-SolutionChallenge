@@ -123,11 +123,7 @@ const LoginScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (userIn && !loading) {
-      console.log('email: ' + email);
-      console.log('emailCheck: ' + emailCheck);
-
       if (emailCheck == 1) {
-        console.log(usersEmail);
         setCurrentUser(usersEmail?.[0]);
 
         navigation.navigate('Main');
@@ -145,7 +141,7 @@ const LoginScreen = ({ navigation }) => {
         </MyText>
       </View>
 
-      <View style={S.container}>
+      <View>
         {clicked && emailCheck != 1 && (
           <View style={S.container2}>
             <Progress.Circle size={30} indeterminate={true} />
