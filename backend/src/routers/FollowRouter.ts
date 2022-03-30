@@ -16,7 +16,8 @@ router.get('/', async (req: Request, res: Response) => {
   const creatorId = req.query.creatorId;
   if (followerId) {
     //이 유저가 팔로잉하는 크리에이터들 리턴
-    const searchedCreator = await createQueryBuilder(Follow, 'fl')
+    const searchedCreator = await createQueryBuilder()
+      .from(Follow, 'fl')
       .leftJoin(UserInfo, 'ui', 'ui.id = fl.creatorId')
       .where('fl.followerId = :followerId', { followerId: followerId })
       .getRawMany()
@@ -24,7 +25,8 @@ router.get('/', async (req: Request, res: Response) => {
   }
   else if (creatorId) {
     //이 유저를 팔로우하는 팔로워들 리턴
-    const searchedFollow = await createQueryBuilder(Follow, 'fl')
+    const searchedFollow = await createQueryBuilder()
+      .from(Follow, 'fl')
       .leftJoin(UserInfo, 'ui', 'ui.id = fl.followerId')
       .where('fl.creatorId = :creatorId', { creatorId: creatorId })
       .getRawMany()
@@ -46,7 +48,8 @@ router.get('/cnt', async (req: Request, res: Response) => {
   const creatorId = req.query.creatorId;
   if (followerId) {
     //이 유저가 팔로잉하는 크리에이터들 리턴
-    const searchedCreator = await createQueryBuilder(Follow, 'fl')
+    const searchedCreator = await createQueryBuilder()
+      .from(Follow, 'fl')
       .leftJoin(UserInfo, 'ui', 'ui.id = fl.creatorId')
       .where('fl.followerId = :followerId', { followerId: followerId })
       .getCount()
@@ -54,7 +57,8 @@ router.get('/cnt', async (req: Request, res: Response) => {
   }
   else if (creatorId) {
     //이 유저를 팔로우하는 팔로워들 리턴
-    const searchedFollow = await createQueryBuilder(Follow, 'fl')
+    const searchedFollow = await createQueryBuilder()
+      .from(Follow, 'fl')
       .leftJoin(UserInfo, 'ui', 'ui.id = fl.followerId')
       .where('fl.creatorId = :creatorId', { creatorId: creatorId })
       .getCount()
@@ -72,13 +76,15 @@ router.get('/cnt', async (req: Request, res: Response) => {
 router.post('/click', async (req: Request, res: Response) => {
   if (!connectionManager.has('default')) {
     const connection = await createConnection(Options);
-  } const body = req.body;
+  }
+  const body = req.body;
   const followerId = body.followerId;
   const creatorId = body.creatorId;
   const searchFollow = await Follow.findOne({ where: { followerId: followerId, creatorId: creatorId } })
   if (searchFollow) {
     //팔로잉 상태. 언팔
-    await createQueryBuilder(Follow)
+    await createQueryBuilder()
+      .from(Follow, 'fl')
       .delete()
       .where({ followerId: followerId, creatorId: creatorId })
       .execute();

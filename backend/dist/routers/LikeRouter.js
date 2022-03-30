@@ -106,8 +106,9 @@ router.get('/story', (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
     }
     const userId = req.query.userId;
-    const searchedStory = yield (0, typeorm_1.createQueryBuilder)(Story_1.default, 'story')
-        .innerJoin(LikeEntity_1.default, 'le', 'story.id = le.likedStoryId')
+    const searchedStory = yield (0, typeorm_1.createQueryBuilder)()
+        .from(LikeEntity_1.default, 'le')
+        .innerJoin(Story_1.default, 'story', 'story.id = le.likedStoryId')
         .where("le.userId = :userId", { userId: userId })
         .getRawMany();
     res.send(searchedStory);
