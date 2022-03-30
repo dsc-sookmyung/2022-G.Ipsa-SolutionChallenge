@@ -118,8 +118,9 @@ const SigninScreen = ({ route, navigation }) => {
           Join
         </MyText>
       </View>
-
-      <MyText fontSize={16}>Nickname</MyText>
+      <View style={S.marginNn}>
+        <MyText fontSize={14}>Nickname</MyText>
+      </View>
 
       <NickNameInput
         style={S.marginNnInput}

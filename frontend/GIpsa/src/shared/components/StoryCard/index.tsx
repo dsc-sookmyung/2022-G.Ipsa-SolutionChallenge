@@ -32,7 +32,7 @@ const StoryCard: FC<StoryCardProps> = ({ story }: StoryCardProps) => {
           source={{
             uri:
               story.thumbnailImageSrc === 'string'
-                ? 'https://k.kakaocdn.net/dn/chFJvJ/btrlY5GSAEx/KdKaCGcO2kyMpE5mM1cwp1/img_640x640.jpg'
+                ? 'https://storage.googleapis.com/gipsa-upload/default-images/random-0.jpg'
                 : story.thumbnailImageSrc,
           }}
         />
