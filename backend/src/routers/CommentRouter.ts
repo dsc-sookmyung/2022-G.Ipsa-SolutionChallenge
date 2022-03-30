@@ -11,7 +11,8 @@ const connectionManager = getConnectionManager();
 router.get('/', async (req: Request, res: Response) => {
   if (!connectionManager.has('default')) {
     const connection = await createConnection(Options);
-  } const userId = req.query.userId;
+  }
+  const userId = req.query.userId;
   const storyId = req.query.storyId;
   if (userId) {
     const searchedComment = await Comment.find({ where: { userId: userId } })
@@ -31,7 +32,8 @@ router.get('/', async (req: Request, res: Response) => {
 router.post('/create', async (req: Request, res: Response) => {
   if (!connectionManager.has('default')) {
     const connection = await createConnection(Options);
-  } const body = req.body;
+  }
+  const body = req.body;
   // const userId = body.userId;
   // const storyId = body.storyId;
   const comment = body as Comment;
