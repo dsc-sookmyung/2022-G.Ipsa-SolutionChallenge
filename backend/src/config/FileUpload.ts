@@ -9,7 +9,7 @@ FileUpload.uploadThumbnail = (req: Request, res: Response) => {
   try {
     const gcsname = req.file?.originalname;
     console.log('image_originalname:' + gcsname)
-    const file = bucket.file(gcsname!);
+    const file = bucket.file('storyImageSrc/' + gcsname!);
     const stream = file.createWriteStream({
       metadata: {
         // contentType: req.file?.mimetype
@@ -37,7 +37,7 @@ FileUpload.uploadAudio = (req: Request, res: Response) => {
   try {
     const gcsname = req.file?.originalname;
     console.log(' audio_originalname:' + gcsname)
-    const file = bucket.file(gcsname!);
+    const file = bucket.file('storyAudioSrc/' + gcsname!);
     const stream = file.createWriteStream({
       metadata: {
         // contentType: req.file?.mimetype

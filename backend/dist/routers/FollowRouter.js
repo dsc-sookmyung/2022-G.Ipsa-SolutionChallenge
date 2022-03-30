@@ -30,7 +30,8 @@ router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const creatorId = req.query.creatorId;
     if (followerId) {
         //이 유저가 팔로잉하는 크리에이터들 리턴
-        const searchedCreator = yield (0, typeorm_1.createQueryBuilder)(Follow_1.default, 'fl')
+        const searchedCreator = yield (0, typeorm_1.createQueryBuilder)()
+            .from(Follow_1.default, 'fl')
             .leftJoin(UserInfo_1.default, 'ui', 'ui.id = fl.creatorId')
             .where('fl.followerId = :followerId', { followerId: followerId })
             .getRawMany();
@@ -38,7 +39,8 @@ router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     else if (creatorId) {
         //이 유저를 팔로우하는 팔로워들 리턴
-        const searchedFollow = yield (0, typeorm_1.createQueryBuilder)(Follow_1.default, 'fl')
+        const searchedFollow = yield (0, typeorm_1.createQueryBuilder)()
+            .from(Follow_1.default, 'fl')
             .leftJoin(UserInfo_1.default, 'ui', 'ui.id = fl.followerId')
             .where('fl.creatorId = :creatorId', { creatorId: creatorId })
             .getRawMany();
@@ -58,7 +60,8 @@ router.get('/cnt', (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const creatorId = req.query.creatorId;
     if (followerId) {
         //이 유저가 팔로잉하는 크리에이터들 리턴
-        const searchedCreator = yield (0, typeorm_1.createQueryBuilder)(Follow_1.default, 'fl')
+        const searchedCreator = yield (0, typeorm_1.createQueryBuilder)()
+            .from(Follow_1.default, 'fl')
             .leftJoin(UserInfo_1.default, 'ui', 'ui.id = fl.creatorId')
             .where('fl.followerId = :followerId', { followerId: followerId })
             .getCount();
@@ -66,7 +69,8 @@ router.get('/cnt', (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
     else if (creatorId) {
         //이 유저를 팔로우하는 팔로워들 리턴
-        const searchedFollow = yield (0, typeorm_1.createQueryBuilder)(Follow_1.default, 'fl')
+        const searchedFollow = yield (0, typeorm_1.createQueryBuilder)()
+            .from(Follow_1.default, 'fl')
             .leftJoin(UserInfo_1.default, 'ui', 'ui.id = fl.followerId')
             .where('fl.creatorId = :creatorId', { creatorId: creatorId })
             .getCount();
@@ -88,7 +92,8 @@ router.post('/click', (req, res) => __awaiter(void 0, void 0, void 0, function* 
     const searchFollow = yield Follow_1.default.findOne({ where: { followerId: followerId, creatorId: creatorId } });
     if (searchFollow) {
         //팔로잉 상태. 언팔
-        yield (0, typeorm_1.createQueryBuilder)(Follow_1.default)
+        yield (0, typeorm_1.createQueryBuilder)()
+            .from(Follow_1.default, 'fl')
             .delete()
             .where({ followerId: followerId, creatorId: creatorId })
             .execute();

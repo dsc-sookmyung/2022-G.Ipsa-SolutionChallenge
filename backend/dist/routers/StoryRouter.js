@@ -20,6 +20,7 @@ const multer_1 = __importDefault(require("multer"));
 const FileUpload_1 = require("../config/FileUpload");
 const dbconnector_1 = __importDefault(require("../database/dbconnector"));
 const typeorm_2 = require("typeorm");
+const UserInfo_1 = __importDefault(require("../database/entities/UserInfo"));
 const router = express_1.default.Router();
 exports.StoryRouter = router;
 const connectionManager = (0, typeorm_1.getConnectionManager)();
@@ -46,14 +47,14 @@ function getPublicUrl(filename) {
 router.post('/imageUpload', multerMid.single('image'), (req, res) => {
     var _a;
     FileUpload_1.FileUpload.uploadThumbnail(req);
-    const imageUrl = getPublicUrl((_a = req.file) === null || _a === void 0 ? void 0 : _a.originalname);
+    const imageUrl = getPublicUrl('storyImageSrc/' + ((_a = req.file) === null || _a === void 0 ? void 0 : _a.originalname));
     console.log(imageUrl);
     res.send({ url: imageUrl });
 });
 router.post('/audioUpload', multerMid.single('audio'), (req, res) => {
     var _a;
     FileUpload_1.FileUpload.uploadAudio(req);
-    const audioUrl = getPublicUrl((_a = req.file) === null || _a === void 0 ? void 0 : _a.originalname);
+    const audioUrl = getPublicUrl('storyAudioSrc/' + ((_a = req.file) === null || _a === void 0 ? void 0 : _a.originalname));
     console.log(audioUrl);
     res.send({ url: audioUrl });
 });
@@ -62,7 +63,11 @@ router.get('/click', (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
     }
     const id = req.query.id;
-    const clickedStory = yield Story_1.default.findOne({ where: { id: id } });
+    const clickedStory = yield yield (0, typeorm_1.createQueryBuilder)()
+        .from(Story_1.default, 'st')
+        .leftJoin(UserInfo_1.default, 'ui', 'ui.id = st.creatorId')
+        .where('st.id = :id', { id: id })
+        .getRawOne();
     res.send(clickedStory);
     // await connection.close();
 }));
@@ -71,7 +76,12 @@ router.post('/click', (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const connection = yield (0, typeorm_2.createConnection)(dbconnector_1.default);
     }
     const id = req.query.id;
-    const clickedStory = yield Story_1.default.findOne({ where: { id: id } });
+    const clickedStory = yield (0, typeorm_1.createQueryBuilder)()
+        .from(Story_1.default, 'st')
+        .leftJoin(UserInfo_1.default, 'ui', 'ui.id = st.creatorId')
+        .where('st.id = :id', { id: id })
+        .getRawOne();
+    // Story.findOne({ where: { id: id } })
     res.send(clickedStory);
     // await connection.close();
 }));
