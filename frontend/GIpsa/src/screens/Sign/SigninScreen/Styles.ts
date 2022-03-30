@@ -6,16 +6,13 @@ const S = StyleSheet.create({
     paddingHorizontal: 24,
   },
   title: {
-    fontSize: 30,
-    textAlign: 'center',
-    fontWeight: '600',
+    alignItems: 'center',
     marginTop: 41,
     marginBottom: 30,
   },
   marginNn: {
     marginTop: 33,
     marginLeft: 27,
-    fontSize: 14,
   },
   marginNnInput: {
     marginTop: 3,
@@ -25,13 +22,6 @@ const S = StyleSheet.create({
   marginavail: {
     marginTop: 7,
     marginLeft: 27,
-    fontSize: 10,
-  },
-  marginavailred: {
-    marginTop: 7,
-    marginLeft: 27,
-    fontSize: 10,
-    color: 'red',
   },
   defaultMargin: {
     marginTop: 30,
@@ -41,7 +31,6 @@ const S = StyleSheet.create({
   marginB: {
     marginTop: 10,
     marginLeft: 27,
-    fontSize: 14,
   },
   tinputYear: {
     width: 88,
@@ -71,8 +60,7 @@ const S = StyleSheet.create({
     textAlign: 'center',
   },
   textQ: {
-    textAlign: 'center',
-    fontSize: 15,
+    alignItems: 'center',
   },
 
   startbtntouch: {

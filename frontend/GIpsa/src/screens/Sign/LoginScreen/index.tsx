@@ -26,6 +26,7 @@ import { User } from 'shared/types';
 import { useUsersEmail } from 'shared/hook/useUsersEmail';
 import { useECheck } from 'shared/hook/useECheck';
 import { useCurrentUser } from 'src/provider/UserProvider';
+import { MyText } from 'shared/components';
 
 const LoginScreen = ({ navigation }) => {
   // /* google
@@ -138,7 +139,11 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={S.container}>
-      <Text style={S.title}>Log In</Text>
+      <View style={S.title}>
+        <MyText fontSize={35} fontWeight={'bold'}>
+          Log In
+        </MyText>
+      </View>
 
       <View style={S.container}>
         {clicked && emailCheck != 1 && (

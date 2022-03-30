@@ -14,8 +14,6 @@ const LikeScreen = ({ navigation }) => {
 
   const { likedStories } = useLikedStories(currentUser?.id);
 
-  console.log(likedStories);
-
   return (
     <View style={S.maincontainer}>
       <View style={S.titlecontainer}>
@@ -29,7 +27,7 @@ const LikeScreen = ({ navigation }) => {
         </MyText>
       </View>
       <ScrollView style={S.container}>
-        <MyStories stories={likedStories} title={''} />
+        <MyStories stories={likedStories} />
       </ScrollView>
     </View>
   );
