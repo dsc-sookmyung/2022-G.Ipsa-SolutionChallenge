@@ -23,12 +23,18 @@ const S = StyleSheet.create({
     marginTop: 24,
     borderRadius: 8,
   },
-
+  background: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: '#00000077',
+  },
   screenContainer: {
     marginTop: 80,
     flex: 1,
     backgroundColor: '#FDF2E7',
     alignItems: 'center',
+    borderTopLeftRadius: 48,
+    borderTopRightRadius: 48,
   },
   contentContainer: {
     flex: 1,

@@ -9,12 +9,12 @@ import TellerReselts from './TellerResults';
 
 import { useStories } from 'shared/hook/useStories';
 import { useUsers } from 'shared/hook/useUsers';
-import GlobalPlayer from 'shared/components/GlobalPlayer';
-import { useGlobalPlayerPv } from 'src/provider/GlobalPlayerProvider';
+import PlayingBar from 'shared/components/PlayingBar';
+import { usePlayingBarShow } from 'src/provider/PlayingBarProvider';
 
 const SearchScreen = () => {
   const [searchText, setSearchText] = useState<string>('');
-  const { playerShow, setPlayerShow } = useGlobalPlayerPv();
+  const { isPlayingBarShow } = usePlayingBarShow();
 
   const { stories } = useStories(searchText);
   const { users } = useUsers(searchText);
@@ -30,7 +30,7 @@ const SearchScreen = () => {
           <StoryReselts stories={stories} />
         </ScrollView>
       )}
-      {playerShow && <GlobalPlayer />}
+      {isPlayingBarShow && <PlayingBar />}
     </View>
   );
 };

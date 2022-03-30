@@ -3,7 +3,7 @@ import qs from 'qs';
 
 import api from 'shared/utils/api';
 
-export function useFollowers(keyword?: string) {
+export function useFollowers(keyword?: number) {
   const {
     data: fetchingData,
     error,

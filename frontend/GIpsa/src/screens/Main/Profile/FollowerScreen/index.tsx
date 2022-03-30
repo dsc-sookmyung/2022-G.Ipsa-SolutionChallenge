@@ -6,13 +6,13 @@ import { useFollowerCount } from 'shared/hook/useFollowerCount';
 import MyFollower from 'shared/components/MyFollowers';
 import { useFollowers } from 'shared/hook/useFollowers';
 import MyText from 'shared/components/MyText';
-import { useUserPv } from 'src/provider/UserProvider';
+import { useCurrentUser } from 'src/provider/UserProvider';
 
 const FollowerScreen = ({ navigation }) => {
-  const { userpv, setUserpv } = useUserPv();
+  const { currentUser } = useCurrentUser();
 
-  const { followers, loading, mutate } = useFollowers('' + userpv.id);
-  const { followercount } = useFollowerCount('' + userpv.id);
+  const { followers, loading, mutate } = useFollowers(currentUser?.id);
+  const { followercount } = useFollowerCount(currentUser?.id);
 
   return (
     <View style={S.maincontainer}>

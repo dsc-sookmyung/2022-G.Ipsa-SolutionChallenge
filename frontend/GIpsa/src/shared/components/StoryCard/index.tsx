@@ -1,28 +1,32 @@
-import React, { FC, useEffect, useState } from 'react';
-import { Image, Text, View } from 'react-native';
+import React, { FC } from 'react';
+import { Image, View } from 'react-native';
 
 import S from './Styles';
 import { Story } from 'shared/types';
 import MyText from '../MyText';
 import { TouchableOpacity } from 'react-native';
-import PlayerModal from '../PlayerModal';
-import { useGlobalPlayerPv } from 'src/provider/GlobalPlayerProvider';
+import { usePlayingStory } from 'src/provider/PlayingStoryProvider';
+import { useMusicPlayerShow } from 'src/provider/MusicPlayerProvider';
+import { usePlayingBarShow } from 'src/provider/PlayingBarProvider';
 
 export interface StoryCardProps {
   story: Story;
 }
 
 const StoryCard: FC<StoryCardProps> = ({ story }: StoryCardProps) => {
-  const [isM, setIsM] = useState(false);
-  const { playerShow, setPlayerShow } = useGlobalPlayerPv();
+  const { setIsMusicPlayerShow } = useMusicPlayerShow();
+  const { setIsPlayingBarShow } = usePlayingBarShow();
+  const { setPlayingStory } = usePlayingStory();
 
-  const stories: Story[] = [];
-  stories.push(story);
+  const handlePress = () => {
+    setPlayingStory(story);
+    setIsMusicPlayerShow(true);
+    setIsPlayingBarShow(true);
+  };
 
   return (
     <View style={S.container}>
-      {isM && <PlayerModal stories={stories} />}
-      <TouchableOpacity onPress={() => setIsM(!isM)}>
+      <TouchableOpacity onPress={handlePress}>
         <Image
           style={S.thumbnail}
           source={{

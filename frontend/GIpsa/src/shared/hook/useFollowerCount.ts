@@ -3,7 +3,7 @@ import qs from 'qs';
 
 import api from 'shared/utils/api';
 
-export function useFollowerCount(keyword?: string) {
+export function useFollowerCount(keyword?: number) {
   const {
     data: fetchingData,
     error,

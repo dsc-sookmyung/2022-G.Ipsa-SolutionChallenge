@@ -1,21 +1,11 @@
-import { MyText } from 'shared/components';
-import S from './Styles';
 import React, { FC, useEffect, useState } from 'react';
 import {
-  Alert,
-  Button,
   Image,
-  Modal,
-  Pressable,
   SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import Slider from '@react-native-community/slider';
 import TrackPlayer, {
   Capability,
   Event,
@@ -25,15 +15,13 @@ import TrackPlayer, {
   useProgress,
   useTrackPlayerEvents,
 } from 'react-native-track-player';
-import { Story, User } from 'shared/types';
-import { useLiked } from 'shared/hook/useLiked';
-import { API_ENDPOINT } from 'shared/constants/env';
-import { useLikedStories } from 'shared/hook/useLikedStories';
-import { useUserPv } from 'src/provider/UserProvider';
-import { useGlobalPlayerPv } from 'src/provider/GlobalPlayerProvider';
-import PlayerModal from '../PlayerModal';
 import * as Progress from 'react-native-progress';
-import { usePlayerPv } from 'src/provider/PlayerProvider';
+
+import S from './Styles';
+import { MyText } from 'shared/components';
+import { useLikedStories } from 'shared/hook/useLikedStories';
+import { useCurrentUser } from 'src/provider/UserProvider';
+import { useMusicPlayerShow } from 'src/provider/MusicPlayerProvider';
 
 const togglePlayback = async (playbackState: State) => {
   const currentTrack = await TrackPlayer.getCurrentTrack();
@@ -81,12 +69,11 @@ async function jumpBackward() {
   }
 }
 
-const GlobalPlayer = () => {
-  const { userpv, setUserpv } = useUserPv();
-  const { mplayerShow, setmPlayerShow } = usePlayerPv();
+const PlayingBar = () => {
+  const { currentUser } = useCurrentUser();
+  const { setIsMusicPlayerShow } = useMusicPlayerShow();
 
-  // 파일 리스트로 더하기(디폴트: 좋아요 누른 스토리들)
-  const { likedStories } = useLikedStories(userpv?.id);
+  const { likedStories } = useLikedStories(currentUser?.id);
 
   const setupIfNecessary = async () => {
     // if app was relaunched and music was already playing, we don't setup again. -> SET UP AGAIN
@@ -163,10 +150,9 @@ const GlobalPlayer = () => {
 
   return (
     <SafeAreaView style={S.container}>
-      {mplayerShow && <PlayerModal stories={null} />}
       <SafeAreaView style={S.screenContainer}>
         {/* <Image style={S.artwork} source={{ uri: `${trackArtwork}` }} /> */}
-        <TouchableOpacity onPress={() => setmPlayerShow(true)}>
+        <TouchableOpacity onPress={() => setIsMusicPlayerShow(true)}>
           <View style={S.contentContainer}>
             <View style={S.titleText}>
               {isLoaded ? (
@@ -208,4 +194,4 @@ const GlobalPlayer = () => {
     </SafeAreaView>
   );
 };
-export default GlobalPlayer;
+export default PlayingBar;
