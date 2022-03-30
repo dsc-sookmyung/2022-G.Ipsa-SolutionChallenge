@@ -80,7 +80,7 @@ const RecordScreen = ({ navigation }) => {
       const uploadedAudioUri = await uploadAudio();
 
       const payload = {
-        creatorId: currentUser?.uid,
+        creatorId: currentUser?.id,
         title,
         thumbnailImageSrc: uploadedImageUri,
         category: selectedCategory?.title,

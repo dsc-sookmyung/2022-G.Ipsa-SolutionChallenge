@@ -25,7 +25,6 @@ import S from './Styles';
 import { MyText } from 'shared/components';
 import { useLiked } from 'shared/hook/useLiked';
 import { API_ENDPOINT } from 'shared/constants/env';
-import { useLikedStories } from 'shared/hook/useLikedStories';
 import { useCurrentUser } from 'src/provider/UserProvider';
 import { useMusicPlayerShow } from 'src/provider/MusicPlayerProvider';
 import { usePlayingStory } from 'src/provider/PlayingStoryProvider';
@@ -122,7 +121,7 @@ const MusicPlayerModal = () => {
     });
 
     const { data: likedStories } = await api.client.get<Story[]>(
-      `/like/story?userId=${currentUser?.uid}`
+      `/like/story?userId=${currentUser?.id}`
     );
 
     for (let i = 0; i < likedStories.length; i++) {
@@ -166,7 +165,7 @@ const MusicPlayerModal = () => {
     }
   });
 
-  const { likeData } = useLiked('?userId=' + currentUser?.uid);
+  const { likeData } = useLiked('?userId=' + currentUser?.id);
 
   useEffect(() => {
     setIsLiked(false);
@@ -178,7 +177,7 @@ const MusicPlayerModal = () => {
   }, [trackId]);
 
   const like = {
-    userId: currentUser?.uid,
+    userId: currentUser?.id,
     likedStoryId: trackId,
   };
 
@@ -231,7 +230,7 @@ const MusicPlayerModal = () => {
             </MyText>
             <View style={S.artistText}>
               <MyText fontSize={14} font="Suit">
-                {`made by ${trackArtist}`}
+                {trackArtist ? `made by ${trackArtist}` : ''}
               </MyText>
             </View>
             <Image style={S.artwork} source={{ uri: `${trackArtwork}` }} />

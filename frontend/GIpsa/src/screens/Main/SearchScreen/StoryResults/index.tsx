@@ -25,4 +25,4 @@ const StoryReselts: FC<StoryReseltsProps> = ({
   );
 };
 
-export default StoryReselts;
+export default React.memo(StoryReselts);

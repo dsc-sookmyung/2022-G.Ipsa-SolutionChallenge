@@ -16,12 +16,11 @@ const UploadedScreen = ({ navigation }) => {
   const { currentUser } = useCurrentUser();
   console.log('currentUser: ', currentUser);
 
-  const { stories } = useStories(undefined, currentUser?.uid);
-  console.log('stories: ', stories);
-  const { storycount } = useStoryCount(currentUser?.uid);
-  console.log('storycount: ', storycount);
-  const { followercount } = useFollowerCount(currentUser?.uid);
-  console.log('followercount: ', followercount);
+  const { stories } = useStories(undefined, currentUser?.id);
+
+  const { storycount } = useStoryCount(currentUser?.id);
+
+  const { followercount } = useFollowerCount(currentUser?.id);
 
   return (
     <View style={S.maincontainer}>

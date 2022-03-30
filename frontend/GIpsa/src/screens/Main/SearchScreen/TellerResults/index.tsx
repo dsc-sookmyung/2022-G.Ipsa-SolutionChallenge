@@ -18,11 +18,11 @@ const TellerReselts: FC<TellerReseltsProps> = ({
       </MyText>
       <S.TellerContainer horizontal>
         {tellers?.map((teller) => (
-          <TellerCard key={teller.uid} teller={teller} direction="horizontal" />
+          <TellerCard key={teller.id} teller={teller} direction="horizontal" />
         ))}
       </S.TellerContainer>
     </S.Root>
   );
 };
 
-export default TellerReselts;
+export default React.memo(TellerReselts);

@@ -1,5 +1,5 @@
 export interface User {
-  uid?: number;
+  id?: number;
   email: string;
   birth: Date;
   showBirth: boolean;
