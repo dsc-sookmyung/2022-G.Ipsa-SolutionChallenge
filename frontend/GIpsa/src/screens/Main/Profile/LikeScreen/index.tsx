@@ -12,7 +12,7 @@ import { useCurrentUser } from 'src/provider/UserProvider';
 const LikeScreen = ({ navigation }) => {
   const { currentUser } = useCurrentUser();
 
-  const { likedStories } = useLikedStories(currentUser?.id);
+  const { likedStories } = useLikedStories(currentUser?.uid);
 
   return (
     <View style={S.maincontainer}>

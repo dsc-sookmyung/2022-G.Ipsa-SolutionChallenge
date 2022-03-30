@@ -14,10 +14,14 @@ import { useCurrentUser } from 'src/provider/UserProvider';
 
 const UploadedScreen = ({ navigation }) => {
   const { currentUser } = useCurrentUser();
+  console.log('currentUser: ', currentUser);
 
-  const { stories } = useStories(undefined, currentUser?.id);
-  const { storycount } = useStoryCount(currentUser?.id);
-  const { followercount } = useFollowerCount(currentUser?.id);
+  const { stories } = useStories(undefined, currentUser?.uid);
+  console.log('stories: ', stories);
+  const { storycount } = useStoryCount(currentUser?.uid);
+  console.log('storycount: ', storycount);
+  const { followercount } = useFollowerCount(currentUser?.uid);
+  console.log('followercount: ', followercount);
 
   return (
     <View style={S.maincontainer}>
@@ -45,7 +49,7 @@ const UploadedScreen = ({ navigation }) => {
         </View>
       </View>
       <ScrollView style={S.container}>
-        <MyStories title="Stories" stories={stories} />
+        <MyStories stories={stories} />
       </ScrollView>
     </View>
   );

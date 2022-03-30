@@ -72,19 +72,16 @@ const SelectArea: FC<SelectAreaProps> = ({
       Math.floor(Math.random() * (max - min) + min);
     setImageUri(default_images[getRandom(0, 8)]);
     console.log(default_images[getRandom(0, 8)]);
-
   };
 
   return (
     <S.Root>
       <S.Background
-        source={
-          !imageUri
-            ? {
-                uri: 'https://storage.googleapis.com/gipsa-upload/default-images/random-0.jpg',
-              }
-            : { uri: imageUri }
-        }
+        source={{
+          uri:
+            imageUri ||
+            'https://storage.googleapis.com/gipsa-upload/default-images/random-0.jpg',
+        }}
       >
         <S.Container>
           <View>

@@ -122,7 +122,7 @@ const MusicPlayerModal = () => {
     });
 
     const { data: likedStories } = await api.client.get<Story[]>(
-      `/like/story?userId=${currentUser?.id}`
+      `/like/story?userId=${currentUser?.uid}`
     );
 
     for (let i = 0; i < likedStories.length; i++) {
@@ -166,7 +166,7 @@ const MusicPlayerModal = () => {
     }
   });
 
-  const { likeData } = useLiked('?userId=' + currentUser?.id);
+  const { likeData } = useLiked('?userId=' + currentUser?.uid);
 
   useEffect(() => {
     setIsLiked(false);
@@ -178,7 +178,7 @@ const MusicPlayerModal = () => {
   }, [trackId]);
 
   const like = {
-    userId: currentUser?.id,
+    userId: currentUser?.uid,
     likedStoryId: trackId,
   };
 

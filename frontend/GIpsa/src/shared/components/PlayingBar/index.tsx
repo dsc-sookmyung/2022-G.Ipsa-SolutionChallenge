@@ -77,7 +77,7 @@ const PlayingBar = () => {
   const { setIsMusicPlayerShow } = useMusicPlayerShow();
   const { isPlayingBarShow, setIsPlayingBarShow } = usePlayingBarShow();
 
-  const { likedStories } = useLikedStories(currentUser?.id);
+  const { likedStories } = useLikedStories(currentUser?.uid);
 
   const setupIfNecessary = async () => {
     // if app was relaunched and music was already playing, we don't setup again. -> SET UP AGAIN

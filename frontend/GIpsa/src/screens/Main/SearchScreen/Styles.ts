@@ -9,6 +9,7 @@ const S = StyleSheet.create({
     alignItems: 'center',
   },
   results: {
+    width: '100%',
     paddingTop: 28,
   },
 });

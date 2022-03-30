@@ -4,6 +4,7 @@ import { colors } from 'shared/utils/colors';
 const S = StyleSheet.create({
   maincontainer: {
     backgroundColor: colors.background,
+    flex: 1,
   },
 
   subcontainer: { alignItems: 'center', marginTop: 31 },
