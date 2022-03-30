@@ -72,6 +72,7 @@ const SelectArea: FC<SelectAreaProps> = ({
       Math.floor(Math.random() * (max - min) + min);
     setImageUri(default_images[getRandom(0, 8)]);
     console.log(default_images[getRandom(0, 8)]);
+
   };
 
   return (

@@ -86,7 +86,6 @@ const RecordScreen = ({ navigation }) => {
         category: selectedCategory?.title,
         audioFileSrc: uploadedAudioUri,
       };
-      console.log(payload);
       await api.client.post('/story/create', payload);
       navigation.navigate('Home');
     } catch (error) {

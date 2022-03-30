@@ -11,7 +11,6 @@ export interface MyStoriesProps {
 }
 
 const MyStories: FC<MyStoriesProps> = ({ stories }: MyStoriesProps) => {
-  console.log('My Stories: ' + JSON.stringify(stories));
   return (
     <View style={S.container}>
       <ScrollView style={S.storyCardContainer} persistentScrollbar>
