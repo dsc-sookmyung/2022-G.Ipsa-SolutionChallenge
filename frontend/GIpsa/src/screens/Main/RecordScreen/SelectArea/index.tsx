@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, SetStateAction, useState } from 'react';
 import { Modal, Text, View } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 
@@ -55,18 +55,34 @@ const SelectArea: FC<SelectAreaProps> = ({
     }
   };
 
-  // 0~8 까지 숫자 랜덤 선택, 상대경로 ./Images/random-n.jpg 연결 필요
+  const default_images: SetStateAction<string>[] = [
+    'https://storage.googleapis.com/gipsa-upload/default-images/random-0.jpg',
+    'https://storage.googleapis.com/gipsa-upload/default-images/random-1.jpg',
+    'https://storage.googleapis.com/gipsa-upload/default-images/random-2.jpg',
+    'https://storage.googleapis.com/gipsa-upload/default-images/random-3.jpg',
+    'https://storage.googleapis.com/gipsa-upload/default-images/random-4.jpg',
+    'https://storage.googleapis.com/gipsa-upload/default-images/random-5.jpg',
+    'https://storage.googleapis.com/gipsa-upload/default-images/random-6.jpg',
+    'https://storage.googleapis.com/gipsa-upload/default-images/random-7.jpg',
+    'https://storage.googleapis.com/gipsa-upload/default-images/random-8.jpg',
+  ];
+
   const handleRandomImageSelect = () => {
     const getRandom = (min: number, max: number) =>
       Math.floor(Math.random() * (max - min) + min);
-    setRandomImageNum(getRandom(0, 8));
+    setImageUri(default_images[getRandom(0, 8)]);
+    console.log(default_images[getRandom(0, 8)]);
   };
 
   return (
     <S.Root>
       <S.Background
         source={
-          !imageUri ? require('./Images/random-0.jpg') : { uri: imageUri }
+          !imageUri
+            ? {
+                uri: 'https://storage.googleapis.com/gipsa-upload/default-images/random-0.jpg',
+              }
+            : { uri: imageUri }
         }
       >
         <S.Container>
