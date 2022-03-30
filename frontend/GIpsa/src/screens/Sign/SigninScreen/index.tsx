@@ -14,6 +14,7 @@ import { LogBox } from 'react-native';
 import { API_ENDPOINT } from 'shared/constants/env';
 
 import UserProvider, { useCurrentUser } from 'src/provider/UserProvider';
+import { MyText } from 'shared/components';
 
 LogBox.ignoreLogs(['EventEmitter.removeListener']);
 LogBox.ignoreLogs([
@@ -75,6 +76,9 @@ const SigninScreen = ({ route, navigation }) => {
       setAvailNn(true);
       user.nickname = nickName;
     }
+    if (nickName == '') {
+      setAvailNn(false);
+    }
     user.nickname = nickName;
   }, [nicknameCheck, nickName]);
 
@@ -113,20 +117,31 @@ const SigninScreen = ({ route, navigation }) => {
 
   return (
     <View style={S.container}>
-      <Text style={S.title}>Join</Text>
-      <Text style={S.marginNn}>Nickname</Text>
+      <View style={S.title}>
+        <MyText fontSize={30} fontWeight={'bold'}>
+          Join
+        </MyText>
+      </View>
+      <View style={S.marginNn}>
+        <MyText fontSize={14}>Nickname</MyText>
+      </View>
       <NickNameInput
         style={S.marginNnInput}
         onChangeText={(nickName) => setNickName(nickName)}
         placeholder="Enter nickname..."
       />
-      {availNn ? (
-        <Text style={S.marginavail}>available</Text>
-      ) : (
-        <Text style={S.marginavailred}>not available</Text>
-      )}
-      <Text style={S.marginB}>Birth</Text>
-
+      <View style={S.marginavail}>
+        {availNn ? (
+          <MyText fontSize={10}>available</MyText>
+        ) : (
+          <MyText fontSize={10} color={'red'}>
+            not available
+          </MyText>
+        )}
+      </View>
+      <View style={S.marginB}>
+        <MyText fontSize={14}>Birth</MyText>
+      </View>
       <View style={S.dateAlign}>
         <DateInput style={S.tinputYear} onChangeText={yeartyped} />
         <DateInput style={S.tinputMonth} onChangeText={monthtyped} />
@@ -135,24 +150,33 @@ const SigninScreen = ({ route, navigation }) => {
 
       {isSenior && (
         <View style={S.area}>
-          <Text style={S.textQ}>
-            Do you want to make contents as a story teller?
-          </Text>
+          <View style={S.textQ}>
+            <MyText fontSize={15}>
+              Do you want to make contents as a story teller?
+            </MyText>
+          </View>
           <View style={S.checkAlign}>
             <CheckBox
               value={isChecked}
               onValueChange={(val) => setIsChecked(val)}
             />
-            <Text>Yes, I want to share my story</Text>
+            <MyText>Yes, I want to share my story</MyText>
           </View>
         </View>
       )}
 
       <TouchableOpacity style={S.startbtntouch} onPress={onPressGoMain}>
-        <Image
-          source={require('../../../shared/assets/images/start-bind.jpg')}
-          style={S.startbtn}
-        />
+        {availNn ? (
+          <Image
+            source={require('../../../shared/assets/images/start-bind.png')}
+            style={S.startbtn}
+          />
+        ) : (
+          <Image
+            source={require('../../../shared/assets/images/unstart-bind.png')}
+            style={S.startbtn}
+          />
+        )}
       </TouchableOpacity>
     </View>
   );
