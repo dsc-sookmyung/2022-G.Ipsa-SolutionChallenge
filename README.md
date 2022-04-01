@@ -1,8 +1,8 @@
 # BIND(AOS)
 
-### 2022 Google Solution Challenge
+## 2022 Google Solution Challenge
 
-#### Bind generations to make a better world (aka. **B**ack **I**n **T**he **D**ays)
+### Bind generations to make a better world (aka. **B**ack **I**n **T**he **D**ays)
 
 </br>
 
