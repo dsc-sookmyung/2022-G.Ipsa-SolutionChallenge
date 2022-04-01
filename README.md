@@ -80,6 +80,8 @@ Also, we are considering to add a recommendation system for users.
 |<img src="https://user-images.githubusercontent.com/68985625/160627117-2f2f5596-9dcc-43ad-bb11-130ad2cf33a2.png" width="250">|<img src="https://user-images.githubusercontent.com/68985625/160627133-942eb431-e019-49d9-8476-47c41361498c.png" width="250">|
 
 ### To Download the app, please follow the following command line
+#### ! First, you need the right version of react-native as said
+
 ```shell
 git clone https://github.com/dsc-sookmyung/2022-G.Ipsa-SolutionChallenge.git
 cd 2022-G.Ipsa-SolutionChallenge
