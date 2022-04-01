@@ -3,6 +3,8 @@
 ### 2022 Google Solution Challenge
 
 #### Bind generations to make a better world (aka. **B**ack **I**n **T**he **D**ays)
+![KakaoTalk_Photo_2022-04-01-10-44-06 001](https://user-images.githubusercontent.com/68985625/161178434-7015d7b7-955d-492c-881d-ff4e4e113119.png)
+![KakaoTalk_Photo_2022-04-01-10-44-07 002](https://user-images.githubusercontent.com/68985625/161178419-9e132bad-40cf-406c-904b-0515479ae538.png)
 
 </br>
 
