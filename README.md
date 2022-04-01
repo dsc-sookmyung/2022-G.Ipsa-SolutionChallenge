@@ -81,6 +81,7 @@ Also, we are considering to add a recommendation system for users.
 
 ### To Download the app, please follow the following command line
 #### ! First, you need the right version of react-native as said
+#### ! Only android is provided
 
 ```shell
 git clone https://github.com/dsc-sookmyung/2022-G.Ipsa-SolutionChallenge.git
